@@ -224,9 +224,7 @@
   /* ---------- cursor glow background ---------- */
   :root{--glow:rgba(255,94,0,.14)}
   :root[data-theme="dark"]{--glow:rgba(214,245,0,.10)}
-  .spot{position:fixed;inset:0;z-index:0;pointer-events:none;--x:78vw;--y:18vh;transition:opacity .5s}
-  .spot::before{content:'';position:absolute;inset:0;background:radial-gradient(520px circle at var(--x) var(--y),var(--glow),transparent 62%)}
-  .spot.away{opacity:.55}
+  .spot{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%;display:block}
   main{position:relative;z-index:1}
 
   /* ---------- motion ---------- */
@@ -243,7 +241,7 @@
 </style>
 </head>
 <body>
-<div class="spot" id="spot" aria-hidden="true"></div>
+<canvas class="spot" id="spot" aria-hidden="true"></canvas>
 
 <header class="bar" id="bar">
   <div class="wrap bar-in">
@@ -580,18 +578,54 @@
   tabs.forEach(function(t){ t.addEventListener('click',function(){ filter(t.getAttribute('data-filter')); }); });
   filter('ui',true);
 
-  /* ---------- cursor spotlight ---------- */
+  /* ---------- pixel glow around the cursor ---------- */
   var spot=document.getElementById('spot');
-  if(spot && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-    var tx=innerWidth*.78, ty=innerHeight*.18, cx=tx, cy=ty, raf=0;
+  if(spot && spot.getContext){
+    var ctx=spot.getContext('2d'), dpr=1, W=0, H=0;
+    var CELL=16, GAP=3, R=240, STEPS=5;
+    var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
     var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function tick(){
-      cx+=(tx-cx)*(still?1:.16); cy+=(ty-cy)*(still?1:.16);
-      spot.style.setProperty('--x',cx.toFixed(1)+'px'); spot.style.setProperty('--y',cy.toFixed(1)+'px');
-      raf=(Math.abs(tx-cx)+Math.abs(ty-cy)>.5)?requestAnimationFrame(tick):0;
+    var tx=innerWidth*.78, ty=innerHeight*.18, cx=tx, cy=ty, power=fine?0:.7, target=power, raf=0, last=0;
+    function size(){ dpr=Math.min(window.devicePixelRatio||1,2); W=innerWidth; H=innerHeight; spot.width=W*dpr; spot.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
+    function hash(x,y){ var h=Math.sin(x*127.1+y*311.7)*43758.5453; return h-Math.floor(h); }
+    function rgb(){ return root.getAttribute('data-theme')==='dark' ? '214,245,0' : '255,94,0'; }
+    function draw(t){
+      ctx.clearRect(0,0,W,H);
+      if(power<.01) return;
+      var col=rgb(), max=root.getAttribute('data-theme')==='dark'?.42:.55;
+      var gx0=Math.floor((cx-R)/CELL), gx1=Math.ceil((cx+R)/CELL), gy0=Math.floor((cy-R)/CELL), gy1=Math.ceil((cy+R)/CELL);
+      for(var gx=gx0;gx<=gx1;gx++){
+        for(var gy=gy0;gy<=gy1;gy++){
+          var px=gx*CELL, py=gy*CELL, dx=px+CELL/2-cx, dy=py+CELL/2-cy, d=Math.sqrt(dx*dx+dy*dy);
+          if(d>R) continue;
+          var n=hash(gx,gy), f=1-d/R;
+          f=f*f*(3-2*f);
+          var lvl=f*STEPS + (n-.5)*1.4;
+          if(!still) lvl+=Math.sin(t/420+n*6.283)*.55;
+          lvl=Math.floor(lvl);
+          if(lvl<=0) continue;
+          ctx.fillStyle='rgba('+col+','+(Math.min(lvl,STEPS)/STEPS*max*power).toFixed(3)+')';
+          ctx.fillRect(px+GAP/2,py+GAP/2,CELL-GAP,CELL-GAP);
+        }
+      }
     }
-    addEventListener('pointermove',function(e){ tx=e.clientX; ty=e.clientY; spot.classList.remove('away'); if(!raf) raf=requestAnimationFrame(tick); },{passive:true});
-    document.documentElement.addEventListener('pointerleave',function(){ spot.classList.add('away'); });
+    function loop(t){
+      var k=still?1:.18;
+      cx+=(tx-cx)*k; cy+=(ty-cy)*k; power+=(target-power)*(still?1:.12);
+      draw(t||0);
+      var settled=Math.abs(tx-cx)+Math.abs(ty-cy)<.5 && Math.abs(target-power)<.01;
+      raf = (!still && (power>.01 || !settled)) ? requestAnimationFrame(loop) : 0;
+    }
+    function kick(){ if(!raf) raf=requestAnimationFrame(loop); }
+    size(); addEventListener('resize',function(){ size(); if(!fine){ tx=cx=innerWidth*.78; ty=cy=innerHeight*.18; } kick(); });
+    if(fine){
+      addEventListener('pointermove',function(e){ tx=e.clientX; ty=e.clientY; target=1; kick(); },{passive:true});
+      document.documentElement.addEventListener('pointerleave',function(){ target=0; kick(); });
+      document.addEventListener('visibilitychange',function(){ if(document.hidden){ cancelAnimationFrame(raf); raf=0; } });
+    } else {
+      still=true; target=power; draw(0);
+    }
+    new MutationObserver(function(){ kick(); if(!fine) draw(0); }).observe(root,{attributes:true,attributeFilter:['data-theme']});
   }
 
   /* ---------- experience ---------- */
