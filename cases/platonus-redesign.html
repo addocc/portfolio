@@ -201,6 +201,13 @@
   .arrow{display:inline-block;transition:transform .2s}
   .btn:hover .arrow{transform:translate(2px,-2px)}
 </style>
+<script>if(/[?&]embed=1\b/.test(location.search))document.documentElement.classList.add('in-sheet');</script>
+<style>
+  html.in-sheet .topbar,html.in-sheet .read-progress,html.in-sheet .footer,html.in-sheet .crumbs{display:none!important}
+  html.in-sheet .toc-inner{top:0!important}
+  html.in-sheet .case-head{padding-top:44px!important}
+  html.in-sheet .case-title{font-size:clamp(34px,5.2vw,54px)!important}
+</style>
 </head>
 <body>
 <div class="read-progress" id="progress"></div>
@@ -378,6 +385,15 @@
 
   sections.forEach(function(s){ io.observe(s); });
   setActive('context');
+})();
+</script>
+<script>
+(function(){
+  if(!document.documentElement.classList.contains('in-sheet')) return;
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href]'); if(!a) return;
+    if(/(^|\/)index\.html/.test(a.getAttribute('href'))){ e.preventDefault(); parent.postMessage({type:'aidos-close-sheet'},location.origin); }
+  });
 })();
 </script>
 </body>
