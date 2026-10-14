@@ -107,6 +107,9 @@
     .work:not(.locked):hover .shot{transform:scale(1.015) rotate(-.8deg)}
     .work:not(.locked):hover .arrow{transform:none;opacity:1}
   }
+  .work:focus,.work:focus-visible,.track button:focus,.tab:focus{outline:none}
+  .work:focus-visible .shot{transform:scale(1.015) rotate(-.8deg)}
+  .work:focus-visible .arrow{transform:none;opacity:1}
   .tag{display:none;position:absolute;left:14px;top:14px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.92);color:#1F1F1F;font-size:12.5px;font-weight:700}
   .work-info{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 4px 0}
   .work h3{margin:0 0 4px;font-family:var(--text);font-weight:700;font-size:17px;line-height:1.35}
@@ -638,7 +641,7 @@
     drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true');
     document.body.classList.remove('drawer-on');
     setTimeout(function(){ if(!isOpen) body.innerHTML=''; },520);
-    if(lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+    if(lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true,focusVisible:false});
   }
   function openCase(slug,push){
     body.innerHTML='<div class="loader">'+(root.lang==='en'?'Loading…':'Загрузка…')+'</div><iframe title="Кейс" src="cases/'+slug+'.html?embed=1"></iframe>';
