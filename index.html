@@ -7,1250 +7,688 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400..800;1,400..800&family=Rubik:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
+<script>
+  try{ if(localStorage.getItem('aidos-theme')==='dark') document.documentElement.setAttribute('data-theme','dark'); }catch(e){}
+</script>
 <style>
   :root{
+    --bg:#FFFFFF;
+    --surface:#F2F2F0;
+    --card:#F2F2F0;
+    --ink:#1F1F1F;
+    --ink-2:#3A3A3A;
+    --mute:#8A8A8B;
+    --line:rgba(31,31,31,.1);
     --accent:#FF5E00;
     --accent-soft:rgba(255,94,0,.12);
-    --bg:#EFF1F2;
-    --bg-card:#FFFFFF;
-    --bg-deep:#1F1F1F;
-    --ink:#1F1F1F;
-    --ink-2:#333333;
-    --ink-mute:#8A8A8B;
-    --line:rgba(31,31,31,.08);
-    --line-2:rgba(31,31,31,.14);
-    --radius-xl:48px;
-    --radius-lg:32px;
-    --radius-md:20px;
-    --radius-sm:12px;
-    --radius-pill:999px;
-    --container:1320px;
-    --pad-x:clamp(16px,3vw,40px);
-    --display:'Rubik', 'Nunito', system-ui, sans-serif;
-    --text:'Nunito', system-ui, sans-serif;
-    --mono:'Nunito', system-ui, sans-serif;
+    --on-accent:#FFFFFF;
+    --bar:rgba(255,255,255,.82);
+    --display:'Rubik','Nunito',system-ui,sans-serif;
+    --text:'Nunito',system-ui,sans-serif;
+    --spring:cubic-bezier(.34,1.56,.64,1);
+    --ease:cubic-bezier(.2,.8,.2,1);
+    --wrap:1360px;
+    --pad:clamp(16px,4vw,40px);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F0F0F;
+    --surface:#1A1A1A;
+    --card:#1A1A1A;
+    --ink:#F2F2F2;
+    --ink-2:#D2D2D2;
+    --mute:#9A9A9A;
+    --line:rgba(255,255,255,.11);
+    --bar:rgba(15,15,15,.82);
+    --accent:#D6F500;
+    --accent-soft:rgba(214,245,0,.14);
+    --on-accent:#111111;
   }
   *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.45}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.5}
   body{overflow-x:hidden}
   a{color:inherit;text-decoration:none}
   img{display:block;max-width:100%}
-  button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
-  ::selection{background:var(--accent);color:#fff}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad)}
 
-  .wrap{max-width:var(--container);margin:0 auto;padding-left:var(--pad-x);padding-right:var(--pad-x)}
-  .display{font-family:var(--display);font-weight:600;letter-spacing:-0.02em;line-height:1.02;text-wrap:balance}
-  .display em{font-style:italic;font-weight:500;color:var(--accent)}
-  .h2{font-family:var(--display);font-weight:600;font-size:clamp(34px,4.6vw,72px);letter-spacing:-0.02em;line-height:1;margin:0;text-wrap:balance}
-  .h2 em{font-style:italic;font-weight:500;color:var(--accent)}
-  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:0.02em;text-transform:uppercase;color:var(--ink-mute)}
-  .num{font-family:var(--mono);font-size:13px;color:var(--ink-mute);letter-spacing:0.04em}
+  /* ---------- top bar ---------- */
+  .bar{position:sticky;top:0;z-index:20;background:var(--bar);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid transparent;transition:border-color .2s}
+  .bar.scrolled{border-bottom-color:var(--line)}
+  .bar-in{height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo img{width:120px;height:auto}
+  :root[data-theme="dark"] .logo img{filter:invert(1)}
+  .nav{display:flex;gap:2px}
+  .nav a{padding:7px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--ink-2);transition:background .2s,color .2s}
+  .nav a:hover{background:var(--surface);color:var(--ink)}
+  .tools{display:flex;align-items:center;gap:8px}
+  .icon-btn{height:38px;min-width:38px;padding:0 12px;border-radius:999px;font-size:13.5px;font-weight:700;color:var(--ink-2);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background .2s}
+  .icon-btn:hover{background:var(--line)}
+  .icon-btn svg{width:16px;height:16px}
+  .cta{height:38px;padding:0 16px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:transform .35s var(--spring)}
+  .cta:hover{transform:translateY(-2px)}
+  @media (max-width:820px){.nav{display:none}}
+  @media (max-width:480px){.cta span{display:none}.icon-btn.lang{display:none}}
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    position:sticky;top:0;z-index:50;background:rgba(239,241,242,.78);backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
+  /* ---------- hero ---------- */
+  .hero{padding:80px 0 72px}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--mute);margin-bottom:22px}
+  .hero h1{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(44px,6.4vw,84px);line-height:1.02;letter-spacing:-.03em}
+  .hero h1 .ava{display:inline-block;width:.9em;height:.9em;margin:0 .02em;border-radius:.24em;overflow:hidden;vertical-align:-.1em;transform:rotate(-6deg);transition:transform .45s var(--spring)}
+  .hero h1 .ava:hover{transform:rotate(4deg) scale(1.08)}
+  .hero h1 .ava img{width:100%;height:100%;object-fit:cover}
+  .hero-row{display:grid;grid-template-columns:minmax(0,560px) auto;justify-content:space-between;align-items:end;gap:28px;margin-top:34px}
+  .hero p{margin:0;font-size:18px;line-height:1.6;font-weight:500;color:var(--ink-2)}
+  .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{height:50px;padding:0 22px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15.5px;transition:transform .35s var(--spring),background .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.dark{background:var(--ink);color:var(--bg)}
+  .btn.ghost{background:var(--surface);color:var(--ink)}
+  @media (max-width:760px){.hero{padding:44px 0 40px}.hero-row{grid-template-columns:1fr}}
+
+  /* ---------- sections ---------- */
+  .section{padding:72px 0 8px}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:22px}
+  .sec-head h2{margin:0;font-family:var(--text);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);line-height:1.4}
+  .sec-head .n{font-size:13px;font-weight:600;color:var(--mute)}
+
+  /* ---------- work grid ---------- */
+  .works{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px 24px}
+  .works .wide{grid-column:1/-1}
+  @media (max-width:760px){.works{grid-template-columns:1fr;gap:36px}}
+  .work{display:block;position:relative}
+  .shot{--p:0px;position:relative;aspect-ratio:16/10;border-radius:24px;overflow:hidden;background:var(--cbg,var(--surface));transition:transform .45s var(--spring);will-change:transform}
+  .wide .shot{aspect-ratio:2439/1406}
+  .shot img{position:absolute;top:var(--p);left:var(--p);width:calc(100% - var(--p)*2);height:calc(100% - var(--p)*2);object-fit:cover;border-radius:0;background:var(--cbg,#E2E4E7)}
+  .shot .zoom{position:absolute;inset:0;overflow:hidden;background:var(--cbg,#E2E4E7)}
+  .shot .zoom img{top:0;left:0;width:100%;height:100%;border-radius:0;transform:scale(1.9)}
+  .arrow{position:absolute;top:14px;right:14px;z-index:2;width:44px;height:44px;border-radius:50%;background:#fff;color:#1F1F1F;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;transform:scale(.4) rotate(-45deg);opacity:0;transition:transform .45s var(--spring),opacity .2s}
+  @media (hover:hover){
+    .work:not(.locked):hover .shot{transform:scale(1.015) rotate(-.8deg)}
+    .work:not(.locked):hover .arrow{transform:none;opacity:1}
   }
-  .topbar-inner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;height:64px}
-  .topbar-signature{display:flex;align-items:center;justify-content:center}
-  .topbar-signature img{width:145px;height:auto;display:block}
-  body.theme-dark .topbar-signature img{filter:invert(1)}
-  .topbar-inner .topbar-right{justify-self:end}
-  @media(min-width:761px) and (max-width:1000px){
-    .topbar-inner{gap:12px}
-    .topbar-signature img{width:110px}
-    .topbar-inner .topbar-right{gap:8px}
-    .topbar-inner .nav a{padding:8px}
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:-0.01em}
-  .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
-  .nav{display:flex;align-items:center;gap:6px}
-  .nav a{font-size:14px;color:var(--ink-2);padding:8px 14px;border-radius:var(--radius-pill);transition:background .2s,color .2s}
-  .nav a:hover{background:rgba(31,31,31,.06);color:var(--ink)}
+  .tag{display:none;position:absolute;left:14px;top:14px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.92);color:#1F1F1F;font-size:12.5px;font-weight:700}
+  .work-info{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 4px 0}
+  .work h3{margin:0 0 4px;font-family:var(--text);font-weight:700;font-size:17px;line-height:1.35}
+  .work p{margin:0;font-size:15px;line-height:1.5;color:var(--mute)}
+  .work .kpi{flex:none;color:var(--accent);font-size:14px;font-weight:700;white-space:nowrap}
+  .locked .shot::after{content:'';position:absolute;inset:0;background:rgba(10,25,45,.15)}
+  .lock{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center}
+  .lock span{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.92);color:#343b48;font-size:13.5px;font-weight:700}
+  .lock svg{width:16px;height:16px}
+
+  .works.small{grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 20px}
+  .works.small .shot{border-radius:20px}
+  .works.small h3{font-size:16px}
+  @media (max-width:900px){.works.small{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:560px){.works.small{grid-template-columns:1fr}}
+  .play{position:absolute;z-index:2;left:14px;bottom:14px;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.92);color:#1F1F1F;font-size:13px;font-weight:800}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 26px}
+  .tab{height:40px;padding:0 16px;border-radius:999px;background:var(--surface);color:var(--ink-2);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:background .2s,color .2s,transform .35s var(--spring)}
+  .tab b{font-weight:700}
+  .tab span{font-size:12.5px;color:var(--mute);font-weight:700}
+  .tab:hover{transform:translateY(-1px)}
+  .tab.is-active{background:var(--ink);color:var(--bg)}
+  .tab.is-active span{color:inherit;opacity:.6}
+  .work.is-hidden{display:none}
+  .work.swap{animation:up .5s var(--ease) both}
+
+  /* ---------- photo strip ---------- */
+  .strip{position:relative;overflow:hidden;padding:4px 0 8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+  .track{display:flex;gap:14px;width:max-content;animation:marquee 80s linear infinite}
+  .strip:hover .track{animation-play-state:paused}
+  .track button{flex:none;height:240px;border-radius:18px;overflow:hidden;transition:transform .45s var(--spring)}
+  .track button:nth-child(3n+2){transform:rotate(1.2deg)}
+  .track button:nth-child(3n){transform:rotate(-1.2deg)}
+  .track button:hover{transform:translateY(-6px) rotate(0)}
+  .track img{height:100%;width:auto}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+  .strip-meta{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-size:14px;color:var(--mute)}
+  .strip-meta button{font-weight:700;color:var(--ink)}
+  @media (max-width:560px){.track button{height:180px}}
+
+  /* ---------- experience table ---------- */
+  .xp{border-top:1px solid var(--line)}
+  .xp-row{border-bottom:1px solid var(--line)}
+  .xp-btn{display:grid;grid-template-columns:200px minmax(0,1fr) 28px;gap:20px;align-items:baseline;width:100%;padding:20px 0;text-align:left}
+  .xp-when{font-size:14px;font-weight:700;color:var(--mute)}
+  .xp-when .dur{display:block;font-weight:600;margin-top:2px}
+  .xp-co{font-family:var(--text);font-weight:700;font-size:18px;line-height:1.35}
+  .xp-co span{font-family:var(--text);font-weight:600;font-size:15px;color:var(--mute);margin-left:8px;letter-spacing:0}
+  .plus{position:relative;width:20px;height:20px;align-self:center;justify-self:end}
+  .plus::before,.plus::after{content:'';position:absolute;left:50%;top:50%;width:14px;height:2px;margin:-1px 0 0 -7px;background:var(--ink);border-radius:2px;transition:transform .35s var(--spring)}
+  .plus::after{transform:rotate(90deg)}
+  .xp-row.open .plus::after{transform:rotate(0)}
+  .xp-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+  .xp-row.open .xp-more{grid-template-rows:1fr}
+  .xp-more > div{overflow:hidden}
+  .xp-in{padding:0 0 22px 220px;font-size:15px;color:var(--ink-2)}
+  .xp-in .role{margin:0 0 8px;color:var(--mute)}
+  .xp-in ul{margin:0;padding-left:18px}
+  .xp-in li{margin:3px 0}
+  .xp-in a{display:inline-block;margin-top:10px;font-weight:800;color:var(--accent)}
   @media (max-width:760px){
-    .topbar-inner{display:flex;height:auto;min-height:64px;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
-    .topbar-signature{order:-1;flex-basis:100%}
-    .nav{flex-wrap:wrap}
-    .nav a{padding:8px 10px}
+    .xp-btn{grid-template-columns:minmax(0,1fr) 24px;gap:6px 12px}
+    .xp-when{grid-column:1;grid-row:2}
+    .xp-co span{display:block;margin:2px 0 0}
+    .xp-in{padding-left:0}
   }
 
-  /* Shared appearance for theme and language controls */
-  .topbar-right{display:flex;align-items:center;gap:16px}
-  .preference-toggle{
-    display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:var(--radius-pill);
-    font-size:13px;line-height:1;white-space:nowrap;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2);
-    transition:color .2s,box-shadow .2s,background .2s;cursor:pointer;
-  }
-  .preference-toggle:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-  .preference-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .preference-toggle svg{width:14px;height:14px;flex:0 0 14px}
-  body.theme-dark .preference-toggle:hover{color:#000;background:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-  body.theme-dark .theme-toggle .tt-sun{display:none}
-  .theme-toggle .tt-moon{display:none}
-  body.theme-dark .theme-toggle .tt-moon{display:block}
+  /* ---------- about ---------- */
+  .about{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  @media (max-width:900px){.about{grid-template-columns:1fr}}
+  .about h3{margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .about ul{list-style:none;margin:0;padding:0}
+  .about li{padding:10px 0;border-top:1px solid var(--line);font-size:16px;font-weight:600}
+  .about li:first-child{border-top:0;padding-top:0}
+  .about li small{display:block;font-size:14px;font-weight:600;color:var(--mute)}
 
-  /* ---------- Buttons ---------- */
-  .btn{
-    display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:var(--radius-pill);
-    font-weight:500;font-size:15px;line-height:1;transition:transform .2s,background .2s,color .2s,box-shadow .2s;
-    white-space:nowrap;cursor:pointer;
-  }
-  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 24px -8px rgba(255,94,0,.55)}
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 16px 32px -10px rgba(255,94,0,.7)}
-  .btn-secondary{background:var(--ink);color:#fff}
-  .btn-secondary:hover{background:#000}
-  .btn-ghost{background:rgba(31,31,31,.06);color:var(--ink)}
-  .btn-ghost:hover{background:rgba(31,31,31,.1)}
-  .btn-outline{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
-  .btn-outline:hover{background:rgba(31,31,31,.04)}
-  .btn-sm{padding:8px 14px;font-size:13px}
-  .btn-arrow{
-    display:inline-flex;align-items:center;gap:6px;background:rgba(31,31,31,.06);color:var(--ink);
-    border-radius:var(--radius-pill);padding:6px 12px 6px 14px;font-size:12px;font-weight:500;
-  }
-  .btn-arrow:hover{background:var(--ink);color:#fff}
-  .arrow{display:inline-block;transition:transform .25s}
-  .btn:hover .arrow,a:hover .arrow{transform:translate(2px,-2px)}
+  /* ---------- footer CTA ---------- */
+  .outro{padding:72px 0 40px;margin-top:24px}
+  .outro h2{margin:0 0 28px;font-family:var(--display);font-weight:600;font-size:clamp(40px,7vw,96px);line-height:1;letter-spacing:-.035em}
+  .outro h2 em{font-style:italic;color:var(--accent)}
+  .outro-links{display:flex;flex-wrap:wrap;gap:10px}
+  .bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:64px;font-size:13.5px;color:var(--mute)}
 
-  /* ---------- HERO ---------- */
-  .hero{padding:24px 0 0}
-  .hero-card{
-    background:var(--bg-card);border-radius:var(--radius-xl);
-    padding:clamp(28px,4vw,64px);position:relative;overflow:hidden;
-    display:flex;flex-direction:column;gap:18px;
-  }
-  .hero-head{display:flex;align-items:center;justify-content:space-between;gap:24px}
-  .hero-meta{position:absolute;top:clamp(28px,4vw,64px);left:clamp(28px,4vw,64px);right:clamp(28px,4vw,64px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .hero-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--radius-pill);background:rgba(31,31,31,.05);font-size:13px;color:var(--ink-2)}
-  .pulse{width:8px;height:8px;border-radius:50%;background:#32D47D;box-shadow:0 0 0 4px rgba(50,212,125,.18)}
-  .hero-title{font-family:var(--display);font-weight:600;letter-spacing:-0.025em;line-height:.94;margin:0;font-size:clamp(44px,6.5vw,104px);white-space:nowrap}
-  @media (max-width:640px){.hero-title{white-space:normal}}
-  .hero-title em{font-style:italic;font-weight:500;color:var(--accent);letter-spacing:-0.01em}
-  .hero-body{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;flex-wrap:wrap}
-  .hero-intro{flex:1 1 360px;min-width:0}
-  .hero-sub{font-size:clamp(16px,1.4vw,20px);color:var(--ink-2);max-width:520px;line-height:1.5}
-  .hero-actions{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
-  .hero-actions .btn{flex:1 1 0;justify-content:center;min-width:160px}
-  .hero-body .id-card{flex:0 0 300px;width:300px}
-  @media (max-width:720px){.hero-body .id-card{flex-basis:100%;width:100%}}
-  .id-card{
-    background:var(--bg);border-radius:var(--radius-lg);padding:22px;display:grid;gap:14px;
-  }
-  .id-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-2)}
-  .id-row b{color:var(--ink);font-weight:500}
-  .id-divider{height:1px;background:var(--line)}
-  .id-tags{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:var(--radius-pill);background:#fff;font-size:12px;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
-  .chip.solid{background:var(--ink);color:#fff;box-shadow:none}
-  .chip.accent{background:var(--accent);color:#fff;box-shadow:none}
+  /* ---------- drawer ---------- */
+  .drawer{position:fixed;inset:0;z-index:50;pointer-events:none}
+  .drawer-bg{position:absolute;inset:0;background:rgba(10,10,10,.45);opacity:0;transition:opacity .35s var(--ease)}
+  .drawer-panel{position:absolute;top:50%;left:50%;width:min(1000px,100% - 32px);height:calc(100dvh - 48px);background:#fff;border-radius:28px;overflow:hidden;transform:translate(-50%,-47%) scale(.97);opacity:0;visibility:hidden;transition:transform .45s var(--ease),opacity .3s ease,visibility 0s linear .45s}
+  .drawer.open{pointer-events:auto}
+  .drawer.open .drawer-bg{opacity:1}
+  .drawer.open .drawer-panel{transform:translate(-50%,-50%);opacity:1;visibility:visible;transition:transform .45s var(--spring),opacity .25s ease,visibility 0s;box-shadow:0 30px 80px rgba(0,0,0,.28)}
+  @media (max-width:700px){.drawer-panel{width:calc(100% - 16px);height:calc(100dvh - 16px);border-radius:22px}}
+  .drawer[data-kind="video"] .drawer-panel{width:min(1040px,100% - 24px);height:auto;border-radius:20px;background:#000}
+  .drawer-close{position:absolute;top:14px;right:14px;z-index:3;height:38px;padding:0 14px 0 12px;border-radius:999px;background:rgba(31,31,31,.78);color:#fff;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:6px;backdrop-filter:blur(6px)}
+  .drawer-body{height:100%}
+  .drawer-body iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+  .video-wrap{aspect-ratio:16/9}
+  .loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#999;font-size:14px;background:#fff;transition:opacity .25s}
+  .loader.done{opacity:0;pointer-events:none}
+  .photos{height:100%;overflow-y:auto;padding:64px 24px 24px;background:#fff;color:#1F1F1F}
+  .photos h2{margin:0 0 18px;font-family:var(--display);font-weight:600;font-size:28px}
+  .photo-grid{columns:3 220px;column-gap:10px}
+  .photo-grid button{display:block;width:100%;margin:0 0 10px;border-radius:12px;overflow:hidden;break-inside:avoid}
+  .photo-grid img{width:100%;height:auto}
+  .viewer{position:absolute;inset:0;z-index:2;background:rgba(10,10,10,.95);display:flex;align-items:center;justify-content:center;padding:56px 64px}
+  .viewer[hidden]{display:none}
+  .viewer img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+  .viewer .nav-b{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:20px}
+  .viewer .prev{left:12px}.viewer .next{right:12px}
+  .viewer .cap{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:13px}
+  .viewer .back{position:absolute;top:14px;left:14px;height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-size:14px}
+  body.drawer-on{overflow:hidden}
 
-  /* compact profile + small avatar */
-  .profile-card{
-    display:flex;align-items:center;gap:16px;
-    background:var(--bg);border-radius:var(--radius-lg);padding:18px 20px;
+  /* ---------- motion ---------- */
+  @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .hero > *{animation:up .6s var(--ease) both}
+  .hero > *:nth-child(2){animation-delay:.06s}
+  .hero > *:nth-child(3){animation-delay:.12s}
+  .reveal{opacity:0}
+  .reveal.in{animation:up .6s var(--ease) both}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal{opacity:1}
   }
-  .avatar-sm{
-    width:72px;height:72px;flex:0 0 72px;border-radius:50%;overflow:hidden;position:relative;
-    background:repeating-linear-gradient(135deg,#E8EAEC 0,#E8EAEC 12px,#DDE0E2 12px,#DDE0E2 24px);
-  }
-  .avatar-sm.filled img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
-  .hero-head .avatar-sm{width:clamp(104px,12vw,160px);height:clamp(104px,12vw,160px);flex-basis:clamp(104px,12vw,160px);border-radius:16px}
-  .hero-head .avatar-sm img{transition:transform .65s cubic-bezier(.22,1,.36,1);transform:scale(1)}
-  @media(hover:hover){.hero-head .avatar-sm:hover img{transform:scale(1.08)}}
-  @media(prefers-reduced-motion:reduce){.hero-head .avatar-sm img{transition:none}.hero-head .avatar-sm:hover img{transform:none}}
-  @media(max-width:480px){.hero-head{gap:16px}.hero-head .avatar-sm{width:96px;height:96px;flex-basis:96px;border-radius:12px}}
-  .profile-name{display:flex;flex-direction:column;gap:3px}
-  .profile-name b{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-0.01em;line-height:1.15;color:var(--ink)}
-  .profile-name span{font-size:13px;color:var(--ink-2)}
-
-  /* marquee strip */
-  .marquee{
-    margin-top:16px;border-radius:var(--radius-lg);background:var(--ink);color:#fff;
-    overflow:hidden;position:relative;
-  }
-  .marquee-track{display:flex;gap:48px;padding:18px 0;white-space:nowrap;animation:marq 40s linear infinite}
-  .marquee span{font-family:var(--display);font-size:clamp(18px,2vw,28px);font-weight:500;letter-spacing:-0.02em;display:inline-flex;align-items:center;gap:48px}
-  .marquee span::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent)}
-  @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-  /* ---------- Section base ---------- */
-  section{padding:96px 0}
-  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
-  .section-head .left{display:flex;align-items:flex-start;gap:32px}
-  .section-head .num{margin-top:8px}
-
-  /* ---------- About strip ---------- */
-  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  @media (max-width:840px){.about-grid{grid-template-columns:1fr}}
-  .about-card{background:var(--bg-card);border-radius:var(--radius-lg);padding:36px}
-  .about-card h3{font-family:var(--display);font-size:clamp(22px,2vw,28px);margin:0 0 14px;font-weight:600;letter-spacing:-0.01em}
-  .about-card p{margin:0;color:var(--ink-2);font-size:16px;line-height:1.55}
-  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:var(--radius-lg);overflow:hidden;margin-top:24px}
-  .stat{background:var(--bg-card);padding:24px}
-  .stat .v{font-family:var(--display);font-size:clamp(28px,3.2vw,42px);font-weight:600;letter-spacing:-0.02em;line-height:1}
-  .stat .v em{font-style:italic;color:var(--accent);font-weight:500}
-  .stat .l{font-size:13px;color:var(--ink-mute);margin-top:8px}
-
-  /* ---------- Tabs ---------- */
-  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;align-items:center}
-  .tabs-label{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mute);margin-right:8px}
-  .tab{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:11px 18px;border-radius:var(--radius-pill);background:var(--bg-card);
-    font-size:14px;font-weight:500;color:var(--ink-2);
-    box-shadow:inset 0 0 0 1px var(--line);
-    transition:background .2s,color .2s,box-shadow .2s,transform .2s;cursor:pointer;
-  }
-  .tab:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
-  .tab.is-active{background:var(--ink);color:#fff;box-shadow:none;transform:translateY(-1px)}
-  .tab .count{font-family:var(--mono);font-size:11px;opacity:.6;padding:2px 8px;border-radius:var(--radius-pill);background:rgba(0,0,0,.06);transition:background .2s}
-  .tab.is-active .count{background:rgba(255,255,255,.16);opacity:.9;color:#fff}
-  body.theme-dark .tab .count{background:rgba(255,255,255,.08)}
-  body.theme-dark .tab.is-active{background:var(--accent)}
-  body.theme-dark .tab.is-active,body.theme-dark .tab.is-active .count{color:#000}
-  body.theme-dark .tab.is-active .count{background:rgba(0,0,0,.14)}
-  .project[hidden]{display:none!important}
-  .projects[hidden],.hobby-gallery[hidden]{display:none!important}
-  .hobby-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
-  .hobby-intro h3{font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:500;letter-spacing:-.02em;margin:0}
-  .hobby-cameras{display:flex;gap:12px;flex-wrap:wrap}
-  .hobby-camera{padding:12px 18px;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius-md);font-size:14px}
-  .hobby-camera span{font-family:var(--mono);font-size:11px;color:var(--ink-mute);display:block;margin-bottom:4px}
-  .photo-grid{columns:3;column-gap:16px}
-  .photo-tile{display:block;width:100%;padding:0;margin:0 0 16px;break-inside:avoid;overflow:hidden;border-radius:0;background:var(--bg-card);cursor:zoom-in}
-  .photo-tile img{width:100%;height:auto;transition:opacity .2s}
-  .photo-tile:hover img{opacity:.85}
-  .photo-tile:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-  .photo-viewer{border:0;padding:16px;background:#101010;color:#fff;border-radius:20px;width:min(1200px,94vw);max-width:94vw;max-height:94dvh}
-  .photo-viewer::backdrop{background:rgba(0,0,0,.88)}
-  .photo-viewer img{width:100%;height:calc(90dvh - 100px);object-fit:contain}
-  .photo-viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-  .photo-viewer button{min-width:44px;min-height:44px;border-radius:999px;border:1px solid #555;color:#fff}
-  .photo-viewer button:hover{background:#333}
-  .photo-viewer-controls{display:flex;gap:8px}
-  .photo-viewer-caption{font-size:13px;color:#ccc}
-  @media(max-width:760px){.photo-grid{columns:2;column-gap:10px}.photo-tile{margin-bottom:10px}}
-  @media(max-width:460px){.photo-grid{columns:1}.hobby-cameras{gap:8px}.hobby-camera{padding:10px 14px}}
-
-  /* Graphic filter — vertical cards: image on top, text below */
-  .projects.filter-graphic{grid-template-columns:1fr 1fr}
-  @media (max-width:760px){.projects.filter-graphic{grid-template-columns:1fr}}
-  .projects.filter-graphic .project{grid-template-columns:1fr}
-
-  /* ---------- Motion cover ---------- */
-  .cover-motion{background:radial-gradient(120% 100% at 20% 20%,#1a0e2a 0,#0a0612 60%,#000 100%);color:#fff}
-  .cover-motion .play{
-    position:relative;z-index:2;width:120px;height:120px;border-radius:50%;
-    background:var(--accent);display:flex;align-items:center;justify-content:center;
-    box-shadow:0 24px 60px -20px rgba(255,94,0,.6),0 0 0 12px rgba(255,94,0,.08);
-  }
-  .cover-motion .play::after{
-    content:'';width:0;height:0;border-left:30px solid #fff;border-top:20px solid transparent;border-bottom:20px solid transparent;margin-left:8px;
-  }
-  .cover-motion .frames{position:absolute;left:0;right:0;bottom:24px;z-index:2;padding:0 24px;display:flex;gap:8px;justify-content:center}
-  .cover-motion .frames i{flex:1;max-width:48px;height:40px;border-radius:6px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-  .cover-motion .frames i.on{background:rgba(255,94,0,.2);box-shadow:inset 0 0 0 1px rgba(255,94,0,.4)}
-  .cover-motion .wave{position:absolute;top:24px;right:24px;left:24px;display:flex;gap:3px;align-items:center;height:32px;z-index:2}
-  .cover-motion .wave i{flex:1;background:linear-gradient(180deg,#FF5E00,#9747FF);border-radius:2px;opacity:.6}
-  .cover-motion-2{background:linear-gradient(135deg,#FFEBD9 0%,#FFC7A1 100%)}
-  .cover-motion-2 .wordmark{position:relative;z-index:2;font-family:var(--display);font-weight:600;font-size:clamp(56px,8vw,96px);letter-spacing:-0.03em;color:var(--ink);line-height:.9;display:flex;flex-direction:column;align-items:center}
-  .cover-motion-2 .wordmark em{color:var(--accent);font-style:italic;font-weight:500}
-  .cover-motion-2 .strokes{position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 80px,rgba(255,94,0,.07) 80px 81px)}
-  .cover-motion-2 .ghost{position:absolute;font-family:var(--display);font-weight:600;font-size:clamp(72px,12vw,140px);letter-spacing:-0.03em;color:rgba(31,31,31,.08);left:20px;top:20px;line-height:1}
-
-  /* ---------- Graphic cover ---------- */
-  .cover-brand{background:linear-gradient(180deg,#F8F6F1 0%,#EBE6DA 100%)}
-  .cover-brand .stack{position:relative;width:78%;max-width:440px;aspect-ratio:1.4/1}
-  .cover-brand .card-bc{position:absolute;background:#fff;border-radius:8px;box-shadow:0 16px 30px -16px rgba(31,31,31,.25);padding:18px;display:flex;flex-direction:column;justify-content:space-between}
-  .cover-brand .card-bc.bc1{inset:auto 35% 0 0;height:60%;transform:rotate(-6deg)}
-  .cover-brand .card-bc.bc2{inset:0 0 auto 35%;height:65%;background:var(--ink);color:#fff;transform:rotate(4deg)}
-  .cover-brand .card-bc.bc3{inset:auto 12% 12% 12%;height:50%;background:var(--accent);color:#fff;transform:rotate(-1deg)}
-  .cover-brand .mark{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-0.02em;display:flex;align-items:center;gap:6px}
-  .cover-brand .mark::before{content:'';width:14px;height:14px;border-radius:4px;background:currentColor;opacity:.85}
-  .cover-brand .lines{display:flex;flex-direction:column;gap:5px}
-  .cover-brand .lines i{height:4px;border-radius:2px;background:currentColor;opacity:.4}
-  .cover-brand .lines i:nth-child(2){width:70%}
-  .cover-brand .lines i:nth-child(3){width:55%}
-  .cover-print{background:#171717;color:#fff}
-  .cover-print .poster-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:84%;max-width:480px}
-  .cover-print .poster{aspect-ratio:3/4;border-radius:6px;background:#fff;color:var(--ink);padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-family:var(--display);font-weight:600;letter-spacing:-0.02em;font-size:14px}
-  .cover-print .poster.p2{background:var(--accent);color:#fff}
-  .cover-print .poster.p3{background:#3b3b3b;color:#fff}
-  .cover-print .poster .big{font-size:22px;line-height:.9}
-  .cover-print .poster .small{font-family:var(--mono);font-size:9px;opacity:.7;font-weight:400;letter-spacing:.04em}
-  .projects{display:grid;grid-template-columns:1fr;gap:20px}
-  .project{
-    background:var(--bg-card);border-radius:var(--radius-lg);
-    overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr;transition:transform .35s ease;
-  }
-  .project:hover{transform:translateY(-4px)}
-  .project.project-locked:hover{transform:none}
-  .project-locked .pj-body{display:grid;grid-template-rows:1fr auto 1fr;padding-bottom:36px;text-align:left}
-  .project-locked .pj-meta{align-self:start}
-  .project-locked .pj-copy{grid-row:2}
-  .locked-preview{background:#176cb0}
-  .locked-preview::after{content:'';position:absolute;inset:0;background:rgba(10,25,45,.18)}
-  .locked-notice{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;padding:20px}
-  .locked-notice span{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:12px 18px;background:rgba(255,255,255,.92);color:#343b48;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.08)}
-  .locked-notice svg{width:18px;height:18px;flex:none}
-  .project[role="link"]:hover{box-shadow:0 24px 50px -28px rgba(31,31,31,.45)}
-  .project.dark{background:var(--bg-deep);color:#fff}
-  .project.dark .pj-meta{color:rgba(255,255,255,.6)}
-  .project.dark .chip{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-  .project.dark .chip.accent{background:var(--accent);color:#fff;box-shadow:none}
-  .project.dark .pj-cta{background:rgba(255,255,255,.1);color:#fff}
-  .project.dark .pj-cta:hover{background:#fff;color:var(--ink)}
-  @media (max-width:980px){.project{grid-template-columns:1fr}}
-
-  .pj-cover{
-    aspect-ratio:16/10;position:relative;overflow:hidden;border:0;
-  }
-  .pj-cover img.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-  .pj-cover .badges{position:absolute;top:18px;left:18px;display:flex;gap:6px;flex-wrap:wrap;z-index:2}
-  .pj-cover .corner{position:absolute;top:18px;right:18px;z-index:2}
-  .pj-body{padding:36px 36px 32px;display:flex;flex-direction:column;justify-content:space-between}
-  .pj-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-mute);font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px}
-  .pj-title{font-family:var(--display);font-size:clamp(24px,2.4vw,34px);font-weight:600;letter-spacing:-0.015em;margin:0 0 10px;line-height:1.05}
-  .pj-desc{margin:0;color:var(--ink-2);font-size:15px;line-height:1.55}
-  .project.dark .pj-desc{color:rgba(255,255,255,.7)}
-  .pj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
-  .pj-cta{
-    display:inline-flex;align-items:center;gap:8px;margin-top:22px;
-    background:rgba(31,31,31,.06);color:var(--ink);
-    padding:10px 16px 10px 18px;border-radius:var(--radius-pill);font-size:13px;font-weight:500;
-    align-self:flex-start;transition:background .2s,color .2s;
-  }
-  .pj-cta:hover{background:var(--ink);color:#fff}
-
-  /* Cover designs (no real images) */
-  .cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-
-  /* ---------- Motion: compact video-link rows ---------- */
-  .project.motion-row{
-    display:flex;align-items:center;gap:clamp(18px,2.5vw,32px);
-    padding:18px 26px 18px 18px;grid-template-columns:none;
-  }
-  .motion-row .pj-cover{
-    flex:0 0 clamp(150px,22vw,230px);width:clamp(150px,22vw,230px);
-    aspect-ratio:16/10;border-radius:var(--radius-md);border:0;overflow:hidden;
-  }
-  .motion-row .m-play{
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:54px;height:54px;border-radius:50%;background:rgba(20,20,20,.35);
-    backdrop-filter:blur(6px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);
-    display:flex;align-items:center;justify-content:center;z-index:2;
-    transition:background .25s,transform .25s,box-shadow .25s;
-  }
-  .motion-row .m-play::after{
-    content:'';width:0;height:0;border-left:15px solid #fff;
-    border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px;
-  }
-  .motion-row:hover .m-play{background:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);transform:translate(-50%,-50%) scale(1.06)}
-  .motion-row .m-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-  .motion-row .m-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mute)}
-  .motion-row .m-title{font-family:var(--display);font-weight:600;font-size:clamp(21px,2.1vw,30px);letter-spacing:-0.015em;margin:0;line-height:1.06}
-  .motion-row .m-watch{flex:0 0 auto;margin:0 0 0 8px;align-self:center}
-  .project.motion-row.dark .m-eyebrow{color:rgba(255,255,255,.55)}
-  @media (max-width:680px){
-    .project.motion-row{flex-direction:column;align-items:stretch;padding:14px;gap:16px}
-    .motion-row .pj-cover{width:100%;flex:none;aspect-ratio:16/9}
-    .motion-row .m-watch{margin-left:0;align-self:flex-start}
-  }
-
-  /* BLINK — dark cover with AI vibes */
-  .cover-blink{
-    background:radial-gradient(120% 100% at 80% 20%,#2a1a40 0%,#0e0a1a 60%,#000 100%);
-    color:#fff;
-  }
-  .cover-blink .grid-bg{
-    position:absolute;inset:0;
-    background:
-      linear-gradient(rgba(151,71,255,.18) 1px,transparent 1px) 0 0/40px 40px,
-      linear-gradient(90deg,rgba(151,71,255,.18) 1px,transparent 1px) 0 0/40px 40px;
-    mask-image:radial-gradient(circle at 70% 30%,#000 0%,transparent 70%);
-  }
-  .cover-blink .orb{
-    position:absolute;width:240px;height:240px;border-radius:50%;
-    background:conic-gradient(from 200deg,#9747FF,#FF5E00,#9747FF);
-    filter:blur(40px);opacity:.7;right:-40px;top:-40px;
-  }
-  .cover-blink .ui-tile{
-    position:relative;z-index:2;background:rgba(255,255,255,.06);backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px 20px;width:78%;max-width:420px;
-    display:flex;flex-direction:column;gap:12px;
-  }
-  .cover-blink .ui-row{display:flex;align-items:center;gap:10px;font-size:13px}
-  .cover-blink .ui-row .b{width:6px;height:6px;border-radius:50%;background:#9747FF;box-shadow:0 0 12px #9747FF}
-  .cover-blink .ui-row .t{flex:1;height:8px;background:rgba(255,255,255,.18);border-radius:4px}
-  .cover-blink .ui-row .t.s{flex:.4}
-  .cover-blink .ai{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(151,71,255,.3),rgba(255,94,0,.2));padding:10px 12px;border-radius:12px;font-size:12px}
-  .cover-blink .ai .dot{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
-
-  /* NIMBL — bright education-y */
-  .cover-nimbl{
-    background:linear-gradient(135deg,#FFF6EC 0%,#FFE0C8 100%);
-  }
-  .cover-nimbl .stripe{
-    position:absolute;inset:0;
-    background:repeating-linear-gradient(135deg,transparent 0 60px,rgba(255,94,0,.08) 60px 61px);
-  }
-  .cover-nimbl .courses{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:12px;width:78%;max-width:440px}
-  .cover-nimbl .course{background:#fff;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 24px -16px rgba(31,31,31,.2)}
-  .cover-nimbl .course .ico{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--display);font-weight:600;font-size:16px;font-style:italic}
-  .cover-nimbl .course .t{height:7px;background:rgba(31,31,31,.08);border-radius:4px;width:80%}
-  .cover-nimbl .course .s{height:5px;background:rgba(31,31,31,.08);border-radius:3px;width:55%}
-  .cover-nimbl .course .bar{height:5px;background:rgba(31,31,31,.06);border-radius:3px;margin-top:4px;position:relative;overflow:hidden}
-  .cover-nimbl .course .bar::after{content:'';position:absolute;left:0;top:0;height:100%;width:var(--p,40%);background:var(--accent);border-radius:3px}
-
-  /* DOCWORK — minimal serious */
-  .cover-doc{
-    background:linear-gradient(180deg,#F4F6F8 0%,#E5E9EC 100%);
-  }
-  .cover-doc .papers{position:relative;width:60%;max-width:340px;aspect-ratio:1/1.1}
-  .cover-doc .paper{
-    position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 14px 32px -18px rgba(31,31,31,.3);
-    padding:18px;display:flex;flex-direction:column;gap:8px;
-  }
-  .cover-doc .paper:nth-child(1){transform:rotate(-7deg) translate(-30px,10px)}
-  .cover-doc .paper:nth-child(2){transform:rotate(3deg) translate(20px,-10px)}
-  .cover-doc .paper:nth-child(3){transform:rotate(-1deg)}
-  .cover-doc .paper .l{height:5px;background:rgba(31,31,31,.1);border-radius:3px}
-  .cover-doc .paper .l.s{width:60%}
-  .cover-doc .paper .l.m{width:80%}
-  .cover-doc .paper .hl{background:rgba(50,212,125,.25);height:8px;border-radius:3px;width:65%}
-  .cover-doc .ai-tag{position:absolute;bottom:14px;right:14px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;padding:6px 10px;border-radius:8px}
-
-  /* ---------- Skills ---------- */
-  .skills-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
-  @media (max-width:840px){.skills-wrap{grid-template-columns:1fr}}
-  .skill-block{background:var(--bg-card);border-radius:var(--radius-lg);padding:36px}
-  .skill-block h3{margin:0 0 20px;font-family:var(--display);font-size:22px;font-weight:600;display:flex;align-items:center;gap:12px}
-  .skill-block h3 .num{font-size:13px}
-  .skill-list{display:flex;flex-wrap:wrap;gap:8px}
-  .skill-list .chip{padding:10px 14px;font-size:13px}
-  .skill-list .chip.lg{padding:12px 18px;font-size:14px}
-  .tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border-radius:var(--radius-md);overflow:hidden;margin-top:8px}
-  .tool{background:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px}
-  .tool b{font-weight:500}
-  .tool:last-child:nth-child(odd){grid-column:1/-1}
-  .tool .lvl{display:flex;gap:3px}
-  .tool .lvl i{width:6px;height:14px;border-radius:2px;background:rgba(31,31,31,.1);display:block}
-  .tool .lvl i.on{background:var(--accent)}
-
-  /* ---------- Experience timeline ---------- */
-  .timeline{display:flex;flex-direction:column;gap:0}
-  .exp{
-    display:grid;grid-template-columns:200px 1fr 220px;gap:32px;align-items:flex-start;
-    padding:32px 0;border-top:1px solid var(--line-2);
-  }
-  .exp:first-child{border-top:1px solid var(--ink)}
-  .exp:last-child{border-bottom:1px solid var(--line-2)}
-  .exp .when{font-family:var(--mono);font-size:13px;color:var(--ink-mute);letter-spacing:.04em;text-transform:uppercase}
-  .exp .when .dur{display:block;margin-top:7px;font-size:12px;letter-spacing:0;text-transform:none;color:var(--ink-2);background:var(--accent-soft);border-radius:var(--radius-pill);padding:3px 10px;width:max-content}
-  .exp .who{display:flex;flex-direction:column;gap:6px}
-  .exp .co{font-family:var(--display);font-size:clamp(22px,2vw,30px);font-weight:600;letter-spacing:-0.015em;display:flex;align-items:center;gap:14px}
-  .exp .co em{font-style:italic;font-weight:500;color:var(--accent)}
-  .exp .role{color:var(--ink-mute);font-size:14px}
-  .exp .desc{color:var(--ink-2);font-size:15px;line-height:1.55}
-  .exp .desc ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
-  .exp .desc li{padding-left:18px;position:relative}
-  .exp .desc li::before{content:'';position:absolute;left:0;top:.65em;width:8px;height:1px;background:var(--ink-mute)}
-  .exp .meta{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-  .exp-link{
-    display:inline-flex;align-items:center;gap:8px;margin-top:18px;
-    padding:8px 14px 8px 16px;border-radius:var(--radius-pill);
-    background:rgba(31,31,31,.06);color:var(--ink);font-size:13px;font-weight:500;
-    text-decoration:none;transition:background .2s,color .2s;align-self:flex-start;width:max-content;
-  }
-  .exp-link:hover{background:var(--ink);color:#fff}
-  body.theme-dark .exp-link{background:rgba(255,255,255,.06);color:#fff}
-  body.theme-dark .exp-link:hover{background:#fff;color:#000}
-  @media (max-width:900px){.exp{grid-template-columns:1fr;gap:14px}}
-
-  /* ---------- Education ---------- */
-  .edu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  @media (max-width:900px){.edu-grid{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:560px){.edu-grid{grid-template-columns:1fr}}
-  .edu{background:var(--bg-card);border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:200px;gap:16px}
-  .edu .y{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.04em}
-  .edu h4{margin:0;font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-0.01em;line-height:1.2}
-  .edu small{color:var(--ink-mute);font-size:13px}
-
-  /* ---------- CTA ---------- */
-  .cta{
-    background:var(--ink);color:#fff;border-radius:var(--radius-xl);padding:clamp(36px,5vw,80px);
-    display:grid;grid-template-columns:1fr 1fr;gap:48px;position:relative;overflow:hidden;
-  }
-  @media (max-width:900px){.cta{grid-template-columns:1fr}}
-  .cta::before{
-    content:'';position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,94,0,.6),transparent 60%);filter:blur(40px);
-  }
-  .cta-left{position:relative;z-index:2;display:flex;flex-direction:column;gap:24px}
-  .cta-left h2{font-family:var(--display);font-size:clamp(40px,5vw,80px);font-weight:600;letter-spacing:-0.025em;line-height:.98;margin:0}
-  .cta-left h2 em{font-style:italic;color:var(--accent);font-weight:500}
-  .author{display:flex;align-items:center;gap:14px;margin-top:8px}
-  .avatar{
-    width:56px;height:56px;border-radius:50%;background:
-      repeating-linear-gradient(135deg,#3a3a3a 0,#3a3a3a 6px,#2a2a2a 6px,#2a2a2a 12px);
-    display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--display);font-weight:600;
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);
-  }
-  .author small{display:block;color:rgba(255,255,255,.5);font-size:13px;margin-top:2px}
-  .cta-form{position:relative;z-index:2;display:flex;flex-direction:column;gap:14px}
-  .field{display:flex;flex-direction:column;gap:6px}
-  .field label{font-size:12px;color:rgba(255,255,255,.5);font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
-  .field input,.field textarea{
-    width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;
-    border-radius:14px;padding:14px 16px;font:inherit;font-size:15px;outline:none;transition:border-color .2s,background .2s;
-    font-family:inherit;resize:vertical;
-  }
-  .field textarea{min-height:90px}
-  .field input:focus,.field textarea:focus{border-color:var(--accent);background:rgba(255,94,0,.06)}
-  .cta-form .send{align-self:flex-start;margin-top:6px}
-  .legal{font-size:11px;color:rgba(255,255,255,.4);max-width:380px;line-height:1.5}
-
-  /* ---------- Footer ---------- */
-  .footer{padding:32px 0 48px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;color:var(--ink-mute);font-size:13px}
-  .footer .links{display:flex;gap:18px}
-  .footer .links a:hover{color:var(--ink)}
-
-  /* ---------- Theme: dark — distinct surface levels ---------- */
-  body.theme-dark{
-    --bg:#080808;--bg-card:#202020;--bg-deep:#181818;--bg-raised:#2B2B2B;--ink:#FFFFFF;--ink-2:#D6D6D6;--ink-mute:#A0A0A0;
-    --line:rgba(255,255,255,.14);--line-2:rgba(255,255,255,.24);
-  }
-  body.theme-dark .topbar{background:rgba(24,24,24,.92);border-bottom-color:var(--line)}
-  body.theme-dark .hero-card,body.theme-dark .about-card,body.theme-dark .project{box-shadow:inset 0 0 0 1px var(--line)}
-  body.theme-dark .nav a:hover{background:rgba(255,255,255,.07)}
-  body.theme-dark .btn-ghost{background:rgba(255,255,255,.07);color:#fff}
-  body.theme-dark .btn-outline{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
-  body.theme-dark .btn-outline:hover{background:var(--accent);color:#000;box-shadow:inset 0 0 0 1px var(--accent)}
-  body.theme-dark .btn-secondary{background:var(--accent);color:#000}
-  body.theme-dark .btn-secondary:hover{background:#fff;color:#000}
-  body.theme-dark .id-card{background:var(--bg-raised);box-shadow:inset 0 0 0 1px var(--line)}
-  body.theme-dark .chip{background:transparent;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2)}
-  body.theme-dark .pj-cta{background:var(--accent);color:#000}
-  body.theme-dark .pj-cta:hover{background:#fff;color:#000}
-  body.theme-dark .stat-grid{background:var(--line)}
-  body.theme-dark .stat{background:var(--bg-card)}
-  body.theme-dark .avatar-sm{background:repeating-linear-gradient(135deg,#1a1a1a 0,#1a1a1a 12px,#111 12px,#111 24px)}
-  body.theme-dark .tool{background:var(--bg-card)}
-  body.theme-dark .tools-grid{background:var(--line)}
-  body.theme-dark .marquee{background:var(--accent);color:#000}
-  body.theme-dark .field input,body.theme-dark .field textarea{background:var(--bg-raised)}
-  body.theme-dark .cta{background:var(--bg-card);box-shadow:inset 0 0 0 1px var(--line)}
-  body.theme-dark em{color:var(--accent)}
-  body.theme-dark ::selection{background:var(--accent);color:#000}
-  body.theme-dark .brand-dot{box-shadow:0 0 0 4px rgba(214,245,0,.18)}
-  /* anything filled with accent in dark theme gets black text */
-  body.theme-dark .btn-primary,
-  body.theme-dark .chip.accent,
-  body.theme-dark .project.dark .chip.accent,
-  body.theme-dark .tab.is-active,
-  body.theme-dark .cover-print .poster.p2,
-  body.theme-dark .cover-brand .card-bc.bc3,
-  body.theme-dark .cover-motion .play,
-  body.theme-dark .motion-row:hover .m-play,
-  body.theme-dark .cta-form .send{color:#000}
-  body.theme-dark .btn-primary{box-shadow:0 8px 24px -8px rgba(214,245,0,.35)}
-  body.theme-dark .btn-primary:hover{box-shadow:0 16px 32px -10px rgba(214,245,0,.45)}
-  body.theme-dark .cover-motion .play{box-shadow:0 24px 60px -20px rgba(214,245,0,.4),0 0 0 12px rgba(214,245,0,.08)}
-  body.theme-dark .cover-motion .play svg,body.theme-dark .motion-row:hover .m-play{fill:#000}
-
-  /* density */
-  body.density-compact section{padding:64px 0}
-  body.density-compact .hero-card{min-height:auto}
-
 </style>
 </head>
 <body>
 
-<!-- Top bar -->
-<header class="topbar">
-  <div class="wrap topbar-inner">
-    <nav class="nav">
-      <a href="#projects" data-en="Projects">Проекты</a>
+<header class="bar" id="bar">
+  <div class="wrap bar-in">
+    <a class="logo" href="#top" aria-label="Aidos Manap"><img src="assets/signature.svg" alt="Aidos Manap" width="120" height="33"></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#projects" data-en="Work">Работы</a>
+      <a href="#photos" data-en="Hobby">Хобби</a>
       <a href="#experience" data-en="Experience">Опыт</a>
-      <a href="#education" data-en="Learning">Образование</a>
+      <a href="#about" data-en="About">Обо мне</a>
     </nav>
-    <a class="topbar-signature" href="#top" aria-label="На главную">
-      <img src="assets/signature.svg" width="1071" height="297" alt="Айдос Манап">
-    </a>
-    <div class="topbar-right">
-      <button type="button" id="themeToggle" class="preference-toggle theme-toggle" aria-pressed="false" aria-label="Переключить тему">
-        <svg class="tt-icon tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.2v2.4M12 19.4v2.4M2.2 12h2.4M19.4 12h2.4M5.1 5.1l1.7 1.7M17.2 17.2l1.7 1.7M18.9 5.1l-1.7 1.7M6.8 17.2l-1.7 1.7"></path></svg>
-        <svg class="tt-icon tt-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"></path></svg>
-        <span class="tt-label" data-tt-light="Тёмная" data-tt-dark="Светлая">Тёмная</span>
-      </button>
-      <button type="button" id="langSwitch" class="preference-toggle lang-switch" aria-label="Switch to English">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><ellipse cx="12" cy="12" rx="4" ry="9"></ellipse><path d="M3 12h18"></path></svg>
-        <span class="lang-switch-text">English</span>
-      </button>
-      <a href="https://t.me/dosyasoda" target="_blank" rel="noreferrer" class="btn btn-primary btn-sm"><span data-en="Get in touch">Написать</span> <svg class="tg-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M3.5 6.5 12 13l8.5-6.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div class="tools">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Тема"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <button class="icon-btn lang" id="langSwitch" type="button"><span class="lang-switch-text">EN</span></button>
+      <a class="cta" href="https://t.me/dosyasoda" target="_blank" rel="noreferrer"><span data-en="Message me">Написать</span> ↗</a>
     </div>
   </div>
 </header>
 
 <main id="top">
-
-<!-- HERO -->
-<section class="hero" data-screen-label="01 Hero" style="padding-top:24px">
   <div class="wrap">
-    <div class="hero-card">
 
-      <div class="hero-head">
-        <h1 class="hero-title" data-en-html="Aidos Manap<em>.</em>">Айдос Манап<em>.</em></h1>
-        <div class="avatar-sm filled">
-          <img src="assets/aidos.jpg" alt="Айдос Манап" loading="lazy">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="status"><span data-en="Now at Astana IT University">Сейчас в Astana IT University</span></div>
+      <h1><span data-en="Aidos">Айдос</span> <span class="ava"><img src="assets/aidos-sm.jpg" alt=""></span> <span data-en="Manap">Манап</span></h1>
+      <div class="hero-row">
+        <p data-en="I'm a UX/UI designer with experience at EdTech companies and an IT startup. I helped build an academic information system (AIS) for the learning process, and B2B projects.">Я UX/UI дизайнер с опытом работы в EdTech компаниях и IT-стартапе. Участвовал в создании информационных систем управления учебным процессом (AIS) и B2B проектов.</p>
+        <div class="hero-btns">
+          <a class="btn dark" href="#projects"><span data-en="See work">Смотреть работы</span> ↓</a>
+          <a class="btn ghost" href="https://drive.google.com/" target="_blank" rel="noreferrer">CV ↗</a>
         </div>
       </div>
+    </section>
 
-      <div class="hero-body">
-        <div class="hero-intro">
-          <p class="hero-sub" data-en="I'm a UX/UI designer with experience at EdTech companies and an IT startup. I helped build an academic information system (AIS) for the learning process, and B2B projects.">Я UX/UI дизайнер с опытом работы в EdTech компаниях и IT-стартапе. Участвовал в создании информационных систем управления учебным процессом (AIS) и B2B проектов.</p>
-        </div>
-        <div class="id-card">
-          <div class="id-row"><span data-en="Role">Роль</span><b>UX/UI Designer</b></div>
-          <div class="id-divider"></div>
-          <div class="id-row"><span data-en="Now">Сейчас</span><b>Astana IT University · EdTech</b></div>
-          <div class="id-divider"></div>
-          <div class="id-row"><span data-en="Format">Формат</span><b data-en="Hybrid · Remote">Гибрид · Удалённо</b></div>
-        </div>
+    <!-- WORK -->
+    <section class="section" id="projects">
+      <div class="sec-head reveal"><h2 data-en="Selected work">Избранные работы</h2></div>
+      <div class="tabs reveal" role="tablist" aria-label="Фильтр работ">
+        <button class="tab is-active" type="button" role="tab" aria-selected="true" data-filter="ui">UI/UX <span>5</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-filter="motion">Motion <span>3</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-filter="graphic"><b data-en="Graphic">Графический</b> <span>2</span></button>
       </div>
+      <div class="works" id="worksGrid">
 
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-secondary"><span data-en="View projects">Смотреть проекты</span> <span class="arrow">↗</span></a>
-        <a href="https://t.me/dosyasoda" target="_blank" rel="noreferrer" class="btn btn-ghost" data-en="Get in touch">Связаться</a>
-        <a href="https://drive.google.com/" target="_blank" rel="noreferrer" class="btn btn-outline">CV</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects" data-screen-label="03 Projects">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="left">
-        <h2 class="h2" data-en-html="My <em>projects</em>">Мои <em>проекты</em></h2>
-      </div>
-    </div>
-
-    <div class="tabs" role="tablist" aria-label="Фильтр проектов">
-      <span class="tabs-label" data-en="Filter">Фильтр</span>
-      <button class="tab is-active" data-filter="ui" type="button">UI/UX <span class="count">5</span></button>
-      <button class="tab" data-filter="motion" type="button">Motion <span class="count">3</span></button>
-      <button class="tab" data-filter="graphic" type="button"><span data-en="Graphic">Графический</span> <span class="count">2</span></button>
-      <button class="tab" data-filter="hobby" type="button"><span data-en="Hobbies">Хобби</span> <span class="count">35</span></button>
-    </div>
-
-    <div class="projects">
-
-      <!-- MONITORING: closed case, only the blurred asset is served -->
-      <article class="project project-locked" data-cat="ui">
-        <div class="pj-cover locked-preview">
-          <img class="cover-img" src="assets/monitoring-blurred-v2.png" alt="Размытое превью интерфейса мониторинговой системы" loading="lazy">
-          <div class="locked-notice">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg><b style="font-weight:500" data-en="I can't show this right now">сейчас не могу показать</b></span>
+        <div class="work locked reveal" data-cat="ui">
+          <div class="shot" style="--cbg:#176cb0">
+            <img src="assets/monitoring-blurred-v2.png" alt="Размытое превью интерфейса мониторинговой системы" loading="lazy">
+            <div class="lock"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-en="I can't show this right now">сейчас не могу показать</span></span></div>
           </div>
+          <div class="work-info"><div>
+            <h3 data-en="Monitoring system interface">Интерфейс мониторинговой системы</h3>
+            <p data-en="Terminals for self-service border crossing in Kazakhstan">Терминалы самостоятельного прохождения границы в Казахстане</p>
+          </div></div>
         </div>
-        <div class="pj-body">
-            <div class="pj-meta"><span data-en="Monitoring system">Мониторинговая система</span><span>UI/UX</span></div>
-            <div class="pj-copy">
-            <h3 class="pj-title" data-en="Monitoring system interface">Интерфейс мониторинговой системы</h3>
-            <p class="pj-desc" data-en="Designing an interface to monitor the operation of self-service border crossing terminals in Kazakhstan.">Проектирование интерфейса для контроля работы терминалов самостоятельного прохождения границы в Казахстане</p>
-            </div>
-        </div>
-      </article>
 
-      <!-- PLATONUS REDESIGN -->
-      <article class="project wide dark" data-cat="ui">
-        <div class="pj-cover" style="background:#D6173A">
-          <img class="cover-img" src="assets/platonus/cover-onboarding.png" alt="Редизайн мобильного приложения Platonus" loading="lazy">
-          <div class="badges">
-            <span class="chip">EdTech</span>
+        <a class="work reveal" data-cat="ui" href="cases/platonus-redesign.html" data-case="platonus-redesign">
+          <div class="shot" style="--cbg:#D6173A">
+            <img src="assets/platonus/cover-onboarding.png" alt="Редизайн мобильного приложения Platonus" loading="lazy">
+            <span class="tag">EdTech</span><span class="arrow">↗</span>
           </div>
-          <div class="corner"><span class="chip accent">Суперапп · aitu</span></div>
-        </div>
-        <div class="pj-body">
-          <div class="pj-meta"><span>PLATONUS</span><span>UI/UX · PRODUCT</span></div>
-          <h3 class="pj-title" data-en="Redesign of the Platonus mobile app">Редизайн мобильного приложения Platonus</h3>
-          <p class="pj-desc" data-en="Redesigned every learning module of an app used by universities across Kazakhstan (MAU ~700k) and unified it into one product — the foundation for a super-app with BTS Digital's aitu.">Перепроектировал все учебные модули приложения, которым пользуются университеты Казахстана (MAU ~700k), и собрал их в единый продукт — фундамент под суперапп вместе с aitu от BTS Digital.</p>
-          <div class="pj-tags">
-            <span class="chip">Product Designer</span>
-            <span class="chip">Дизайн-система</span>
-            <span class="chip">Исследование</span>
+          <div class="work-info"><div>
+            <h3 data-en="Redesign of the Platonus mobile app">Редизайн мобильного приложения Platonus</h3>
+            <p data-en="All learning modules in one product, the base for a super-app with aitu">Все учебные модули в одном продукте, основа для суперапп с aitu</p>
+          </div><span class="kpi">700K MAU</span></div>
+        </a>
+
+        <a class="work wide reveal" data-cat="ui" href="cases/blink.html" data-case="blink">
+          <div class="shot" style="--cbg:#0B0B14">
+            <img src="assets/blink.png" alt="Blink" loading="lazy">
+            <span class="tag">Startup</span><span class="arrow">↗</span>
           </div>
-          <a href="cases/platonus-redesign.html" class="pj-cta"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-        </div>
-      </article>
+          <div class="work-info"><div>
+            <h3 data-en="Blink — an AI assistant for teams">Blink — ИИ-помощник для команд</h3>
+            <p data-en="Interface, mascot and promo video for a startup with tasks, boards and calls">Интерфейс, маскот и промо-ролик для стартапа с задачами, досками и созвонами</p>
+          </div><span class="kpi" data-en="2 YC applications">2 подачи в YC</span></div>
+        </a>
 
-      <!-- BLINK -->
-      <article class="project wide dark" data-cat="ui">
-        <div class="pj-cover cover-blink">
-          <img class="cover-img" src="assets/blink.png" alt="BLINK" loading="lazy">
-          <div class="badges">
-            <span class="chip">Startup</span>
+        <a class="work reveal" data-cat="ui" href="cases/nimbl-academy.html" data-case="nimbl-academy">
+          <div class="shot" style="--cbg:#14111F">
+            <img src="assets/nimbl.png" alt="Nimbl Academy" loading="lazy">
+            <span class="tag">EdTech</span><span class="arrow">↗</span>
           </div>
-          <div class="corner"><span class="chip accent" data-en="2 YC applications">2 подачи в YC</span></div>
-        </div>
-        <div class="pj-body">
-          <div class="pj-meta"><span>BLINK</span><span>UI/UX · MOTION · BRAND</span></div>
-          <h3 class="pj-title" data-en="Blink — an AI assistant for teams">Blink — ИИ-помощник для команд</h3>
-          <p class="pj-desc" data-en="A startup that brings tasks, boards and calls together with an AI assistant. I designed the interface, the mascot and the promo video. We applied to Y Combinator twice, and later the project found partners to fund it.">Стартап, где задачи, доски и созвоны собраны вместе с ИИ-помощником. Я делал интерфейс, маскота и промо-ролик. Дважды подавались в Y Combinator, а потом у проекта нашлись партнёры для финансирования.</p>
-          <div class="pj-tags">
-            <span class="chip">UI/UX Designer</span>
-            <span class="chip">Graphic Designer</span>
-            <span class="chip">Motion Designer</span>
+          <div class="work-info"><div>
+            <h3 data-en="Course completion up from 56% to 78%">Доходимость курса с 56% до 78%</h3>
+            <p data-en="Learning platform with AI hints and achievements">Учебная платформа с подсказками ИИ и достижениями</p>
+          </div><span class="kpi">+22 п.п.</span></div>
+        </a>
+
+        <a class="work reveal" data-cat="ui" href="cases/docwork.html" data-case="docwork">
+          <div class="shot" style="--cbg:#EEF1F5">
+            <img src="assets/docwork.png" alt="DOCWORK" loading="lazy">
+            <span class="tag" data-en="Under NDA">Под NDA</span><span class="arrow">↗</span>
           </div>
-          <a href="cases/blink.html" class="pj-cta"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-        </div>
-      </article>
+          <div class="work-info"><div>
+            <h3 data-en="Document review and an AI assistant">Проверка документов и ИИ-ассистент</h3>
+            <p data-en="Closed platform for lawyers and analysts">Закрытая платформа для юристов и аналитиков</p>
+          </div><span class="kpi">B2B · AI</span></div>
+        </a>
 
-      <!-- NIMBL -->
-      <article class="project narrow" data-cat="ui">
-        <div class="pj-cover cover-nimbl">
-          <img class="cover-img" src="assets/nimbl.png" alt="Nimbl Academy" loading="lazy">
-          <div class="badges"><span class="chip">EdTech</span></div>
-          <div class="corner"><span class="chip accent">+22 п.п. CR</span></div>
-        </div>
-        <div class="pj-body">
-          <div class="pj-meta"><span>NIMBL ACADEMY</span><span>UI/UX</span></div>
-          <h3 class="pj-title" data-en="Course completion up from 56% to 78%">Доходимость курса с 56% до 78%</h3>
-          <p class="pj-desc" data-en="A learning platform for the Nimbl academy: lectures, practice with AI hints and achievements. On the pilot cohort, 11 of 14 students finished the course.">Учебная платформа академии Nimbl: лекции, практика с подсказками ИИ и достижения. На пилотном потоке курс закончили 11 студентов из 14.</p>
-          <a href="cases/nimbl-academy.html" class="pj-cta"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <!-- DOCWORK -->
-      <article class="project narrow" data-cat="ui">
-        <div class="pj-cover cover-doc">
-          <img class="cover-img" src="assets/docwork.png" alt="DOCWORK" loading="lazy">
-          <div class="corner"><span class="chip accent" data-en="Under NDA">Под NDA</span></div>
-        </div>
-        <div class="pj-body">
-          <div class="pj-meta"><span>DOCWORK</span><span>UI/UX</span></div>
-          <h3 class="pj-title" data-en="Document review and an AI assistant">Проверка документов и ИИ-ассистент</h3>
-          <p class="pj-desc" data-en="A closed platform for lawyers and analysts: it finds errors in documents and answers questions about them. Two modules are already in use at the client.">Закрытая платформа для юристов и аналитиков: находит ошибки в документах и отвечает на вопросы по ним. Два модуля уже работают у клиента.</p>
-          <a href="cases/docwork.html" class="pj-cta"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <!-- MOTION 1 -->
-      <article class="project motion-row dark" data-cat="motion">
-        <div class="pj-cover">
-          <img class="cover-img" src="assets/blink-promo.png" alt="BLINK promo" loading="lazy">
-          <span class="m-play" aria-hidden="true"></span>
-        </div>
-        <div class="m-mid">
-          <div class="m-eyebrow">BLINK · MOTION</div>
-          <h3 class="m-title" data-en="BLINK startup promo video">Промо-ролик стартапа BLINK</h3>
-        </div>
-        <a href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" class="pj-cta m-watch"><span data-en="Watch the video">Посмотреть видео</span> <span class="arrow">↗</span></a>
-      </article>
-
-      <!-- MOTION 2 -->
-      <article class="project motion-row" data-cat="motion">
-        <div class="pj-cover">
-          <img class="cover-img" src="assets/platonus-logo.png" alt="Platonus App logo" loading="lazy" style="transform:scale(1.9);transform-origin:center">
-          <span class="m-play" aria-hidden="true"></span>
-        </div>
-        <div class="m-mid">
-          <div class="m-eyebrow">PLATONUS APP · MOTION</div>
-          <h3 class="m-title" data-en="Video presentation of the logo and identity for the Platonus App mobile application">Видео-презентация логотипа и айдентики 
-для мобильного приложения Platonus App
-</h3>
-        </div>
-        <a href="https://youtu.be/IbF2e5BNC3Q" target="_blank" rel="noreferrer" class="pj-cta m-watch"><span data-en="Watch the video">Посмотреть видео</span> <span class="arrow">↗</span></a>
-      </article>
-
-      <!-- MOTION 3 -->
-      <article class="project motion-row" data-cat="motion">
-        <div class="pj-cover">
-          <img class="cover-img" src="assets/platonus/cover-onboarding.png" alt="Platonus App — анимации и загрузка" loading="lazy">
-          <span class="m-play" aria-hidden="true"></span>
-        </div>
-        <div class="m-mid">
-          <div class="m-eyebrow">PLATONUS APP · MOTION</div>
-          <h3 class="m-title" data-en="Onboarding animations and loading screen for the Platonus App">Приветственные анимации и загрузка для приложения Platonus App</h3>
-        </div>
-        <a href="cases/platonus-motion.html" class="pj-cta m-watch"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-      </article>
-
-      <!-- GRAPHIC 1 -->
-      <article class="project narrow" data-cat="graphic">
-        <div class="pj-cover">
-          <img class="cover-img" src="assets/graphic/cover-graphic.jpg" alt="Печатная продукция для застройщиков — буклет Riverside Loft, Sensata" loading="lazy">
-          <div class="badges"><span class="chip">Brand</span><span class="chip">Identity</span></div>
-        </div>
-        <div class="pj-body">
-          <div class="pj-meta"><span>ALIBARY · CLIENTS</span><span>Brand</span></div>
-          <h3 class="pj-title" data-en="All kinds of graphics for construction companies in Kazakhstan" style="font-size: 24px">Все виды графики для строительных компаний Казахстана</h3>
-          <p class="pj-desc" data-en="Worked with BI Group, Sensata, NAK and other major developers in Kazakhstan (+1 residential complex by Sensata in Germany).">Работал с BI Group, Sensata, NAK и другими крупными застройщиками Казахстана (+1 жилой комплекс от Sensata в Германии).</p>
-          <a href="cases/graphic-design.html" class="pj-cta"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <!-- GRAPHIC 2 — PLATONUS LOGO -->
-      <article class="project narrow" data-cat="graphic">
-        <div class="pj-cover" style="background:#FFFFFF">
-          <img class="cover-img" src="assets/graphic/platonus-logo-cover.jpg" alt="Логотип Platonus App" loading="lazy">
-          <div class="badges"><span class="chip">Logo</span><span class="chip">Identity</span></div>
-        </div>
-        <div class="pj-body">
-          <div class="pj-meta"><span>PLATONUS APP · LOGO</span><span>Identity</span></div>
-          <h3 class="pj-title" data-en="Logo and concept for the Platonus App mobile application" style="font-size: 24px">Логотип и концепт для мобильного приложения Platonus App</h3>
-          <p class="pj-desc" data-en="A 'helping hand' mark that reads cleanly both as an app icon and a full logo, with a system of brand variants.">В основе знака — раскрытая ладонь как метафора помощи <br>и поддержки.</p>
-          <a href="cases/platonus-logo.html" class="pj-cta"><span data-en="Open the case">Открыть кейс</span> <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- Photography panel is placed alongside the project grid by hobby.js. -->
-<div id="hobbyGallery" class="hobby-gallery" hidden>
-  <div class="hobby-intro">
-    <h3 data-en="Photography">Фотография</h3>
-    <div class="hobby-cameras">
-      <div class="hobby-camera"><span>Digital</span>Fujifilm X-M5</div>
-      <div class="hobby-camera"><span>Film</span>Kodak Star AF</div>
-    </div>
-  </div>
-  <div class="photo-grid" id="photoGrid"></div>
-</div>
-<dialog class="photo-viewer" id="photoViewer" aria-label="Фотография / Photograph">
-  <div class="photo-viewer-bar">
-    <span class="photo-viewer-caption" id="photoCaption"></span>
-    <div class="photo-viewer-controls">
-      <button type="button" id="photoPrev" aria-label="Предыдущее фото / Previous photo">←</button>
-      <button type="button" id="photoNext" aria-label="Следующее фото / Next photo">→</button>
-      <button type="button" id="photoClose" aria-label="Закрыть / Close">✕</button>
-    </div>
-  </div>
-  <img id="photoLarge" alt="">
-</dialog>
-<script src="hobby.js"></script>
-
-<!-- SKILLS -->
-<section id="skills" data-screen-label="04 Skills">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="left">
-        <h2 class="h2" data-en-html="What I <em>can do</em>">Что <em>умею</em></h2>
+        <a class="work wide reveal" data-cat="motion" href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" data-video="AF8cavjqE5g">
+          <div class="shot" style="--cbg:#0B0B14"><img src="assets/blink-promo.png" alt="Промо-ролик Blink" loading="lazy"><span class="play">▶ <span data-en="Watch">Смотреть</span></span><span class="arrow">↗</span></div>
+          <div class="work-info"><div><h3 data-en="Blink promo video">Промо-ролик Blink</h3><p>Motion · After Effects</p></div></div>
+        </a>
+        <a class="work reveal" data-cat="motion" href="https://youtu.be/IbF2e5BNC3Q" target="_blank" rel="noreferrer" data-video="IbF2e5BNC3Q">
+          <div class="shot" style="--cbg:#FFFFFF"><span class="zoom"><img src="assets/platonus-logo.png" alt="Видео-презентация логотипа Platonus App" loading="lazy"></span><span class="play">▶ <span data-en="Watch">Смотреть</span></span><span class="arrow">↗</span></div>
+          <div class="work-info"><div><h3 data-en="Platonus App logo video">Видео логотипа Platonus App</h3><p>Motion</p></div></div>
+        </a>
+        <a class="work reveal" data-cat="motion" href="cases/platonus-motion.html" data-case="platonus-motion">
+          <div class="shot" style="--cbg:#D6173A"><img src="assets/platonus/cover-onboarding.png" alt="Анимации Platonus App" loading="lazy"><span class="arrow">↗</span></div>
+          <div class="work-info"><div><h3 data-en="Welcome and loading animations">Приветствие и загрузка</h3><p>Platonus App · Motion</p></div></div>
+        </a>
+        <a class="work reveal" data-cat="graphic" href="cases/graphic-design.html" data-case="graphic-design">
+          <div class="shot"><img src="assets/graphic/cover-graphic.jpg" alt="Печатная продукция для застройщиков" loading="lazy"><span class="arrow">↗</span></div>
+          <div class="work-info"><div><h3 data-en="Graphics for developers">Графика для застройщиков</h3><p>BI Group, Sensata, NAK</p></div></div>
+        </a>
+        <a class="work reveal" data-cat="graphic" href="cases/platonus-logo.html" data-case="platonus-logo">
+          <div class="shot" style="--cbg:#FFFFFF"><img src="assets/graphic/platonus-logo-cover.jpg" alt="Логотип Platonus App" loading="lazy"><span class="arrow">↗</span></div>
+          <div class="work-info"><div><h3 data-en="Platonus App logo">Логотип Platonus App</h3><p>Identity</p></div></div>
+        </a>
       </div>
-    </div>
+    </section>
 
-    <div class="skills-wrap">
-      <div class="skill-block">
-        <h3 data-en="Skills">Навыки</h3>
-        <div class="skill-list">
-          <span class="chip lg" data-en="Designing complex systems">Проектирование сложных систем</span>
-          <span class="chip lg" data-en="Research and interviews">Исследования и интервью</span>
-          <span class="chip lg" data-en="User flows and prototyping">User flow и прототипирование</span>
-          <span class="chip lg" data-en="Design systems">Дизайн-системы</span>
-          <span class="chip lg" data-en="Hypotheses and metrics">Гипотезы и метрики</span>
-          <span class="chip lg" data-en="Motion design">Моушн-дизайн</span>
+    <!-- PHOTOS -->
+    <section class="section" id="photos">
+      <div class="sec-head reveal"><h2 data-en="I also want to share my hobby">Еще хочу поделиться своим хобби</h2><span class="n">Fujifilm X-M5 · Kodak Star AF</span></div>
+      <div class="strip reveal"><div class="track" id="track"></div></div>
+      <div class="strip-meta"><span data-en="Digital and film, in my free time">Цифра и плёнка, в свободное время</span><button type="button" id="allPhotos"></button></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+      <div class="sec-head reveal"><h2 data-en="Experience">Опыт</h2><span class="n" data-en="since 2022">с 2022</span></div>
+      <div class="xp reveal">
+
+        <div class="xp-row">
+          <button class="xp-btn" type="button" aria-expanded="false">
+            <span class="xp-when"><span data-en="Jun 2025 — now">Июнь 2025 — сейчас</span><span class="dur" data-start="2025-06"></span></span>
+            <span class="xp-co">Astana IT University<span>UX/UI Designer</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="xp-more"><div><div class="xp-in">
+            <p class="role" data-en="EdTech · Academic Information System (AIS) · Astana, Kazakhstan">EdTech · Система управления учебным процессом (AIS) · Astana, Kazakhstan</p>
+            <ul>
+              <li data-en="Designed the full academic information system for an IT university.">Создание полного дизайна системы управления учебным процессом для IT университета</li>
+              <li data-en="Designed a mobile application for students.">Проектирование мобильного приложения для обучающихся</li>
+            </ul>
+            <a href="https://astanait.edu.kz" target="_blank" rel="noreferrer">astanait.edu.kz ↗</a>
+          </div></div></div>
         </div>
-      </div>
 
-      <div class="skill-block">
-        <h3 data-en="Tools">Инструменты</h3>
-        <div class="tools-grid">
-          <div class="tool"><b>Figma</b></div>
-          <div class="tool"><b>Adobe</b></div>
-          <div class="tool"><b>After Effects</b></div>
-          <div class="tool"><b>Claude Code</b></div>
-          <div class="tool"><b>Codex</b></div>
-          <div class="tool"><b>Magnific (Freepik)</b></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience" data-screen-label="05 Experience">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="left">
-        <h2 class="h2" data-en-html="Work <em>experience</em>">Опыт <em>работы</em></h2>
-      </div>
-    </div>
-
-    <div class="timeline">
-
-      <div class="exp">
-        <div class="when" data-en-html="Project<br>work">Проектная<br>работа</div>
-        <div class="who">
-          <div class="co">KazDream IT Holding <em>·</em> <span style="color:var(--ink-mute);font-style:normal;font-weight:500">Motion / UI/UX Designer</span></div>
-          <div class="role" data-en="GovTech · Self-service border-crossing terminals in Kazakhstan">GovTech · Терминалы самостоятельного прохождения границы в Казахстане</div>
-          <div class="desc" style="margin-top:14px">
+        <div class="xp-row">
+          <button class="xp-btn" type="button" aria-expanded="false">
+            <span class="xp-when" data-en="Project work">Проектная работа</span>
+            <span class="xp-co">KazDream IT Holding<span>Motion / UI/UX Designer</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="xp-more"><div><div class="xp-in">
+            <p class="role" data-en="GovTech · Self-service border-crossing terminals in Kazakhstan">GovTech · Терминалы самостоятельного прохождения границы в Казахстане</p>
             <ul>
               <li data-en="Designed the interface for self-service border-crossing terminals.">Создание интерфейса для терминалов самостоятельного прохождения границы.</li>
               <li data-en="Motion design of animations and micro-interactions for the terminal UI.">Motion-дизайн анимаций и интеракций для UI терминалов.</li>
             </ul>
-          </div>
-          <a href="https://kazdream.kz" target="_blank" rel="noreferrer" class="exp-link">kazdream.kz <span class="arrow">↗</span></a>
+            <a href="https://kazdream.kz" target="_blank" rel="noreferrer">kazdream.kz ↗</a>
+          </div></div></div>
         </div>
-        <div class="meta">
-          <span class="chip">Motion</span>
-        </div>
-      </div>
 
-      <div class="exp">
-        <div class="when">ИЮНЬ 2025 — СЕЙЧАС<span class="dur" data-start="2025-06">1 год</span></div>
-        <div class="who">
-          <div class="co">Astana IT University <em>·</em> <span style="color:var(--ink-mute);font-style:normal;font-weight:500">UX/UI Designer</span></div>
-          <div class="role" data-en="EdTech · Academic Information System (AIS) · Astana, Kazakhstan">EdTech · Система управления учебным процессом (AIS) · Astana, Kazakhstan</div>
-          <div class="desc" style="margin-top:14px">
-            <ul>
-              <li data-en="Astana IT University is a leading center of competence for digital transformation in Central Asia.">Astana IT University — ведущий центр компетенций для цифровой трансформации в Центральной Азии.</li>
-              <li data-en="Designed the full academic information system for an IT university.">Создание полного дизайна системы управления учебным процессом для IT университета</li>
-              <li data-en="Designed a mobile application for students.">Проектирование мобильного приложения для обучающихся</li>
-            </ul>
-          </div>
-          <a href="https://astanait.edu.kz" target="_blank" rel="noreferrer" class="exp-link">astanait.edu.kz <span class="arrow">↗</span></a>
-        </div>
-        <div class="meta">
-          <span class="chip">Mobile</span>
-          <span class="chip">EdTech</span>
-        </div>
-      </div>
-
-      <div class="exp">
-        <div class="when">ДЕК 2024 — АВГ 2025<span class="dur">9 месяцев</span></div>
-        <div class="who">
-          <div class="co">Platonus <em>·</em> <span style="color:var(--ink-mute);font-style:normal;font-weight:500">UI/UX Designer</span></div>
-          <div class="role" data-en="EdTech · Academic Information System (AIS) · MAU 700K, DAU 25K">EdTech · Система управления учебным процессом (AIS) · MAU 700K, DAU 25K</div>
-          <div class="desc" style="margin-top:14px">
+        <div class="xp-row">
+          <button class="xp-btn" type="button" aria-expanded="false">
+            <span class="xp-when"><span data-en="Dec 2024 — Aug 2025">Дек 2024 — авг 2025</span><span class="dur" data-en="9 mos">9 месяцев</span></span>
+            <span class="xp-co">Platonus<span>UI/UX Designer</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="xp-more"><div><div class="xp-in">
+            <p class="role" data-en="EdTech · Academic Information System (AIS) · MAU 700K, DAU 25K">EdTech · Система управления учебным процессом (AIS) · MAU 700K, DAU 25K</p>
             <ul>
               <li data-en="Growing the educational mobile app and web platform.">Развитие образовательного мобильного приложения и веб-платформы.</li>
               <li data-en="Working in the product team, with stakeholders and in brainstorms.">Работа в продуктовой команде, со стейкхолдерами и в брейнштормах.</li>
-              <li data-en="Designing around business requirements.">Проектирование с учётом бизнес-требований.</li>
               <li data-en="Working within the design system, building extra components.">Работа в рамках дизайн-системы, создание дополнительных компонентов.</li>
               <li data-en="Close collaboration with analysts and developers.">Активная связка с аналитиками и разработчиками.</li>
             </ul>
-          </div>
-          <a href="https://platonus.com" target="_blank" rel="noreferrer" class="exp-link">platonus.com <span class="arrow">↗</span></a>
+            <a href="https://platonus.com" target="_blank" rel="noreferrer">platonus.com ↗</a>
+          </div></div></div>
         </div>
-        <div class="meta">
-          <span class="chip">Mobile</span>
-          <span class="chip">Web</span>
-          <span class="chip accent">700K MAU</span>
-        </div>
-      </div>
 
-      <div class="exp">
-        <div class="when">ФЕВ 2024 — ДЕК 2024<span class="dur">11 месяцев</span></div>
-        <div class="who">
-          <div class="co">Nimbl <em>·</em> <span style="color:var(--ink-mute);font-style:normal;font-weight:500">UI/UX Designer</span></div>
-          <div class="role" data-en="IT startup · B2B / B2G projects">IT-стартап · B2B / B2G проекты</div>
-          <div class="desc" style="margin-top:14px">
+        <div class="xp-row">
+          <button class="xp-btn" type="button" aria-expanded="false">
+            <span class="xp-when"><span data-en="Feb 2024 — Dec 2024">Фев 2024 — дек 2024</span><span class="dur" data-en="11 mos">11 месяцев</span></span>
+            <span class="xp-co">Nimbl<span>UI/UX Designer</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="xp-more"><div><div class="xp-in">
+            <p class="role" data-en="IT startup · B2B / B2G projects">IT-стартап · B2B / B2G проекты</p>
             <ul>
-              <li data-en="Took part in building a startup for a Y Combinator application.">Участвовал в создании стартапа для подачи в Y-Combinator.</li>
+              <li data-en="Took part in building a startup for a Y Combinator application.">Участвовал в создании стартапа для подачи в Y Combinator.</li>
               <li data-en="Designed the academy platform — Completion Rate from 56% to 78%.">Спроектировал платформу для академии — Completion Rate с 56% до 78%.</li>
               <li data-en="Websites and apps for B2B and B2G.">Веб-сайты и приложения для B2B и B2G.</li>
               <li data-en="In-depth interviews, usability tests, hypothesis validation.">Глубинные интервью, юзабилити-тесты, проверка гипотез.</li>
-              <li data-en="Interactive prototypes and solution testing.">Интерактивные прототипы и тестирование решений.</li>
             </ul>
-          </div>
+          </div></div></div>
         </div>
-        <div class="meta">
-          <span class="chip">Startup</span>
-          <span class="chip">Research</span>
-          <span class="chip accent">+22 п.п. CR</span>
-        </div>
-      </div>
 
-      <div class="exp">
-        <div class="when">ИЮН 2022 — ЯНВ 2024<span class="dur">1 год 8 месяцев</span></div>
-        <div class="who">
-          <div class="co">Alibary Marketing Agency <em>·</em> <span style="color:var(--ink-mute);font-style:normal;font-weight:500">Graphic Designer</span></div>
-          <div class="role" data-en="Marketing agency">Маркетинговое агентство</div>
-          <div class="desc" style="margin-top:14px">
+        <div class="xp-row">
+          <button class="xp-btn" type="button" aria-expanded="false">
+            <span class="xp-when"><span data-en="Jun 2022 — Jan 2024">Июн 2022 — янв 2024</span><span class="dur" data-en="1 yr 8 mos">1 год 8 месяцев</span></span>
+            <span class="xp-co">Alibary Marketing Agency<span>Graphic Designer</span></span>
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="xp-more"><div><div class="xp-in">
+            <p class="role" data-en="Marketing agency">Маркетинговое агентство</p>
             <ul>
-              <li data-en="Worked with Bi Group, Sensata, NAK.">Работа с Bi Group, Sensata, NAK.</li>
-              <li data-en="In-depth interviews and brief surveys to understand client problems.">Глубинные интервью и бриф-опросы для изучения проблем клиента.</li>
+              <li data-en="Worked with BI Group, Sensata, NAK.">Работа с BI Group, Sensata, NAK.</li>
               <li data-en="Logos, corporate style, business cards and identity.">Логотипы, корпоративный стиль, визитки и айдентика.</li>
               <li data-en="Illustrations, icons, infographics, banners, posters.">Иллюстрации, иконки, инфографика, баннеры, плакаты.</li>
               <li data-en="Print-ready layout preparation.">Подготовка макетов к печати.</li>
             </ul>
-          </div>
+          </div></div></div>
         </div>
-        <div class="meta">
-          <span class="chip">Brand</span>
-          <span class="chip">Graphic</span>
-          <span class="chip">Print</span>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="sec-head reveal"><h2 data-en="About me">Обо мне</h2></div>
+      <div class="about reveal">
+        <div>
+          <h3 data-en="Skills">Навыки</h3>
+          <ul>
+            <li data-en="Designing complex systems">Проектирование сложных систем</li>
+            <li data-en="Research and interviews">Исследования и интервью</li>
+            <li data-en="User flows and prototyping">User flow и прототипирование</li>
+            <li data-en="Design systems">Дизайн-системы</li>
+            <li data-en="Hypotheses and metrics">Гипотезы и метрики</li>
+            <li data-en="Motion design">Моушн-дизайн</li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-en="Tools">Инструменты</h3>
+          <ul>
+            <li>Figma</li><li>Adobe</li><li>After Effects</li><li>Claude Code</li><li>Codex</li><li>Magnific (Freepik)</li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-en="Education">Образование</h3>
+          <ul>
+            <li>Master's Degree, Media Technologies<small>Astana IT University · 2025</small></li>
+            <li>Bachelor's Degree, Media Technologies<small>Astana IT University · 2023</small></li>
+            <li>UX Design<small>Georgia Institute of Technology</small></li>
+            <li>UX Design<small>Future Learn</small></li>
+          </ul>
         </div>
       </div>
+    </section>
 
-    </div>
+    <!-- OUTRO -->
+    <section class="outro" id="contact">
+      <div class="outro-links reveal">
+        <a class="btn dark" href="https://t.me/dosyasoda" target="_blank" rel="noreferrer">Telegram ↗</a>
+        <a class="btn ghost" href="mailto:aidos1337228@gmail.com">Email</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/aidosmanap/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        <a class="btn ghost" href="https://drive.google.com/" target="_blank" rel="noreferrer">CV ↗</a>
+      </div>
+      <div class="bottom"><span data-en="© 2026 · Aidos Manap · Made in Astana">© 2026 · Айдос Манап · Made in Astana</span><a href="#top" data-en="Back to top ↑">Наверх ↑</a></div>
+    </section>
+
   </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education" data-screen-label="06 Education">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="left">
-        <h2 class="h2" data-en-html="Education <em>&amp;</em> learning">Образование <em>&</em> обучение</h2>
-      </div>
-    </div>
-    <div class="edu-grid">
-      <div class="edu">
-        <div>
-          <div class="y">2025</div>
-          <h4 style="margin-top:10px">Master's Degree, Media Technologies</h4>
-        </div>
-        <small>Astana IT University · Astana, Kazakhstan</small>
-      </div>
-      <div class="edu">
-        <div>
-          <div class="y">2023</div>
-          <h4 style="margin-top:10px">Bachelor's Degree, Media Technologies</h4>
-        </div>
-        <small>Astana IT University · Astana, Kazakhstan</small>
-      </div>
-      <div class="edu">
-        <div>
-          <div class="y" data-en="Course">Курс</div>
-          <h4 style="margin-top:10px">UX Design</h4>
-        </div>
-        <small>Georgia Institute of Technology</small>
-      </div>
-      <div class="edu">
-        <div>
-          <div class="y" data-en="Course">Курс</div>
-          <h4 style="margin-top:10px">UX Design</h4>
-        </div>
-        <small>Future Learn</small>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<section data-screen-label="07 Footer" style="padding:24px 0 0">
-  <div class="wrap">
-    <div class="footer">
-      <div data-en="© 2026 · Aidos Manap · Made in Astana">© 2026 · Aidos Manap · Made in Astana</div>
-      <div class="links">
-        <a href="https://t.me/dosyasoda">Telegram</a>
-        <a href="https://www.linkedin.com/in/aidosmanap/">LinkedIn</a>
-        <a href="mailto:aidos1337228@gmail.com">Email</a>
-        <a href="https://drive.google.com/">CV</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 </main>
 
-<!-- Tabs filter -->
+<!-- DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-bg" data-close></div>
+  <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Кейс">
+    <button class="drawer-close" type="button" data-close><span data-en="Close">Закрыть</span> ✕</button>
+    <div class="drawer-body" id="drawerBody"></div>
+  </div>
+</div>
+
 <script>
 (function(){
-  const tabs = document.querySelectorAll('.tabs .tab');
-  const projects = document.querySelectorAll('.projects .project');
-  const grid = document.querySelector('.projects');
-  function applyFilter(f){
-    projects.forEach(p=>{
-      const cats = (p.dataset.cat||'').split(/\s+/);
-      const show = f==='all' || cats.includes(f);
-      p.hidden = !show;
+  var root=document.documentElement;
+
+  /* ---------- photos ---------- */
+  var photos = [
+    ['FXM50005.JPG','Ветви на фоне облаков'],['FXM50039.JPG','Розовые фламинго в саду'],['FXM50048 (2).JPG','Ночная прогулка по заснеженной аллее'],
+    ['FXM50050.JPG','Камни и отражения в воде'],['FXM50051 (2).JPG','Человек среди заснеженных деревьев'],['FXM50052.JPG','Силуэт за фонарным столбом'],
+    ['FXM50053.JPG','Камень в прозрачной воде'],['FXM50055.JPG','Здание на фоне розового неба'],['FXM50060.JPG','Театр в вечернем свете'],
+    ['FXM50071.JPG','Архитектура на закате'],['FXM50078.JPG','Заснеженные ели ночью'],['FXM50079.JPG','Люди у городской остановки'],
+    ['FXM50087.JPG','Свет и тень на снегу'],['FXM50094.JPG','Поезд на эстакаде'],['FXM50099.JPG','Граффити под эстакадой'],
+    ['FXM50110.JPG','Чёрно-белый городской пейзаж'],['FXM50111.JPG','Шаг по тротуару'],['FXM50114.JPG','Рабочие у дорожного знака'],
+    ['FXM50116.JPG','Фонари в зимнем парке'],['FXM50129.JPG','Ночной силуэт здания'],['inst-@stepnaya_lavka_3243_11.jpg','Граффити и тени на стене'],
+    ['inst-@stepnaya_lavka_3243_12.jpg','Река под мостом'],['inst-@stepnaya_lavka_3243_18.jpg','Лестница и надписи на стене'],['inst-@stepnaya_lavka_3243_21.jpg','Высотные здания'],
+    ['inst-@stepnaya_lavka_3243_37.jpg','Геометрия моста и свет'],['R1-04257-0008.JPG','Свет в лестничном пролёте'],['R1-04257-0019.JPG','Столик на ночной улице'],
+    ['R1-04257-0031.JPG','Букет цветов у стены'],['inst-@stepnaya_lavka_3984_5.jpg','Белые облака на синем небе'],['inst-@stepnaya_lavka_3984_9.jpg','Арбузные корки на каменном берегу'],
+    ['inst-@stepnaya_lavka_3984_10.jpg','Волны у каменного берега'],['inst-@stepnaya_lavka_3984_12.jpg','Рыбалка на закате'],['inst-@stepnaya_lavka_3984_16.jpg','Двое у ограждения ночью'],
+    ['inst-@stepnaya_lavka_3984_34.jpg','Урна с наклейкой в свете вспышки'],['inst-@stepnaya_lavka_3984_36.jpg','Горы под вечерним небом']
+  ];
+  function src(p){ return 'assets/hobby/' + encodeURIComponent(p[0]); }
+  var track=document.getElementById('track'), picks=[21,7,30,10,26,1,13,29,24,2,32,15];
+  for(var pass=0;pass<2;pass++){
+    picks.forEach(function(i){
+      var b=document.createElement('button'); b.type='button'; b.setAttribute('data-i',i);
+      if(pass) b.setAttribute('aria-hidden','true'), b.tabIndex=-1;
+      var im=new Image(); im.src=src(photos[i]); im.alt=pass?'':photos[i][1]; im.loading='lazy'; im.decoding='async';
+      b.appendChild(im); track.appendChild(b);
     });
-    if(grid) grid.classList.toggle('filter-graphic', f==='graphic');
-    if(grid) grid.hidden = f==='hobby';
-    document.getElementById('hobbyGallery').hidden = f!=='hobby';
-    tabs.forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.filter===f)));
   }
-  tabs.forEach(tab=>{
-    tab.addEventListener('click', ()=>{
-      tabs.forEach(t=>t.classList.remove('is-active'));
-      tab.classList.add('is-active');
-      applyFilter(tab.dataset.filter);
-    });
-  });
-  const init = document.querySelector('.tabs .tab.is-active');
-  if(init) applyFilter(init.dataset.filter);
-})();
-</script>
+  var allBtn=document.getElementById('allPhotos');
+  allBtn.textContent='Все '+photos.length+' фото →'; allBtn.setAttribute('data-en','All '+photos.length+' photos →');
 
-<!-- Whole-card click -->
-<script>
-(function(){
-  document.querySelectorAll('.projects .project').forEach(function(card){
-    var cta = card.querySelector('a.pj-cta');
-    if(!cta) return;
-    var href = cta.getAttribute('href');
-    if(!href || href === '#') return;
-    var external = cta.target === '_blank';
-    card.style.cursor = 'pointer';
-    card.setAttribute('tabindex','0');
-    card.setAttribute('role','link');
-    function go(){
-      if(external){ window.open(href, '_blank', 'noopener'); }
-      else { window.location.href = href; }
-    }
-    card.addEventListener('click', function(e){
-      // let real links/buttons handle their own clicks
-      if(e.target.closest('a, button')) return;
-      go();
-    });
-    card.addEventListener('keydown', function(e){
-      if(e.key === 'Enter'){ e.preventDefault(); go(); }
-    });
-  });
-})();
-</script>
-
-<!-- Theme toggle -->
-<script>
-(function(){
-  var DARK_ACCENT = '#D6F500';
-  window.__tweakAccent = '#FF5E00';
-  var btn = document.getElementById('themeToggle');
-  var label = btn && btn.querySelector('.tt-label');
-
-  window.applyTheme = function(theme){
-    var dark = theme === 'dark';
-    document.body.classList.toggle('theme-dark', dark);
-    var accent = dark ? DARK_ACCENT : window.__tweakAccent;
-    var hex = accent.replace('#','');
-    var r = parseInt(hex.slice(0,2),16), g = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
-    document.documentElement.style.setProperty('--accent', accent);
-    document.documentElement.style.setProperty('--accent-soft', 'rgba('+r+','+g+','+b+',.14)');
-    if(btn){
-      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
-      if(label) label.textContent = label.getAttribute(dark ? 'data-tt-dark' : 'data-tt-light') || label.textContent;
-    }
-    try{ localStorage.setItem('aidos-theme', theme); }catch(e){}
-  };
-
-  var saved = null;
-  try{ saved = localStorage.getItem('aidos-theme'); }catch(e){}
-  window.applyTheme(saved || 'light');
-
-  if(btn) btn.addEventListener('click', function(){
-    window.applyTheme(document.body.classList.contains('theme-dark') ? 'light' : 'dark');
-  });
-})();
-</script>
-
-<!-- Duration for current roles -->
-<script>
-(function(){
-  function ru(n,one,few,many){var m10=n%10,m100=n%100;if(m10===1&&m100!==11)return one;if(m10>=2&&m10<=4&&(m100<12||m100>14))return few;return many;}
+  /* ---------- live duration ---------- */
+  function ru(n,a,b,c){var m10=n%10,m100=n%100;if(m10===1&&m100!==11)return a;if(m10>=2&&m10<=4&&(m100<12||m100>14))return b;return c;}
   document.querySelectorAll('.dur[data-start]').forEach(function(el){
     var p=el.getAttribute('data-start').split('-'), now=new Date();
-    var total=(now.getFullYear()-(+p[0]))*12+(now.getMonth()+1-(+p[1]))+1;
-    if(total<1) total=1;
-    var y=Math.floor(total/12), m=total%12, r=[], e=[];
+    var t=(now.getFullYear()-(+p[0]))*12+(now.getMonth()+1-(+p[1]))+1; if(t<1)t=1;
+    var y=Math.floor(t/12), m=t%12, r=[], e=[];
     if(y){r.push(y+' '+ru(y,'год','года','лет'));e.push(y+(y===1?' yr':' yrs'));}
     if(m){r.push(m+' '+ru(m,'месяц','месяца','месяцев'));e.push(m+(m===1?' mo':' mos'));}
-    el.textContent=r.join(' ');
-    el.setAttribute('data-en',e.join(' '));
-  });
-})();
-</script>
-
-<!-- Language switch RU / EN -->
-<script>
-(function(){
-  var btn = document.getElementById('langSwitch');
-  if(!btn) return;
-  var label = btn.querySelector('.lang-switch-text');
-  var nodes = document.querySelectorAll('[data-en], [data-en-html]');
-
-  // cache the original Russian content on first load (source is RU)
-  nodes.forEach(function(n){
-    if(n.hasAttribute('data-en-html')){ n.setAttribute('data-ru-html', n.innerHTML); }
-    else { n.setAttribute('data-ru-text', n.textContent); }
+    el.textContent=r.join(' '); el.setAttribute('data-en',e.join(' '));
   });
 
-  function apply(lang){
-    nodes.forEach(function(n){
-      if(lang === 'en'){
-        if(n.hasAttribute('data-en-html')) n.innerHTML = n.getAttribute('data-en-html');
-        else n.textContent = n.getAttribute('data-en');
-      } else {
-        if(n.hasAttribute('data-ru-html')) n.innerHTML = n.getAttribute('data-ru-html');
-        else n.textContent = n.getAttribute('data-ru-text');
-      }
+  /* ---------- tabs ---------- */
+  var grid=document.getElementById('worksGrid'), tabs=document.querySelectorAll('.tab');
+  function filter(cat,initial){
+    tabs.forEach(function(t){ var on=t.getAttribute('data-filter')===cat; t.classList.toggle('is-active',on); t.setAttribute('aria-selected',on); });
+    var i=0;
+    grid.querySelectorAll('.work').forEach(function(w){
+      var show=w.getAttribute('data-cat')===cat;
+      w.classList.toggle('is-hidden',!show);
+      if(initial) return;
+      w.classList.remove('swap');
+      if(show){ w.classList.add('in'); void w.offsetWidth; w.style.animationDelay=(Math.min(i,4)*0.06)+'s'; w.classList.add('swap'); i++; }
     });
-    document.documentElement.lang = lang;
-    label.textContent = (lang === 'en') ? 'Русский' : 'English';
-    btn.setAttribute('aria-label', (lang === 'en') ? 'Переключить на русский' : 'Switch to English');
-    try{ localStorage.setItem('portfolioLang', lang); }catch(e){}
   }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ filter(t.getAttribute('data-filter')); }); });
+  filter('ui',true);
 
-  var saved = 'ru';
-  try{ saved = localStorage.getItem('portfolioLang') || 'ru'; }catch(e){}
-  apply(saved);
-
-  btn.addEventListener('click', function(){
-    apply(document.documentElement.lang === 'en' ? 'ru' : 'en');
+  /* ---------- experience ---------- */
+  document.querySelectorAll('.xp-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      var row=b.closest('.xp-row'), open=!row.classList.contains('open');
+      row.classList.toggle('open',open); b.setAttribute('aria-expanded',open);
+    });
   });
-})();
-</script>
 
-<!-- Tweaks -->
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<div id="tweaks-root"></div>
-<script type="text/babel">
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme": "light",
-  "accent": "#FF5E00",
-  "density": "comfortable",
-  "displayFont": "Rubik"
-}/*EDITMODE-END*/;
+  /* ---------- bar border + reveal ---------- */
+  var bar=document.getElementById('bar');
+  function onScroll(){ bar.classList.toggle('scrolled', scrollY>8); }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  var io='IntersectionObserver' in window ? new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -8% 0px',threshold:.06}) : null;
+  document.querySelectorAll('.reveal').forEach(function(el,i){
+    var sib=el.parentElement.querySelectorAll(':scope > .reveal'); var idx=Array.prototype.indexOf.call(sib,el);
+    if(idx>0) el.style.animationDelay=(Math.min(idx,4)*0.07)+'s';
+    io ? io.observe(el) : el.classList.add('in');
+  });
 
-function App(){
-  const [t, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
-  const { TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakToggle, TweakSelect } = window;
+  /* ---------- theme ---------- */
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')!=='dark';
+    if(dark) root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme');
+    try{ localStorage.setItem('aidos-theme', dark?'dark':'light'); }catch(e){}
+  });
 
-  const firstRun = React.useRef(true);
-  React.useEffect(()=>{
-    const b = document.body;
-    b.classList.toggle('density-compact', t.density === 'compact');
-    window.__tweakAccent = t.accent;
-    if(firstRun.current){
-      firstRun.current = false;
-      let saved = null;
-      try{ saved = localStorage.getItem('aidos-theme'); }catch(e){}
-      window.applyTheme(saved || t.theme);
-    } else {
-      window.applyTheme(t.theme);
+  /* ---------- language ---------- */
+  var langBtn=document.getElementById('langSwitch'), label=langBtn.querySelector('.lang-switch-text');
+  var nodes=document.querySelectorAll('[data-en],[data-en-html]');
+  nodes.forEach(function(n){ if(n.hasAttribute('data-en-html')) n.setAttribute('data-ru-html',n.innerHTML); else n.setAttribute('data-ru-text',n.textContent); });
+  function applyLang(lang){
+    nodes.forEach(function(n){
+      if(lang==='en'){ if(n.hasAttribute('data-en-html')) n.innerHTML=n.getAttribute('data-en-html'); else n.textContent=n.getAttribute('data-en'); }
+      else { if(n.hasAttribute('data-ru-html')) n.innerHTML=n.getAttribute('data-ru-html'); else n.textContent=n.getAttribute('data-ru-text'); }
+    });
+    root.lang=lang; label.textContent = lang==='en' ? 'RU' : 'EN';
+    try{ localStorage.setItem('portfolioLang',lang); }catch(e){}
+  }
+  var savedLang='ru'; try{ savedLang=localStorage.getItem('portfolioLang')||'ru'; }catch(e){}
+  applyLang(savedLang);
+  langBtn.addEventListener('click',function(){ applyLang(root.lang==='en'?'ru':'en'); });
+
+  /* ---------- drawer ---------- */
+  var drawer=document.getElementById('drawer'), body=document.getElementById('drawerBody');
+  var pushed=false, lastFocus=null, isOpen=false, openRaf=0;
+  function show(kind){
+    lastFocus=document.activeElement;
+    drawer.setAttribute('data-kind',kind); drawer.setAttribute('aria-hidden','false');
+    document.body.classList.add('drawer-on');
+    isOpen=true; cancelAnimationFrame(openRaf);
+    openRaf=requestAnimationFrame(function(){ openRaf=requestAnimationFrame(function(){ if(!isOpen) return; drawer.classList.add('open'); drawer.querySelector('.drawer-close').focus({preventScroll:true}); }); });
+  }
+  function hide(){
+    isOpen=false; cancelAnimationFrame(openRaf);
+    drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true');
+    document.body.classList.remove('drawer-on');
+    setTimeout(function(){ if(!isOpen) body.innerHTML=''; },520);
+    if(lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+  }
+  function openCase(slug,push){
+    body.innerHTML='<div class="loader">'+(root.lang==='en'?'Loading…':'Загрузка…')+'</div><iframe title="Кейс" src="cases/'+slug+'.html?embed=1"></iframe>';
+    var fr=body.querySelector('iframe'), ld=body.querySelector('.loader');
+    fr.addEventListener('load',function(){ ld.classList.add('done'); });
+    show('case');
+    if(push){ history.pushState({drawer:slug},'','?case='+slug); pushed=true; }
+  }
+  function openVideo(id){
+    body.innerHTML='<div class="video-wrap"><iframe title="Видео" src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+    show('video');
+  }
+  function openPhotos(start){
+    var en=root.lang==='en';
+    var html='<div class="photos"><h2>'+(en?'Photography':'Фотография')+'</h2><div class="photo-grid">';
+    photos.forEach(function(p,i){ html+='<button type="button" data-i="'+i+'"><img loading="lazy" src="'+src(p)+'" alt="'+p[1]+'"></button>'; });
+    html+='</div></div><div class="viewer" hidden><button class="back" type="button">'+(en?'← All photos':'← Все фото')+'</button><button class="nav-b prev" type="button" aria-label="Назад">‹</button><img alt=""><button class="nav-b next" type="button" aria-label="Вперёд">›</button><div class="cap"></div></div>';
+    body.innerHTML=html;
+    var v=body.querySelector('.viewer'), big=v.querySelector('img'), cap=v.querySelector('.cap'), cur=0;
+    function at(i){ cur=(i+photos.length)%photos.length; big.src=src(photos[cur]); big.alt=photos[cur][1]; cap.textContent=String(cur+1).padStart(2,'0')+' / '+photos.length; v.hidden=false; }
+    body.querySelectorAll('.photo-grid button').forEach(function(b){ b.addEventListener('click',function(){ at(+b.dataset.i); }); });
+    v.querySelector('.prev').addEventListener('click',function(){ at(cur-1); });
+    v.querySelector('.next').addEventListener('click',function(){ at(cur+1); });
+    v.querySelector('.back').addEventListener('click',function(){ v.hidden=true; });
+    body._viewer={el:v,step:function(d){ at(cur+d); }};
+    show('photos');
+    if(typeof start==='number') at(start);
+  }
+  function close(){
+    if(!isOpen) return;
+    if(drawer.getAttribute('data-kind')==='case'){
+      if(pushed){ pushed=false; history.back(); return; }
+      history.replaceState(null,'',location.pathname);
     }
-    document.documentElement.style.setProperty('--display', `'${t.displayFont}', 'Nunito', system-ui, sans-serif`);
-  }, [t.theme, t.accent, t.density, t.displayFont]);
-
-  return (
-    <TweaksPanel>
-      <TweakSection title="Тема">
-        <TweakRadio value={t.theme} onChange={v=>setTweak('theme',v)} options={[{value:'light',label:'Светлая'},{value:'dark',label:'Тёмная'}]}/>
-      </TweakSection>
-      <TweakSection title="Акцент">
-        <TweakColor value={t.accent} onChange={v=>setTweak('accent',v)} options={['#FF5E00','#9747FF','#32D47D','#1F1F1F']}/>
-      </TweakSection>
-      <TweakSection title="Плотность">
-        <TweakRadio value={t.density} onChange={v=>setTweak('density',v)} options={[{value:'comfortable',label:'Просторно'},{value:'compact',label:'Плотно'}]}/>
-      </TweakSection>
-      <TweakSection title="Дисплейный шрифт">
-        <TweakSelect value={t.displayFont} onChange={v=>setTweak('displayFont',v)} options={['Rubik','Nunito','Georgia']}/>
-      </TweakSection>
-    </TweaksPanel>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App/>);
+    hide();
+  }
+  function plain(e){ return !(e.metaKey||e.ctrlKey||e.shiftKey||e.button===1); }
+  document.querySelectorAll('a[data-case]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e)) return; e.preventDefault(); openCase(a.getAttribute('data-case'),true); }); });
+  document.querySelectorAll('a[data-video]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e)) return; e.preventDefault(); openVideo(a.getAttribute('data-video')); }); });
+  track.addEventListener('click',function(e){ var b=e.target.closest('button[data-i]'); if(b) openPhotos(+b.getAttribute('data-i')); });
+  allBtn.addEventListener('click',function(){ openPhotos(); });
+  drawer.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click',close); });
+  document.addEventListener('keydown',function(e){
+    if(!isOpen) return;
+    var v=body._viewer;
+    if(e.key==='Escape'){ if(v && !v.el.hidden) v.el.hidden=true; else close(); }
+    if(v && !v.el.hidden && e.key==='ArrowLeft') v.step(-1);
+    if(v && !v.el.hidden && e.key==='ArrowRight') v.step(1);
+  });
+  addEventListener('message',function(e){ if(e.origin===location.origin && e.data && e.data.type==='aidos-close-sheet') close(); });
+  addEventListener('popstate',function(){
+    var slug=new URLSearchParams(location.search).get('case');
+    if(slug && /^[a-z0-9-]+$/.test(slug)) openCase(slug,false);
+    else if(isOpen){ pushed=false; hide(); }
+  });
+  var first=new URLSearchParams(location.search).get('case');
+  if(first && /^[a-z0-9-]+$/.test(first)) openCase(first,false);
+})();
 </script>
 </body>
 </html>
