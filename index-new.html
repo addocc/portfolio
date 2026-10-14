@@ -100,6 +100,9 @@
   .shot{--p:clamp(10px,1.4vw,18px);position:relative;aspect-ratio:16/10;border-radius:28px;overflow:hidden;background:var(--surface)}
   .wide .shot{aspect-ratio:2439/1406}
   .shot img{position:absolute;top:var(--p);left:var(--p);width:calc(100% - var(--p)*2);height:calc(100% - var(--p)*2);object-fit:cover;border-radius:16px;background:var(--cbg,#E2E4E7);transition:transform .5s var(--spring)}
+  .shot .zoom{position:absolute;top:var(--p);left:var(--p);right:var(--p);bottom:var(--p);overflow:hidden;border-radius:16px;background:var(--cbg,#E2E4E7)}
+  .shot .zoom img{top:0;left:0;width:100%;height:100%;border-radius:0;transform:scale(1.9)}
+  @media (hover:hover){.work:hover .shot .zoom img{transform:scale(1.95) rotate(-1.2deg)}}
   .arrow{position:absolute;top:calc(var(--p) + 12px);right:calc(var(--p) + 12px);z-index:2;width:44px;height:44px;border-radius:50%;background:#fff;color:#1F1F1F;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;transform:scale(.4) rotate(-45deg);opacity:0;transition:transform .45s var(--spring),opacity .2s}
   @media (hover:hover){
     .work:not(.locked):hover .shot img{transform:scale(1.025) rotate(-1.2deg)}
@@ -121,6 +124,17 @@
   @media (max-width:900px){.works.small{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media (max-width:560px){.works.small{grid-template-columns:1fr}}
   .play{position:absolute;z-index:2;left:calc(var(--p) + 12px);bottom:calc(var(--p) + 12px);display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.92);color:#1F1F1F;font-size:13px;font-weight:800}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 26px}
+  .tab{height:40px;padding:0 16px;border-radius:999px;background:var(--surface);color:var(--ink-2);font-size:14.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:background .2s,color .2s,transform .35s var(--spring)}
+  .tab b{font-weight:700}
+  .tab span{font-size:12.5px;color:var(--mute);font-weight:700}
+  .tab:hover{transform:translateY(-1px)}
+  .tab.is-active{background:var(--ink);color:var(--bg)}
+  .tab.is-active span{color:inherit;opacity:.6}
+  .work.is-hidden{display:none}
+  .work.swap{animation:up .5s var(--ease) both}
 
   /* ---------- photo strip ---------- */
   .strip{position:relative;overflow:hidden;padding:4px 0 8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
@@ -229,7 +243,7 @@
     <a class="logo" href="#top" aria-label="Aidos Manap"><img src="assets/signature.svg" alt="Aidos Manap" width="120" height="33"></a>
     <nav class="nav" aria-label="Разделы">
       <a href="#work" data-en="Work">Работы</a>
-      <a href="#motion" data-en="Motion">Моушн</a>
+      <a href="#photos" data-en="Hobby">Хобби</a>
       <a href="#experience" data-en="Experience">Опыт</a>
       <a href="#about" data-en="About">Обо мне</a>
     </nav>
@@ -259,10 +273,15 @@
 
     <!-- WORK -->
     <section class="section" id="work">
-      <div class="sec-head reveal"><h2 data-en="Selected work">Избранные работы</h2><span class="n">UI/UX · 05</span></div>
-      <div class="works">
+      <div class="sec-head reveal"><h2 data-en="Selected work">Избранные работы</h2></div>
+      <div class="tabs reveal" role="tablist" aria-label="Фильтр работ">
+        <button class="tab is-active" type="button" role="tab" aria-selected="true" data-filter="ui">UI/UX <span>5</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-filter="motion">Motion <span>3</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-filter="graphic"><b data-en="Graphic">Графический</b> <span>2</span></button>
+      </div>
+      <div class="works" id="worksGrid">
 
-        <div class="work locked reveal">
+        <div class="work locked reveal" data-cat="ui">
           <div class="shot" style="--cbg:#176cb0">
             <img src="assets/monitoring-blurred-v2.png" alt="Размытое превью интерфейса мониторинговой системы" loading="lazy">
             <div class="lock"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-en="I can't show this right now">сейчас не могу показать</span></span></div>
@@ -273,7 +292,7 @@
           </div></div>
         </div>
 
-        <a class="work reveal" href="cases/platonus-redesign.html" data-case="platonus-redesign">
+        <a class="work reveal" data-cat="ui" href="cases/platonus-redesign.html" data-case="platonus-redesign">
           <div class="shot" style="--cbg:#D6173A">
             <img src="assets/platonus/cover-onboarding.png" alt="Редизайн мобильного приложения Platonus" loading="lazy">
             <span class="tag">EdTech</span><span class="arrow">↗</span>
@@ -284,7 +303,7 @@
           </div><span class="kpi">700K MAU</span></div>
         </a>
 
-        <a class="work wide reveal" href="cases/blink.html" data-case="blink">
+        <a class="work wide reveal" data-cat="ui" href="cases/blink.html" data-case="blink">
           <div class="shot" style="--cbg:#0B0B14">
             <img src="assets/blink.png" alt="Blink" loading="lazy">
             <span class="tag">Startup</span><span class="arrow">↗</span>
@@ -295,7 +314,7 @@
           </div><span class="kpi" data-en="2 YC applications">2 подачи в YC</span></div>
         </a>
 
-        <a class="work reveal" href="cases/nimbl-academy.html" data-case="nimbl-academy">
+        <a class="work reveal" data-cat="ui" href="cases/nimbl-academy.html" data-case="nimbl-academy">
           <div class="shot" style="--cbg:#14111F">
             <img src="assets/nimbl.png" alt="Nimbl Academy" loading="lazy">
             <span class="tag">EdTech</span><span class="arrow">↗</span>
@@ -306,7 +325,7 @@
           </div><span class="kpi">+22 п.п.</span></div>
         </a>
 
-        <a class="work reveal" href="cases/docwork.html" data-case="docwork">
+        <a class="work reveal" data-cat="ui" href="cases/docwork.html" data-case="docwork">
           <div class="shot" style="--cbg:#EEF1F5">
             <img src="assets/docwork.png" alt="DOCWORK" loading="lazy">
             <span class="tag" data-en="Under NDA">Под NDA</span><span class="arrow">↗</span>
@@ -317,30 +336,23 @@
           </div><span class="kpi">B2B · AI</span></div>
         </a>
 
-      </div>
-    </section>
-
-    <!-- MOTION & GRAPHICS -->
-    <section class="section" id="motion">
-      <div class="sec-head reveal"><h2 data-en="Motion &amp; graphics">Моушн и графика</h2><span class="n">05</span></div>
-      <div class="works small">
-        <a class="work reveal" href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" data-video="AF8cavjqE5g">
+        <a class="work wide reveal" data-cat="motion" href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" data-video="AF8cavjqE5g">
           <div class="shot" style="--cbg:#0B0B14"><img src="assets/blink-promo.png" alt="Промо-ролик Blink" loading="lazy"><span class="play">▶ <span data-en="Watch">Смотреть</span></span><span class="arrow">↗</span></div>
           <div class="work-info"><div><h3 data-en="Blink promo video">Промо-ролик Blink</h3><p>Motion · After Effects</p></div></div>
         </a>
-        <a class="work reveal" href="https://youtu.be/IbF2e5BNC3Q" target="_blank" rel="noreferrer" data-video="IbF2e5BNC3Q">
-          <div class="shot" style="--cbg:#FFFFFF"><img src="assets/platonus-logo.png" alt="Видео-презентация логотипа Platonus App" loading="lazy" style="transform:scale(1.9)"><span class="play">▶ <span data-en="Watch">Смотреть</span></span><span class="arrow">↗</span></div>
+        <a class="work reveal" data-cat="motion" href="https://youtu.be/IbF2e5BNC3Q" target="_blank" rel="noreferrer" data-video="IbF2e5BNC3Q">
+          <div class="shot" style="--cbg:#FFFFFF"><span class="zoom"><img src="assets/platonus-logo.png" alt="Видео-презентация логотипа Platonus App" loading="lazy"></span><span class="play">▶ <span data-en="Watch">Смотреть</span></span><span class="arrow">↗</span></div>
           <div class="work-info"><div><h3 data-en="Platonus App logo video">Видео логотипа Platonus App</h3><p>Motion</p></div></div>
         </a>
-        <a class="work reveal" href="cases/platonus-motion.html" data-case="platonus-motion">
+        <a class="work reveal" data-cat="motion" href="cases/platonus-motion.html" data-case="platonus-motion">
           <div class="shot" style="--cbg:#D6173A"><img src="assets/platonus/cover-onboarding.png" alt="Анимации Platonus App" loading="lazy"><span class="arrow">↗</span></div>
           <div class="work-info"><div><h3 data-en="Welcome and loading animations">Приветствие и загрузка</h3><p>Platonus App · Motion</p></div></div>
         </a>
-        <a class="work reveal" href="cases/graphic-design.html" data-case="graphic-design">
+        <a class="work reveal" data-cat="graphic" href="cases/graphic-design.html" data-case="graphic-design">
           <div class="shot"><img src="assets/graphic/cover-graphic.jpg" alt="Печатная продукция для застройщиков" loading="lazy"><span class="arrow">↗</span></div>
           <div class="work-info"><div><h3 data-en="Graphics for developers">Графика для застройщиков</h3><p>BI Group, Sensata, NAK</p></div></div>
         </a>
-        <a class="work reveal" href="cases/platonus-logo.html" data-case="platonus-logo">
+        <a class="work reveal" data-cat="graphic" href="cases/platonus-logo.html" data-case="platonus-logo">
           <div class="shot" style="--cbg:#FFFFFF"><img src="assets/graphic/platonus-logo-cover.jpg" alt="Логотип Platonus App" loading="lazy"><span class="arrow">↗</span></div>
           <div class="work-info"><div><h3 data-en="Platonus App logo">Логотип Platonus App</h3><p>Identity</p></div></div>
         </a>
@@ -349,7 +361,7 @@
 
     <!-- PHOTOS -->
     <section class="section" id="photos">
-      <div class="sec-head reveal"><h2 data-en="Photography">Фотография</h2><span class="n">Fujifilm X-M5 · Kodak Star AF</span></div>
+      <div class="sec-head reveal"><h2 data-en="I also want to share my hobby">Еще хочу поделиться своим хобби</h2><span class="n">Fujifilm X-M5 · Kodak Star AF</span></div>
       <div class="strip reveal"><div class="track" id="track"></div></div>
       <div class="strip-meta"><span data-en="Digital and film, in my free time">Цифра и плёнка, в свободное время</span><button type="button" id="allPhotos"></button></div>
     </section>
@@ -378,7 +390,7 @@
         <div class="xp-row">
           <button class="xp-btn" type="button" aria-expanded="false">
             <span class="xp-when" data-en="Project work">Проектная работа</span>
-            <span class="xp-co">KazDream IT Holding<span>Motion Designer</span></span>
+            <span class="xp-co">KazDream IT Holding<span>Motion / UI/UX Designer</span></span>
             <span class="plus" aria-hidden="true"></span>
           </button>
           <div class="xp-more"><div><div class="xp-in">
@@ -544,6 +556,22 @@
     if(m){r.push(m+' '+ru(m,'месяц','месяца','месяцев'));e.push(m+(m===1?' mo':' mos'));}
     el.textContent=r.join(' '); el.setAttribute('data-en',e.join(' '));
   });
+
+  /* ---------- tabs ---------- */
+  var grid=document.getElementById('worksGrid'), tabs=document.querySelectorAll('.tab');
+  function filter(cat,initial){
+    tabs.forEach(function(t){ var on=t.getAttribute('data-filter')===cat; t.classList.toggle('is-active',on); t.setAttribute('aria-selected',on); });
+    var i=0;
+    grid.querySelectorAll('.work').forEach(function(w){
+      var show=w.getAttribute('data-cat')===cat;
+      w.classList.toggle('is-hidden',!show);
+      if(initial) return;
+      w.classList.remove('swap');
+      if(show){ w.classList.add('in'); void w.offsetWidth; w.style.animationDelay=(Math.min(i,4)*0.06)+'s'; w.classList.add('swap'); i++; }
+    });
+  }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ filter(t.getAttribute('data-filter')); }); });
+  filter('ui',true);
 
   /* ---------- experience ---------- */
   document.querySelectorAll('.xp-btn').forEach(function(b){
