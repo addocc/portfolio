@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Логотип и концепт Platonus App · Айдос Манап</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --accent:#FF5E00;
+    --accent-soft:rgba(255,94,0,.12);
+    --bg:#EFF1F2;
+    --bg-card:#FFFFFF;
+    --bg-deep:#1F1F1F;
+    --ink:#1F1F1F;
+    --ink-2:#333333;
+    --ink-mute:#8A8A8B;
+    --line:rgba(31,31,31,.08);
+    --line-2:rgba(31,31,31,.14);
+    --platonus:#D6173A;
+    --radius-xl:48px;
+    --radius-lg:32px;
+    --radius-md:20px;
+    --radius-sm:12px;
+    --radius-pill:999px;
+    --container:1320px;
+    --pad-x:clamp(16px,3vw,40px);
+    --display:'Inter Tight', 'Inter', system-ui, sans-serif;
+    --text:'Inter', system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.45}
+  body{overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--platonus);color:#fff}
+
+  .wrap{max-width:var(--container);margin:0 auto;padding-left:var(--pad-x);padding-right:var(--pad-x)}
+  .read-progress{display:none}
+
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(239,241,242,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:-0.01em}
+  .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2);padding:8px 14px;border-radius:var(--radius-pill);transition:background .2s,color .2s}
+  .back:hover{background:rgba(31,31,31,.06);color:var(--ink)}
+  .back .ar{transition:transform .2s}
+  .back:hover .ar{transform:translateX(-3px)}
+
+  /* case header */
+  .case-head{padding:48px 0 8px}
+  .crumbs{display:flex;align-items:center;gap:10px;color:var(--ink-mute);font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:26px;flex-wrap:wrap}
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs .sep{opacity:.5}
+  .case-title{font-family:var(--display);font-weight:600;letter-spacing:-0.025em;line-height:1.0;margin:0;font-size:clamp(40px,6.4vw,98px);text-wrap:balance;max-width:none}
+  .case-title em{font-style:italic;font-weight:500;color:var(--platonus)}
+  .case-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-pill);background:#fff;border:1px solid var(--line);font-size:13px;color:var(--ink-2)}
+  .chip.brand{background:var(--platonus);border-color:var(--platonus);color:#fff}
+  .chip.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+  .lead{font-size:clamp(17px,1.5vw,21px);line-height:1.6;color:var(--ink-2);max-width:62ch;margin:30px 0 0;text-wrap:pretty}
+  .lead b{color:var(--ink);font-weight:600}
+
+  /* meta strip */
+  .meta-strip{display:flex;flex-wrap:wrap;gap:0;margin-top:40px;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;background:#fff}
+  .meta-strip .m{flex:1 1 180px;padding:20px 24px;border-right:1px solid var(--line)}
+  .meta-strip .m:last-child{border-right:0}
+  .meta-strip .k{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+  .meta-strip .v{font-family:var(--display);font-size:clamp(20px,2vw,28px);font-weight:600;letter-spacing:-0.02em;line-height:1}
+  .meta-strip .v em{font-style:italic;color:var(--platonus);font-weight:500}
+
+  /* section */
+  .sec{padding:64px 0 8px}
+  .sec-num{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--platonus);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .sec-num::after{content:'';flex:1;height:1px;background:var(--line)}
+  .sec h2{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,46px);letter-spacing:-0.02em;line-height:1.05;margin:0 0 14px;text-wrap:balance}
+  .sec p{font-size:17px;line-height:1.62;color:var(--ink-2);margin:0 0 8px;max-width:64ch;text-wrap:pretty}
+
+  /* shots */
+  .shots{display:flex;flex-direction:column;gap:clamp(20px,3vw,34px);margin-top:38px}
+  .shots-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:38px}
+  @media (max-width:680px){.shots-2{grid-template-columns:1fr}}
+  .shot{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 30px 60px -40px rgba(31,31,31,.4)}
+  .shots-2 .shot{border-radius:var(--radius-md)}
+  .shot img{width:100%;height:auto;display:block}
+  .shot-cap{font-family:var(--mono);font-size:12px;color:var(--ink-mute);letter-spacing:.02em;margin-top:12px;padding-left:2px}
+
+  /* footer */
+  .footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:30px 0 40px;color:var(--ink-mute);font-size:14px;border-top:1px solid var(--line);margin-top:64px}
+  .footer .links{display:flex;gap:18px;flex-wrap:wrap}
+  .footer .links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="read-progress" id="progress"></div>
+
+<!-- Top bar -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a href="../index.html" class="brand">
+      <img src="../assets/signature.svg" width="145" height="40" alt="Айдос Манап" style="display:block;object-fit:contain">
+    </a>
+    <a href="../index.html#projects" class="back"><span class="ar">←</span> Все проекты</a>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+
+  <!-- CASE HEADER -->
+  <header class="case-head" data-screen-label="Case header">
+    <div class="crumbs">
+      <a href="../index.html#projects">Проекты</a>
+      <span class="sep">/</span>
+      <span>Platonus App · Лого</span>
+    </div>
+    <h1 class="case-title">Логотип и концепт для мобильного приложения <em>Platonus App</em></h1>
+    <div class="case-tags">
+      <span class="chip dark">Platonus App</span>
+      <span class="chip">Logo Design</span>
+      <span class="chip">Identity</span>
+    </div>
+  </header>
+
+  <!-- IDEA -->
+  <section class="sec" data-screen-label="Идея">
+    <div class="sec-num">Идея</div>
+    <p>В основе знака — раскрытая ладонь как метафора помощи и поддержки. Platonus App становится «рукой помощи» для студента: мобильный куратор, который всегда под рукой.</p>
+    <div class="shots">
+      <figure class="shot" style="margin:0">
+        <img src="../assets/graphic/platonus-logo-idea.jpg" alt="Концепция логотипа Platonus App — «рука помощи», твой мобильный куратор" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- LOGO -->
+  <section class="sec" data-screen-label="Логотип">
+    <div class="sec-num">Знак</div>
+    <div class="shots">
+      <figure class="shot" style="margin:0">
+        <img src="../assets/graphic/platonus-logo-white.jpg" alt="Логотип Platonus App на светлом фоне" loading="lazy">
+      </figure>
+    </div>
+    <div class="shots-2">
+      <figure class="shot" style="margin:0">
+        <img src="../assets/graphic/platonus-logo-red.jpg" alt="Логотип Platonus App на фирменном красном фоне" loading="lazy">
+      </figure>
+      <figure class="shot" style="margin:0">
+        <img src="../assets/graphic/platonus-logo-dark.jpg" alt="Логотип Platonus App на тёмном фоне" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- APP ICON -->
+  <section class="sec" data-screen-label="Иконка">
+    <div class="sec-num">Иконка</div>
+    <div class="shots">
+      <figure class="shot" style="margin:0">
+        <img src="../assets/graphic/platonus-logo-icons.jpg" alt="Варианты иконки приложения Platonus App на красном, тёмном и белом фоне" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- MOCKUP -->
+  <section class="sec" data-screen-label="На экране">
+    <div class="sec-num">В контексте</div>
+    <div class="shots">
+      <figure class="shot" style="margin:0">
+        <img src="../assets/graphic/platonus-logo-mockup.jpg" alt="Иконка Platonus App на домашнем экране iPhone" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div>© 2026 · Айдос Манап · Made in Astana</div>
+    <div class="links">
+      <a href="https://t.me/dosyasoda">Telegram</a>
+      <a href="https://www.linkedin.com/in/aidosmanap/">LinkedIn</a>
+      <a href="mailto:aidos1337228@gmail.com">Email</a>
+    </div>
+  </footer>
+
+</div>
+</main>
+
+<script>
+(function(){
+  var bar = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+    bar.style.width = (p*100).toFixed(2) + '%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
