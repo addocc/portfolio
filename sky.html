@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Айдос Манап — UI/UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Inter:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --serif:'Source Serif 4',Georgia,serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --white:#FFFFFF;
+    --soft:rgba(255,255,255,.78);
+    --faint:rgba(255,255,255,.62);
+    --glass:rgba(24,58,78,.10);
+    --glass-2:rgba(24,58,78,.16);
+    --hi:inset 0 1px 0 0 rgba(255,255,255,.42);
+    --ts:0 2px 2px rgba(0,0,0,.22);
+    --spring:cubic-bezier(.34,1.5,.64,1);
+    --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;min-height:100%;color:var(--white);font-family:var(--sans);background:#7DB2CE}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+
+  /* ---------- sky ---------- */
+  .sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+    background:
+      radial-gradient(ellipse 34% 28% at 46% -6%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.4) 40%, transparent 72%),
+      linear-gradient(180deg,#5FA6CF 0%,#7BBADC 40%,#9FCDE3 72%,#C6E1EC 100%)}
+  .cloud{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,.55) 55%,rgba(255,255,255,0));filter:blur(18px)}
+  .c1{width:560px;height:220px;left:-160px;bottom:-110px}
+  .c2{width:520px;height:220px;left:300px;bottom:-110px;opacity:.85}
+  .c3{width:760px;height:300px;right:-160px;bottom:-40px}
+  .c4{width:420px;height:180px;right:240px;bottom:20px;opacity:.65}
+  .c5{width:300px;height:140px;right:-60px;bottom:230px;opacity:.6}
+  .c6{width:360px;height:140px;left:520px;bottom:-40px;opacity:.5}
+  .flock{position:absolute;width:640px;height:270px;color:#16222A;opacity:.85;animation:drift 120s linear infinite}
+  .flock.f1{top:16%;left:62%}
+  .flock.f2{top:58%;left:-8%;animation-duration:150s;animation-delay:-40s;opacity:.6}
+  .flock.f3{top:4%;left:26%;width:520px;animation-duration:170s;animation-delay:-90s;opacity:.5}
+  .flock use{animation:flap 1.8s ease-in-out infinite}
+  .flock use:nth-child(3n){animation-delay:-.6s}
+  .flock use:nth-child(3n+1){animation-delay:-1.2s}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-60vw)}}
+  @keyframes flap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.55)}}
+
+  /* ---------- layout ---------- */
+  .side{text-shadow:0 1px 2px rgba(0,0,0,.18);position:fixed;z-index:5;left:0;top:0;bottom:0;width:240px;padding:26px 28px 28px;display:flex;flex-direction:column;justify-content:space-between}
+  .who{display:flex;align-items:center;gap:8px;font-weight:500;font-size:16px;letter-spacing:-.02em;color:#F5F5F7}
+  .nav{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin-top:auto;margin-bottom:auto;font-size:16px;line-height:24px}
+  .nav a,.nav button{color:var(--white);opacity:.92;transition:opacity .2s}
+  .nav a:hover,.nav button:hover{opacity:1}
+  .nav .on{font-weight:600;opacity:1}
+  .nav .dash{opacity:.9;margin:2px 0}
+  .nav .ico{width:20px;height:20px;margin-bottom:22px;opacity:.95}
+  .side-foot{display:flex;flex-direction:column;gap:22px;font-size:14px;line-height:1.6}
+  .side-foot .links a{display:block;opacity:.92}
+  .side-foot .links a:hover{opacity:1}
+  .side-foot .bar{width:3px;height:20px;background:#fff}
+  .side-foot img{width:96px;filter:invert(1) brightness(2)}
+  .topright{position:fixed;z-index:6;top:22px;right:26px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:500}
+  .topright .now{display:flex;align-items:center;gap:8px;opacity:.95}
+  .topright .now svg{width:16px;height:16px}
+  .pill-sm{height:30px;padding:0 12px;border-radius:999px;background:rgba(0,0,0,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:13px;font-weight:600}
+  main{position:relative;z-index:2;margin-left:240px;padding:0 40px 80px}
+  @media (max-width:980px){
+    .side{position:relative;width:auto;height:auto;padding:20px 20px 0;flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px}
+    .nav{margin:0;flex-direction:row;flex-wrap:wrap;gap:4px 14px;width:100%;order:3}
+    .nav .ico,.nav .dash{display:none}
+    .side-foot{display:none}
+    .topright{position:absolute;top:18px;right:18px}
+    .topright .now span{display:none}
+    main{margin-left:0;padding:0 16px 60px}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:96px 0 40px;text-align:center}
+  .hero h1{margin:0 0 36px;font-family:var(--serif);font-weight:400;font-size:clamp(38px,4.4vw,56px);line-height:1.08;letter-spacing:-.02em;text-shadow:var(--ts)}
+  .glass{position:relative;background:var(--glass);backdrop-filter:blur(50px) saturate(1.15);-webkit-backdrop-filter:blur(50px) saturate(1.15);box-shadow:var(--hi);border-radius:12px}
+  .compose{width:min(700px,100%);border-radius:36px;padding:30px 26px 22px;text-align:left}
+  .thumbs-row{display:flex;gap:16px;margin:0 4px 26px}
+  .thumbs-row a{position:relative;width:100px;height:100px;border-radius:8px;border:2px solid #fff;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.18);transition:transform .45s var(--spring)}
+  .thumbs-row a:hover{transform:translateY(-4px) rotate(-3deg)}
+  .thumbs-row a.wide{width:176px}
+  .thumbs-row img{width:100%;height:100%;object-fit:cover}
+  .count{position:absolute;top:-10px;right:-10px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#000;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .thumbs-row a .count{top:4px;right:4px}
+  .compose p{margin:0 4px;font-family:var(--serif);font-size:clamp(18px,1.6vw,21px);line-height:1.38;text-shadow:var(--ts)}
+  .compose hr{border:0;border-top:1px solid rgba(255,255,255,.25);margin:24px 0 18px}
+  .compose .row{display:flex;align-items:center;gap:10px}
+  .chip{height:38px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,.14);display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;transition:background .2s,transform .35s var(--spring)}
+  .chip:hover{background:rgba(255,255,255,.24);transform:translateY(-1px)}
+  .chip svg{width:16px;height:16px}
+  .round{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
+  .round svg{width:16px;height:16px}
+  .go{margin-top:auto;padding-top:56px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .go a{width:38px;height:38px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;transition:transform .35s var(--spring)}
+  .go a:hover{transform:translateY(3px)}
+  .go span{font-size:12px;color:rgba(25,45,55,.72)}
+
+  /* ---------- sections ---------- */
+  .section{padding:64px 0 24px;scroll-margin-top:24px}
+  .section h2{margin:0 0 30px;font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.2vw,40px);letter-spacing:-.03em;line-height:1.1;text-shadow:var(--ts)}
+  .pills{display:flex;flex-wrap:wrap;gap:10px;margin:-6px 0 22px}
+  .pill{height:38px;padding:0 16px;border-radius:999px;background:rgba(0,0,0,.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:14px;transition:background .2s,color .2s,transform .35s var(--spring)}
+  .pill:hover{transform:translateY(-1px);background:rgba(0,0,0,.1)}
+  .pill.on{background:#fff;color:#000}
+
+  /* ---------- board ---------- */
+  .board{columns:240px;column-gap:18px;max-width:1540px}
+  .card{display:block;break-inside:avoid;margin:0 0 18px;width:100%;text-align:left;transition:transform .45s var(--spring),opacity .3s;will-change:transform}
+  .card.hide{display:none}
+  .card:hover{transform:translateY(-4px) scale(1.015)}
+  .note{padding:16px 20px 18px}
+  .note .mini{position:relative;display:block;width:60px;height:56px;margin-bottom:15px}
+  .note .mini img{position:absolute;width:51px;height:51px;border-radius:6px;border:1.5px solid #fff;box-shadow:0 4px 4px rgba(0,0,0,.25);object-fit:cover}
+  .note .mini img:first-child{left:0;top:4px}
+  .note .mini img:nth-child(2){left:5px;top:0;transform:rotate(6.5deg)}
+  .note h3{margin:0 0 15px;font-family:var(--serif);font-weight:400;font-size:16px;line-height:24px;text-shadow:var(--ts)}
+  .note p{margin:0 0 15px;font-family:var(--serif);font-size:14px;line-height:20px;text-shadow:var(--ts)}
+  .meta{font-size:12px;line-height:1;color:rgba(255,255,255,.78)}
+  .pic{position:relative;border-radius:12px;overflow:hidden;box-shadow:var(--hi),0 10px 30px -18px rgba(0,0,0,.45)}
+  .pic img{width:100%;height:auto;display:block}
+  .pic.tall img{aspect-ratio:3/4;object-fit:cover}
+  .pic.sq img{aspect-ratio:1/1;object-fit:cover}
+  .pic::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.42);pointer-events:none}
+  .pic .shade{position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.62));pointer-events:none}
+  .pic .cap{position:absolute;left:18px;right:18px;bottom:16px}
+  .pic .cap b{display:block;font-family:var(--serif);font-weight:400;font-size:16px;line-height:22px;text-shadow:var(--ts)}
+  .pic .cap span{display:block;margin-top:6px;font-size:12px;color:rgba(255,255,255,.8)}
+  .pic .badge{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);min-width:32px;height:32px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .pic .play{position:absolute;top:14px;left:14px;height:30px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.9);color:#000;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .pic .lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .pic .lock span{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.9);color:#2b3440;font-size:13px;font-weight:600}
+  .card.locked{cursor:default}
+  .card.locked:hover{transform:none}
+
+  /* ---------- experience (events style) ---------- */
+  .years{border-top:2px solid rgba(255,255,255,.9);position:relative}
+  .years::before{content:'';position:absolute;top:-6px;left:38%;width:10px;height:10px;border-radius:50%;background:#fff}
+  .year{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:28px 0 32px;border-bottom:1px solid rgba(255,255,255,.28)}
+  .year:last-child{border-bottom:0}
+  .year .num{font-family:var(--serif);font-weight:400;font-size:clamp(48px,5vw,64px);line-height:1;letter-spacing:-.03em;text-shadow:var(--ts)}
+  .year.past .num{opacity:.55}
+  .events{display:flex;flex-wrap:wrap;gap:18px}
+  .event{width:264px;padding:24px 22px 22px}
+  .event h3{margin:0 0 14px;font-family:var(--serif);font-weight:400;font-size:18px;line-height:24px;text-shadow:var(--ts)}
+  .event .when{font-family:var(--serif);font-size:15.5px;line-height:20px;text-shadow:var(--ts)}
+  .event .link{display:block;margin-top:14px;font-size:12px;color:rgba(255,255,255,.8)}
+  .event ul{margin:14px 0 0;padding-left:16px;font-family:var(--serif);font-size:14px;line-height:20px;text-shadow:var(--ts)}
+  .event li{margin:3px 0}
+  @media (max-width:640px){.year{grid-template-columns:1fr}.event{width:100%}}
+
+  /* ---------- about ---------- */
+  .about{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1100px}
+  @media (max-width:900px){.about{grid-template-columns:1fr}}
+  .about .glass{padding:22px 22px 18px}
+  .about h3{margin:0 0 14px;font-family:var(--serif);font-weight:400;font-size:20px;text-shadow:var(--ts)}
+  .about ul{list-style:none;margin:0;padding:0}
+  .about li{padding:8px 0;border-top:1px solid rgba(255,255,255,.2);font-family:var(--serif);font-size:15px;line-height:20px;text-shadow:var(--ts)}
+  .about li:first-child{border-top:0;padding-top:0}
+  .about li small{display:block;font-family:var(--sans);font-size:12px;color:rgba(255,255,255,.78);margin-top:3px}
+  .foot{margin-top:56px;font-size:13px;color:rgba(30,50,60,.65)}
+
+  /* ---------- reader overlay ---------- */
+  .reader{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:0;transition:opacity .35s var(--ease)}
+  .reader.open{pointer-events:auto;opacity:1}
+  .reader-bg{position:absolute;inset:0;background:rgba(110,150,170,.28);backdrop-filter:blur(36px) saturate(1.1);-webkit-backdrop-filter:blur(36px) saturate(1.1)}
+  .reader-body{position:absolute;inset:0;transform:translateY(18px);transition:transform .5s var(--ease)}
+  .reader.open .reader-body{transform:none}
+  .reader iframe.case{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+  .reader-top{position:absolute;z-index:3;top:18px;right:20px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:500}
+  .reader-top button{display:flex;align-items:center;gap:10px}
+  .reader-top .x{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:14px}
+  .video{position:absolute;top:50%;left:50%;width:min(1040px,100% - 32px);aspect-ratio:16/9;transform:translate(-50%,-50%);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3);background:#000}
+  .video iframe{width:100%;height:100%;border:0}
+  .zen{position:absolute;inset:0;display:flex;align-items:center;gap:72px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:0 calc(50vw - 22vw);scrollbar-width:none}
+  .zen::-webkit-scrollbar{display:none}
+  .zen figure{flex:none;margin:0;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:22px}
+  .zen img{height:min(70vh,700px);width:auto;max-width:80vw;border-radius:8px;box-shadow:0 18px 40px -12px rgba(0,0,0,.35)}
+  .zen figcaption{font-family:var(--serif);font-size:20px;text-shadow:var(--ts)}
+  body.reading{overflow:hidden}
+
+  /* ---------- motion ---------- */
+  @keyframes rise{from{opacity:0;translate:0 20px}to{opacity:1;translate:0 0}}
+  .hero > *{animation:rise .7s var(--ease) both}
+  .hero > *:nth-child(2){animation-delay:.08s}
+  .hero > *:nth-child(3){animation-delay:.16s}
+  .reveal{opacity:0}
+  .reveal.in{animation:rise .6s var(--ease) both}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<!-- SKY -->
+<div class="sky" aria-hidden="true">
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  <div class="cloud c4"></div><div class="cloud c5"></div><div class="cloud c6"></div>
+  <svg width="0" height="0" style="position:absolute">
+    <defs><symbol id="bird" viewBox="0 0 24 10"><path d="M1 7.5C4.5 2.5 8.5 2 12 6.2 15.5 2 19.5 2.5 23 7.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol></defs>
+  </svg>
+  <svg class="flock f1" viewBox="0 0 520 220"><use href="#bird" x="40" y="60" width="26" height="11"/><use href="#bird" x="96" y="38" width="22" height="9"/><use href="#bird" x="150" y="70" width="28" height="12"/><use href="#bird" x="210" y="30" width="20" height="8"/><use href="#bird" x="262" y="92" width="24" height="10"/><use href="#bird" x="318" y="48" width="26" height="11"/><use href="#bird" x="372" y="110" width="20" height="8"/><use href="#bird" x="420" y="72" width="24" height="10"/><use href="#bird" x="470" y="130" width="22" height="9"/><use href="#bird" x="120" y="132" width="20" height="8"/><use href="#bird" x="230" y="150" width="26" height="11"/><use href="#bird" x="340" y="170" width="20" height="8"/></svg>
+  <svg class="flock f2" viewBox="0 0 520 220"><use href="#bird" x="30" y="110" width="24" height="10"/><use href="#bird" x="80" y="80" width="28" height="12"/><use href="#bird" x="140" y="120" width="22" height="9"/><use href="#bird" x="190" y="70" width="26" height="11"/><use href="#bird" x="250" y="140" width="20" height="8"/><use href="#bird" x="300" y="96" width="24" height="10"/><use href="#bird" x="360" y="150" width="28" height="12"/><use href="#bird" x="410" y="110" width="22" height="9"/><use href="#bird" x="460" y="170" width="20" height="8"/><use href="#bird" x="100" y="170" width="20" height="8"/></svg>
+  <svg class="flock f3" viewBox="0 0 520 220"><use href="#bird" x="60" y="40" width="22" height="9"/><use href="#bird" x="130" y="20" width="26" height="11"/><use href="#bird" x="200" y="60" width="20" height="8"/><use href="#bird" x="270" y="34" width="24" height="10"/><use href="#bird" x="340" y="70" width="22" height="9"/><use href="#bird" x="400" y="28" width="20" height="8"/></svg>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="side">
+  <div class="who"><span data-en="Aidos Manap">Айдос Манап</span></div>
+  <nav class="nav" aria-label="Навигация">
+    <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5 17 17"/></svg>
+    <a href="#top" data-en="Home">Главная</a>
+    <a href="#work" data-en="Work">Работы</a>
+    <span class="dash">—</span>
+    <button type="button" data-filter="ui">UI/UX</button>
+    <button type="button" data-filter="motion">Motion</button>
+    <button type="button" data-filter="graphic" data-en="Graphic">Графика</button>
+    <button type="button" data-filter="hobby" data-en="Hobby">Хобби</button>
+    <span class="dash">—</span>
+    <a href="#experience" data-en="Experience">Опыт</a>
+    <a href="#about" data-en="About me">Обо мне</a>
+  </nav>
+  <div class="side-foot">
+    <div class="links">
+      <a href="https://t.me/dosyasoda" target="_blank" rel="noreferrer">Telegram</a>
+      <a href="https://www.linkedin.com/in/aidosmanap/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="mailto:aidos1337228@gmail.com">Email</a>
+      <a href="https://drive.google.com/" target="_blank" rel="noreferrer">CV</a>
+    </div>
+    <span class="bar" aria-hidden="true"></span>
+    <img src="assets/signature.svg" alt="Aidos Manap" width="96" height="27">
+  </div>
+</aside>
+
+<div class="topright">
+  <span class="now"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="2.2" fill="currentColor"/><path d="M3.8 4.2a6 6 0 0 0 0 7.6M12.2 4.2a6 6 0 0 1 0 7.6"/></svg><span data-en="Now at Astana IT University">Сейчас в Astana IT University</span></span>
+  <button class="pill-sm" id="langSwitch" type="button"><span class="lang-switch-text">EN</span></button>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <h1 data-en="Aidos Manap, UI/UX designer">Айдос Манап, UI/UX дизайнер</h1>
+    <div class="glass compose">
+      <div class="thumbs-row">
+        <a href="cases/platonus-redesign.html" data-case="platonus-redesign" aria-label="Platonus"><img src="assets/sky/platonus-cover.jpg" alt=""></a>
+        <a href="cases/nimbl-academy.html" data-case="nimbl-academy" aria-label="Nimbl Academy"><img src="assets/sky/nimbl.jpg" alt=""></a>
+        <a class="wide" href="cases/blink.html" data-case="blink" aria-label="Blink"><img src="assets/sky/blink.jpg" alt=""><span class="count">5</span></a>
+      </div>
+      <p data-en="I'm a UX/UI designer with experience at EdTech companies and an IT startup. I helped build an academic information system (AIS) for the learning process, and B2B projects.">Я UX/UI дизайнер с опытом работы в EdTech компаниях и IT-стартапе. Участвовал в создании информационных систем управления учебным процессом (AIS) и B2B проектов.</p>
+      <hr>
+      <div class="row">
+        <a class="chip" href="https://t.me/dosyasoda" target="_blank" rel="noreferrer"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2 7 9M14 2l-4.5 12-2.5-5-5-2.5z"/></svg><span data-en="Get in touch">Связаться</span></a>
+        <a class="chip" href="https://drive.google.com/" target="_blank" rel="noreferrer"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 1.5H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.5z"/><path d="M9 1.5v4h4"/></svg>CV</a>
+        <a class="round" href="#work" aria-label="Работы"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+      </div>
+    </div>
+    <div class="go">
+      <a href="#work" aria-label="Смотреть работы"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
+      <span data-en="scroll to see the work">листайте, чтобы посмотреть работы</span>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <h2 class="reveal" data-en="My work">Мои работы</h2>
+    <div class="pills reveal" role="tablist" aria-label="Фильтр работ">
+      <button class="pill on" type="button" data-filter="all" data-en="All">Все</button>
+      <button class="pill" type="button" data-filter="ui">UI/UX</button>
+      <button class="pill" type="button" data-filter="motion">Motion</button>
+      <button class="pill" type="button" data-filter="graphic" data-en="Graphic">Графика</button>
+      <button class="pill" type="button" data-filter="hobby" data-en="Hobby">Хобби</button>
+    </div>
+
+    <div class="board" id="board">
+
+      <a class="card pic reveal" data-cat="ui" href="cases/platonus-redesign.html" data-case="platonus-redesign">
+        <img src="assets/sky/platonus-cover.jpg" alt="Редизайн мобильного приложения Platonus" loading="lazy">
+        <span class="shade"></span>
+        <span class="cap"><b data-en="Redesign of the Platonus mobile app">Редизайн мобильного приложения Platonus</b><span>UI/UX · 700K MAU</span></span>
+      </a>
+
+      <a class="card glass note reveal" data-cat="ui" href="cases/nimbl-academy.html" data-case="nimbl-academy">
+        <span class="mini"><img src="assets/sky/nimbl.jpg" alt=""><img src="assets/sky/nimbl-shields.jpg" alt=""></span>
+        <h3 data-en="Course completion up from 56% to 78%">Доходимость курса с 56% до 78%</h3>
+        <p data-en="Learning platform for the Nimbl academy: lectures, practice with AI hints and achievements. 11 of 14 students finished the pilot cohort.">Учебная платформа академии Nimbl: лекции, практика с подсказками ИИ и достижения. Пилотный поток закончили 11 студентов из 14.</p>
+        <span class="meta">Nimbl Academy — UI/UX</span>
+      </a>
+
+      <a class="card pic reveal" data-cat="motion" href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" data-video="AF8cavjqE5g">
+        <img src="assets/sky/blink-promo.jpg" alt="Промо-ролик Blink" loading="lazy">
+        <span class="play">▶ <span data-en="Watch">Смотреть</span></span>
+        <span class="shade"></span>
+        <span class="cap"><b data-en="Blink promo video">Промо-ролик Blink</b><span>Motion · After Effects</span></span>
+      </a>
+
+      <div class="card pic locked reveal" data-cat="ui">
+        <img src="assets/sky/monitoring.jpg" alt="Размытое превью интерфейса мониторинговой системы" loading="lazy">
+        <span class="lock"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-en="I can't show this yet">пока не могу показать</span></span></span>
+        <span class="shade"></span>
+        <span class="cap"><b data-en="Monitoring system interface">Интерфейс мониторинговой системы</b><span data-en="Border-crossing terminals · Kazakhstan">Терминалы прохождения границы · Казахстан</span></span>
+      </div>
+
+      <a class="card glass note reveal" data-cat="ui" href="cases/blink.html" data-case="blink">
+        <span class="mini"><img src="assets/sky/blink.jpg" alt=""><img src="assets/sky/blink-mascot.jpg" alt=""></span>
+        <h3 data-en="Blink — an AI assistant for teams">Blink — ИИ-помощник для команд</h3>
+        <p data-en="Interface, mascot and promo video for a startup with tasks, boards and calls. Two Y Combinator applications, then the project found funding partners.">Интерфейс, маскот и промо-ролик для стартапа с задачами, досками и созвонами. Две подачи в Y Combinator, а потом у проекта нашлись партнёры для финансирования.</p>
+        <span class="meta" data-en="Startup — UI/UX, Motion">Стартап — UI/UX, Motion</span>
+      </a>
+
+      <button class="card pic tall reveal" type="button" data-cat="hobby" data-photo="7">
+        <img src="assets/sky/photo-1.jpg" alt="Здание на фоне розового неба" loading="lazy">
+      </button>
+
+      <a class="card glass note reveal" data-cat="ui" href="cases/docwork.html" data-case="docwork">
+        <span class="mini"><img src="assets/sky/docwork.jpg" alt=""><img src="assets/sky/docwork-hero.jpg" alt=""></span>
+        <h3 data-en="Document review and an AI assistant">Проверка документов и ИИ-ассистент</h3>
+        <p data-en="A closed platform for lawyers and analysts: it finds errors in documents and answers questions about them.">Закрытая платформа для юристов и аналитиков: находит ошибки в документах и отвечает на вопросы по ним.</p>
+        <span class="meta" data-en="Docwork — under NDA">Docwork — под NDA</span>
+      </a>
+
+      <a class="card pic sq reveal" data-cat="graphic" href="cases/platonus-logo.html" data-case="platonus-logo">
+        <img src="assets/sky/platonus-logo.jpg" alt="Логотип Platonus App" loading="lazy">
+        <span class="shade"></span>
+        <span class="cap"><b data-en="Platonus App logo">Логотип Platonus App</b><span>Identity</span></span>
+      </a>
+
+      <a class="card pic reveal" data-cat="motion" href="cases/platonus-motion.html" data-case="platonus-motion">
+        <img src="assets/platonus/intro-1.gif" alt="Приветственная анимация Platonus App" loading="lazy">
+        <span class="shade"></span>
+        <span class="cap"><b data-en="Welcome and loading animations">Приветствие и загрузка</b><span>Platonus App · Motion</span></span>
+      </a>
+
+      <button class="card pic reveal" type="button" data-cat="hobby" data-photo="21">
+        <img src="assets/sky/photo-2.jpg" alt="Река под мостом" loading="lazy">
+      </button>
+
+      <a class="card glass note reveal" data-cat="graphic" href="cases/graphic-design.html" data-case="graphic-design">
+        <span class="mini"><img src="assets/sky/graphic.jpg" alt=""><img src="assets/sky/graphic-booklet.jpg" alt=""></span>
+        <h3 data-en="Graphics for developers in Kazakhstan">Графика для застройщиков Казахстана</h3>
+        <p data-en="Booklets, banners, brochures and signage for BI Group, Sensata, NAK and others.">Буклеты, баннеры, брошюры и наружная реклама для BI Group, Sensata, NAK и других.</p>
+        <span class="meta" data-en="Alibary — Graphic design">Alibary — графический дизайн</span>
+      </a>
+
+      <a class="card pic sq reveal" data-cat="motion" href="https://youtu.be/IbF2e5BNC3Q" target="_blank" rel="noreferrer" data-video="IbF2e5BNC3Q">
+        <img src="assets/sky/platonus-logo-video.jpg" alt="Видео логотипа Platonus App" loading="lazy" style="object-position:50% 50%">
+        <span class="play">▶ <span data-en="Watch">Смотреть</span></span>
+        <span class="shade"></span>
+        <span class="cap"><b data-en="Platonus App logo video">Видео логотипа Platonus App</b><span>Motion</span></span>
+      </a>
+
+      <button class="card pic tall reveal" type="button" data-cat="hobby" data-photo="26">
+        <img src="assets/sky/photo-3.jpg" alt="Столик на ночной улице" loading="lazy">
+        <span class="badge" id="photoCount">35</span>
+      </button>
+
+      <button class="card pic reveal" type="button" data-cat="hobby" data-photo="30">
+        <img src="assets/sky/photo-4.jpg" alt="Волны у каменного берега" loading="lazy">
+      </button>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <h2 class="reveal" data-en="Where I've worked">Где я работал</h2>
+    <div class="years reveal">
+      <div class="year">
+        <div class="num">2025</div>
+        <div class="events">
+          <div class="glass event">
+            <h3>Astana IT University</h3>
+            <div class="when">UX/UI Designer<br><span data-en="Jun 2025 — now">Июнь 2025 — сейчас</span> · <span class="dur" data-start="2025-06"></span></div>
+            <ul>
+              <li data-en="Full design of the academic information system">Полный дизайн системы управления учебным процессом</li>
+              <li data-en="Mobile app for students">Мобильное приложение для обучающихся</li>
+            </ul>
+            <a class="link" href="https://astanait.edu.kz" target="_blank" rel="noreferrer">astanait.edu.kz</a>
+          </div>
+          <div class="glass event">
+            <h3>KazDream IT Holding</h3>
+            <div class="when">Motion / UI/UX Designer<br><span data-en="Project work">Проектная работа</span></div>
+            <ul>
+              <li data-en="Interface for self-service border-crossing terminals">Интерфейс терминалов самостоятельного прохождения границы</li>
+              <li data-en="Animations and micro-interactions for the terminal UI">Анимации и интеракции для UI терминалов</li>
+            </ul>
+            <a class="link" href="https://kazdream.kz" target="_blank" rel="noreferrer">kazdream.kz</a>
+          </div>
+        </div>
+      </div>
+      <div class="year past">
+        <div class="num">2024</div>
+        <div class="events">
+          <div class="glass event">
+            <h3>Platonus</h3>
+            <div class="when">UI/UX Designer<br><span data-en="Dec 2024 — Aug 2025 · 9 mos">Дек 2024 — авг 2025 · 9 месяцев</span></div>
+            <ul>
+              <li data-en="Mobile app and web platform, MAU 700K">Мобильное приложение и веб-платформа, MAU 700K</li>
+              <li data-en="Design system and new components">Дизайн-система и новые компоненты</li>
+            </ul>
+            <a class="link" href="https://platonus.com" target="_blank" rel="noreferrer">platonus.com</a>
+          </div>
+          <div class="glass event">
+            <h3>Nimbl</h3>
+            <div class="when">UI/UX Designer<br><span data-en="Feb 2024 — Dec 2024 · 11 mos">Фев 2024 — дек 2024 · 11 месяцев</span></div>
+            <ul>
+              <li data-en="Startup for a Y Combinator application">Стартап для подачи в Y Combinator</li>
+              <li data-en="Academy platform: completion from 56% to 78%">Платформа академии: доходимость с 56% до 78%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="year past">
+        <div class="num">2022</div>
+        <div class="events">
+          <div class="glass event">
+            <h3>Alibary Marketing Agency</h3>
+            <div class="when">Graphic Designer<br><span data-en="Jun 2022 — Jan 2024 · 1 yr 8 mos">Июн 2022 — янв 2024 · 1 год 8 месяцев</span></div>
+            <ul>
+              <li data-en="BI Group, Sensata, NAK">BI Group, Sensata, NAK</li>
+              <li data-en="Logos, identity, print and outdoor">Логотипы, айдентика, печать и наружка</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <h2 class="reveal" data-en="About me">Обо мне</h2>
+    <div class="about reveal">
+      <div class="glass">
+        <h3 data-en="Skills">Навыки</h3>
+        <ul>
+          <li data-en="Designing complex systems">Проектирование сложных систем</li>
+          <li data-en="Research and interviews">Исследования и интервью</li>
+          <li data-en="User flows and prototyping">User flow и прототипирование</li>
+          <li data-en="Design systems">Дизайн-системы</li>
+          <li data-en="Hypotheses and metrics">Гипотезы и метрики</li>
+          <li data-en="Motion design">Моушн-дизайн</li>
+        </ul>
+      </div>
+      <div class="glass">
+        <h3 data-en="Tools">Инструменты</h3>
+        <ul><li>Figma</li><li>Adobe</li><li>After Effects</li><li>Claude Code</li><li>Codex</li><li>Magnific (Freepik)</li></ul>
+      </div>
+      <div class="glass">
+        <h3 data-en="Education">Образование</h3>
+        <ul>
+          <li>Master's Degree, Media Technologies<small>Astana IT University · 2025</small></li>
+          <li>Bachelor's Degree, Media Technologies<small>Astana IT University · 2023</small></li>
+          <li>UX Design<small>Georgia Institute of Technology</small></li>
+          <li>UX Design<small>Future Learn</small></li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot" data-en="© 2026 · Aidos Manap · Made in Astana">© 2026 · Айдос Манап · Made in Astana</p>
+  </section>
+</main>
+
+<!-- READER -->
+<div class="reader" id="reader" aria-hidden="true">
+  <div class="reader-bg" data-close></div>
+  <div class="reader-body" id="readerBody"></div>
+  <div class="reader-top"><button type="button" data-close><span data-en="Close">Закрыть</span><span class="x">✕</span></button></div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var photos=[['FXM50005.JPG','Ветви на фоне облаков'],['FXM50039.JPG','Розовые фламинго в саду'],['FXM50048 (2).JPG','Ночная прогулка по заснеженной аллее'],['FXM50050.JPG','Камни и отражения в воде'],['FXM50051 (2).JPG','Человек среди заснеженных деревьев'],['FXM50052.JPG','Силуэт за фонарным столбом'],['FXM50053.JPG','Камень в прозрачной воде'],['FXM50055.JPG','Здание на фоне розового неба'],['FXM50060.JPG','Театр в вечернем свете'],['FXM50071.JPG','Архитектура на закате'],['FXM50078.JPG','Заснеженные ели ночью'],['FXM50079.JPG','Люди у городской остановки'],['FXM50087.JPG','Свет и тень на снегу'],['FXM50094.JPG','Поезд на эстакаде'],['FXM50099.JPG','Граффити под эстакадой'],['FXM50110.JPG','Чёрно-белый городской пейзаж'],['FXM50111.JPG','Шаг по тротуару'],['FXM50114.JPG','Рабочие у дорожного знака'],['FXM50116.JPG','Фонари в зимнем парке'],['FXM50129.JPG','Ночной силуэт здания'],['inst-@stepnaya_lavka_3243_11.jpg','Граффити и тени на стене'],['inst-@stepnaya_lavka_3243_12.jpg','Река под мостом'],['inst-@stepnaya_lavka_3243_18.jpg','Лестница и надписи на стене'],['inst-@stepnaya_lavka_3243_21.jpg','Высотные здания'],['inst-@stepnaya_lavka_3243_37.jpg','Геометрия моста и свет'],['R1-04257-0008.JPG','Свет в лестничном пролёте'],['R1-04257-0019.JPG','Столик на ночной улице'],['R1-04257-0031.JPG','Букет цветов у стены'],['inst-@stepnaya_lavka_3984_5.jpg','Белые облака на синем небе'],['inst-@stepnaya_lavka_3984_9.jpg','Арбузные корки на каменном берегу'],['inst-@stepnaya_lavka_3984_10.jpg','Волны у каменного берега'],['inst-@stepnaya_lavka_3984_12.jpg','Рыбалка на закате'],['inst-@stepnaya_lavka_3984_16.jpg','Двое у ограждения ночью'],['inst-@stepnaya_lavka_3984_34.jpg','Урна с наклейкой в свете вспышки'],['inst-@stepnaya_lavka_3984_36.jpg','Горы под вечерним небом']];
+  function src(p){ return 'assets/hobby/'+encodeURIComponent(p[0]); }
+  document.getElementById('photoCount').textContent=photos.length;
+
+  /* duration */
+  function ru(n,a,b,c){var m10=n%10,m100=n%100;if(m10===1&&m100!==11)return a;if(m10>=2&&m10<=4&&(m100<12||m100>14))return b;return c;}
+  document.querySelectorAll('.dur[data-start]').forEach(function(el){
+    var p=el.getAttribute('data-start').split('-'),now=new Date(),t=(now.getFullYear()-(+p[0]))*12+(now.getMonth()+1-(+p[1]))+1;if(t<1)t=1;
+    var y=Math.floor(t/12),m=t%12,r=[],e=[];
+    if(y){r.push(y+' '+ru(y,'год','года','лет'));e.push(y+(y===1?' yr':' yrs'));}
+    if(m){r.push(m+' '+ru(m,'месяц','месяца','месяцев'));e.push(m+(m===1?' mo':' mos'));}
+    el.textContent=r.join(' ');el.setAttribute('data-en',e.join(' '));
+  });
+
+  /* filter */
+  var board=document.getElementById('board');
+  var pills=document.querySelectorAll('.pill'), navBtns=document.querySelectorAll('.nav [data-filter]');
+  function filter(cat){
+    pills.forEach(function(p){ p.classList.toggle('on',p.getAttribute('data-filter')===cat); });
+    navBtns.forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-filter')===cat); });
+    var i=0;
+    board.querySelectorAll('.card').forEach(function(c){
+      var show=cat==='all'||c.getAttribute('data-cat')===cat;
+      c.classList.toggle('hide',!show);
+      if(show){ c.classList.remove('in'); void c.offsetWidth; c.style.animationDelay=(Math.min(i,8)*0.04)+'s'; c.classList.add('in'); i++; }
+    });
+  }
+  pills.forEach(function(p){ p.addEventListener('click',function(){ filter(p.getAttribute('data-filter')); }); });
+  navBtns.forEach(function(b){ b.addEventListener('click',function(){ filter(b.getAttribute('data-filter')); document.getElementById('work').scrollIntoView({behavior:'smooth'}); }); });
+
+  /* reveal */
+  var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -6% 0px',threshold:.05}):null;
+  document.querySelectorAll('.reveal').forEach(function(el){ io?io.observe(el):el.classList.add('in'); });
+
+  /* language */
+  var langBtn=document.getElementById('langSwitch'),label=langBtn.querySelector('.lang-switch-text');
+  var nodes=document.querySelectorAll('[data-en]');
+  nodes.forEach(function(n){ n.setAttribute('data-ru-text',n.textContent); });
+  function applyLang(lang){
+    nodes.forEach(function(n){ n.textContent = lang==='en' ? n.getAttribute('data-en') : n.getAttribute('data-ru-text'); });
+    root.lang=lang; label.textContent=lang==='en'?'RU':'EN';
+    try{localStorage.setItem('portfolioLang',lang);}catch(e){}
+  }
+  var saved='ru'; try{saved=localStorage.getItem('portfolioLang')||'ru';}catch(e){}
+  applyLang(saved);
+  langBtn.addEventListener('click',function(){ applyLang(root.lang==='en'?'ru':'en'); });
+
+  /* reader */
+  var reader=document.getElementById('reader'), body=document.getElementById('readerBody');
+  var isOpen=false, pushed=false, last=null;
+  function show(){
+    last=document.activeElement; isOpen=true;
+    reader.setAttribute('aria-hidden','false'); document.body.classList.add('reading');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(isOpen){ reader.classList.add('open'); reader.querySelector('.reader-top button').focus({preventScroll:true}); } }); });
+  }
+  function hide(){
+    isOpen=false; reader.classList.remove('open'); reader.setAttribute('aria-hidden','true'); document.body.classList.remove('reading');
+    setTimeout(function(){ if(!isOpen) body.innerHTML=''; },420);
+    if(last&&last.focus) last.focus({preventScroll:true});
+  }
+  function openCase(slug,push){
+    body.innerHTML='<iframe class="case" title="Кейс" allowtransparency="true" src="cases/'+slug+'.html?embed=1&sky=1"></iframe>';
+    show();
+    if(push){ history.pushState({c:slug},'','?case='+slug); pushed=true; }
+  }
+  function openVideo(id){
+    body.innerHTML='<div class="video"><iframe title="Видео" src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+    show();
+  }
+  function openZen(start){
+    var h='<div class="zen" id="zen">';
+    photos.forEach(function(p,i){ h+='<figure data-i="'+i+'"><img loading="lazy" src="'+src(p)+'" alt="'+p[1]+'"><figcaption>'+p[1]+'</figcaption></figure>'; });
+    body.innerHTML=h+'</div>';
+    show();
+    var z=document.getElementById('zen'), f=z.querySelector('[data-i="'+(start||0)+'"]');
+    requestAnimationFrame(function(){ if(f) z.scrollLeft=f.offsetLeft-(z.clientWidth-f.offsetWidth)/2; });
+  }
+  function close(){
+    if(!isOpen) return;
+    if(body.querySelector('iframe.case')){
+      if(pushed){ pushed=false; history.back(); return; }
+      history.replaceState(null,'',location.pathname);
+    }
+    hide();
+  }
+  function plain(e){ return !(e.metaKey||e.ctrlKey||e.shiftKey||e.button===1); }
+  document.querySelectorAll('a[data-case]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e))return; e.preventDefault(); openCase(a.getAttribute('data-case'),true); }); });
+  document.querySelectorAll('a[data-video]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e))return; e.preventDefault(); openVideo(a.getAttribute('data-video')); }); });
+  document.querySelectorAll('[data-photo]').forEach(function(b){ b.addEventListener('click',function(){ openZen(+b.getAttribute('data-photo')); }); });
+  reader.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click',close); });
+  document.addEventListener('keydown',function(e){
+    if(!isOpen) return;
+    if(e.key==='Escape') close();
+    var z=document.getElementById('zen');
+    if(z&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){ z.scrollBy({left:(e.key==='ArrowRight'?1:-1)*z.clientWidth*0.5,behavior:'smooth'}); }
+  });
+  addEventListener('message',function(e){ if(e.origin===location.origin&&e.data&&e.data.type==='aidos-close-sheet') close(); });
+  addEventListener('popstate',function(){
+    var s=new URLSearchParams(location.search).get('case');
+    if(s&&/^[a-z0-9-]+$/.test(s)) openCase(s,false); else if(isOpen){ pushed=false; hide(); }
+  });
+  var first=new URLSearchParams(location.search).get('case');
+  if(first&&/^[a-z0-9-]+$/.test(first)) openCase(first,false);
+})();
+</script>
+</body>
+</html>

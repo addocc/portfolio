@@ -1,0 +1,51 @@
+/* Sky reading mode — applied only when a case is opened from sky.html (html.sky) */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Inter:wght@400..600&display=swap');
+
+html.sky{
+  --s-serif:'Source Serif 4',Georgia,serif;
+  --s-sans:'Inter',system-ui,sans-serif;
+  --s-soft:rgba(255,255,255,.8);
+  --s-faint:rgba(255,255,255,.62);
+  --s-line:rgba(255,255,255,.22);
+  --s-glass:rgba(24,58,78,.12);
+  --s-ts:0 2px 2px rgba(0,0,0,.22);
+  --q-fig:min(980px, calc(100vw - 32px));
+}
+html.sky,html.sky body{background:transparent!important;color:#fff!important}
+html.sky body{font-family:var(--s-sans)!important}
+html.sky .case-head{padding-top:72px!important}
+html.sky .case-title{font-family:var(--s-serif)!important;font-weight:400!important;font-size:clamp(32px,4vw,44px)!important;letter-spacing:-.02em!important;color:#fff!important;text-shadow:var(--s-ts)}
+html.sky .case-title em{color:#fff!important;font-style:italic!important;font-weight:400!important}
+html.sky .case-tags .chip,html.sky .case-tags .chip + .chip::before{color:var(--s-soft)!important}
+html.sky .lead,html.sky .case-lead{color:#fff!important;font-family:var(--s-serif)!important;font-size:20px!important;line-height:1.5!important;text-shadow:var(--s-ts)}
+
+html.sky .passport>div,html.sky .case-summary>div,html.sky .meta-strip .m{border-color:var(--s-line)!important}
+html.sky .passport dt,html.sky .case-summary dt,html.sky .meta-strip .k{color:var(--s-faint)!important;font-family:var(--s-sans)!important}
+html.sky .passport dd,html.sky .case-summary dd,html.sky .meta-strip .v,html.sky .meta-strip .v em{color:#fff!important;font-family:var(--s-serif)!important;font-weight:400!important;font-size:16px!important;text-shadow:var(--s-ts)}
+
+html.sky .sec h2,html.sky .sec-head h2,html.sky .sec-num{color:var(--s-soft)!important;font-family:var(--s-sans)!important}
+html.sky .sec h3{font-family:var(--s-serif)!important;font-weight:400!important;font-size:24px!important;color:#fff!important;text-shadow:var(--s-ts)}
+html.sky .sec p,html.sky .blist li,html.sky .xp-in,html.sky .quote{color:#fff!important;font-family:var(--s-serif)!important;font-size:18.5px!important;line-height:1.55!important;text-shadow:var(--s-ts)}
+html.sky .sec a:not(.promo-link){color:#fff!important;text-decoration-color:rgba(255,255,255,.5)!important}
+html.sky .blist li::before{background:#fff!important}
+html.sky .quote{border-left-color:var(--s-line)!important}
+
+html.sky .nda,html.sky .callout,html.sky .stat,html.sky .metric,html.sky .ba-card,html.sky .result-hero{background:var(--s-glass)!important;-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);box-shadow:inset 0 1px 0 rgba(255,255,255,.42)!important;color:#fff!important}
+html.sky .nda p,html.sky .nda strong{color:#fff!important}
+html.sky .nda .lock{background:#fff!important;color:#000!important}
+html.sky .callout .k,html.sky .stat .lbl,html.sky .metric .t,html.sky .metric .sub,html.sky .ba-card .t,html.sky .ba-card .frac,html.sky .result-hero .k,html.sky .result-hero .d{color:var(--s-soft)!important}
+html.sky .callout p,html.sky .stat .big,html.sky .metric .v,html.sky .ba-card .pct,html.sky .result-hero .v{color:#fff!important;font-family:var(--s-serif)!important;font-weight:400!important;font-style:normal!important;text-shadow:var(--s-ts)}
+html.sky .result-hero .v em{color:#fff!important}
+html.sky .ba-arrow{color:#fff!important}
+
+html.sky .ins-row{border-color:var(--s-line)!important}
+html.sky .ins-q{color:var(--s-soft)!important;font-family:var(--s-serif)!important;font-style:italic!important}
+html.sky .ins-a{color:#fff!important;font-family:var(--s-serif)!important;font-weight:400!important;text-shadow:var(--s-ts)}
+html.sky .ins-a::before{color:#fff!important}
+html.sky .dec{border-color:var(--s-line)!important}
+html.sky .dec-n{color:var(--s-soft)!important}
+
+html.sky .hero-shot,html.sky .shot,html.sky .media,html.sky .frame-shot,html.sky .vid-card,html.sky .shots .shot,html.sky .shots-2 .shot{border-radius:12px!important;box-shadow:0 18px 40px -14px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.42)!important}
+html.sky figcaption,html.sky .mascot-note{color:var(--s-soft)!important;font-family:var(--s-sans)!important;font-size:12.5px!important;text-align:left!important}
+html.sky .promo-link{background:#000!important}
+html.sky .promo-note{color:#fff!important;text-shadow:var(--s-ts)}
