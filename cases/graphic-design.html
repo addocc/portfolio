@@ -102,7 +102,7 @@
   .frame-shot img{width:100%;height:auto;display:block}
 
   /* ---------- layout: TOC + content ---------- */
-  .layout{display:grid;grid-template-columns:248px 1fr;gap:clamp(32px,5vw,88px);padding:8px 0 40px;align-items:start}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,5vw,88px);padding:8px 0 40px;align-items:start}
   @media (max-width:960px){.layout{grid-template-columns:minmax(0,1fr);gap:0}.toc{min-width:0}}
   .content{min-width:0}
 
@@ -186,25 +186,6 @@
   <!-- WORKS -->
   <div class="layout">
 
-    <!-- TOC -->
-    <aside class="toc">
-      <div class="toc-inner">
-        <p class="toc-label">Содержание</p>
-        <nav aria-label="Содержание кейса">
-          <ol>
-            <li><a href="#w01" data-spy="w01"><span class="n">01</span> Буклет</a></li>
-            <li><a href="#w02" data-spy="w02"><span class="n">02</span> Баннеры</a></li>
-            <li><a href="#w03" data-spy="w03"><span class="n">03</span> Брошюра</a></li>
-            <li><a href="#w04" data-spy="w04"><span class="n">04</span> Консультационные листы</a></li>
-            <li><a href="#w05" data-spy="w05"><span class="n">05</span> Квадрофолдер</a></li>
-            <li><a href="#w06" data-spy="w06"><span class="n">06</span> Памятки</a></li>
-            <li><a href="#w07" data-spy="w07"><span class="n">07</span> SMM-креативы</a></li>
-            <li><a href="#w08" data-spy="w08"><span class="n">08</span> Презентация</a></li>
-            <li><a href="#w09" data-spy="w09"><span class="n">09</span> Строительные заборы</a></li>
-          </ol>
-        </nav>
-      </div>
-    </aside>
 
     <!-- CONTENT -->
     <article class="content">

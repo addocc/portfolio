@@ -90,7 +90,7 @@
   .hero-shot img{width:100%;display:block}
 
   /* ---------- layout: TOC + content ---------- */
-  .layout{display:grid;grid-template-columns:248px 1fr;gap:clamp(32px,5vw,88px);padding:56px 0 40px;align-items:start}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,5vw,88px);padding:56px 0 40px;align-items:start}
   @media (max-width:960px){.layout{grid-template-columns:minmax(0,1fr);gap:0}.toc{min-width:0}}
 
   .toc{position:sticky;top:88px}
@@ -284,24 +284,6 @@
   <!-- LAYOUT -->
   <div class="layout">
 
-    <!-- TOC -->
-    <aside class="toc">
-      <div class="toc-inner">
-        <p class="toc-label">Содержание</p>
-        <nav aria-label="Содержание кейса">
-          <ol>
-            <li><a href="#context" data-spy="context"><span class="n">01</span> Контекст и роль</a></li>
-            <li><a href="#problem" data-spy="problem"><span class="n">02</span> Проблема</a></li>
-            <li><a href="#research" data-spy="research"><span class="n">03</span> Исследование</a></li>
-            <li><a href="#flow" data-spy="flow"><span class="n">04</span> Структура продукта</a></li>
-            <li><a href="#decisions" data-spy="decisions"><span class="n">05</span> Ключевые решения</a></li>
-            <li><a href="#team" data-spy="team"><span class="n">06</span> Ограничения и команда</a></li>
-            <li><a href="#results" data-spy="results"><span class="n">07</span> Результаты</a></li>
-            <li><a href="#next" data-spy="next"><span class="n">08</span> Что дальше</a></li>
-          </ol>
-        </nav>
-      </div>
-    </aside>
 
     <!-- CONTENT -->
     <article class="content">
