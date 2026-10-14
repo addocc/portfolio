@@ -27,7 +27,7 @@
     --text:'Nunito',system-ui,sans-serif;
     --spring:cubic-bezier(.34,1.56,.64,1);
     --ease:cubic-bezier(.2,.8,.2,1);
-    --wrap:1180px;
+    --wrap:1360px;
     --pad:clamp(16px,4vw,40px);
   }
   :root[data-theme="dark"]{
@@ -97,8 +97,8 @@
   .works .wide{grid-column:1/-1}
   @media (max-width:760px){.works{grid-template-columns:1fr;gap:36px}}
   .work{display:block;position:relative}
-  .shot{--p:clamp(10px,1.4vw,18px);position:relative;aspect-ratio:4/3;border-radius:28px;overflow:hidden;background:var(--surface)}
-  .wide .shot{aspect-ratio:21/10}
+  .shot{--p:clamp(10px,1.4vw,18px);position:relative;aspect-ratio:16/10;border-radius:28px;overflow:hidden;background:var(--surface)}
+  .wide .shot{aspect-ratio:2439/1406}
   .shot img{position:absolute;top:var(--p);left:var(--p);width:calc(100% - var(--p)*2);height:calc(100% - var(--p)*2);object-fit:cover;border-radius:16px;background:var(--cbg,#E2E4E7);transition:transform .5s var(--spring)}
   .arrow{position:absolute;top:calc(var(--p) + 12px);right:calc(var(--p) + 12px);z-index:2;width:44px;height:44px;border-radius:50%;background:#fff;color:#1F1F1F;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;transform:scale(.4) rotate(-45deg);opacity:0;transition:transform .45s var(--spring),opacity .2s}
   @media (hover:hover){
