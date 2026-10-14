@@ -432,6 +432,12 @@
   .skill-block h3{margin:0 0 20px;font-family:var(--display);font-size:22px;font-weight:600;display:flex;align-items:center;gap:12px}
   .skill-block h3 .num{font-size:13px}
   .skill-list{display:flex;flex-wrap:wrap;gap:8px}
+  .skill-items{list-style:none;margin:0;padding:0;counter-reset:sk;display:flex;flex-direction:column}
+  .skill-items li{counter-increment:sk;display:grid;grid-template-columns:34px 1fr;column-gap:10px;row-gap:4px;padding:16px 0;border-top:1px solid var(--line)}
+  .skill-items li:first-child{border-top:0;padding-top:4px}
+  .skill-items li::before{content:counter(sk,decimal-leading-zero);grid-row:1/3;font-size:13px;font-weight:600;color:var(--accent);padding-top:3px}
+  .skill-items b{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink);line-height:1.3}
+  .skill-items span{font-size:14.5px;line-height:1.5;color:var(--ink-mute)}
   .skill-list .chip{padding:10px 14px;font-size:13px}
   .skill-list .chip.lg{padding:12px 18px;font-size:14px}
   .tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border-radius:var(--radius-md);overflow:hidden;margin-top:8px}
@@ -850,25 +856,14 @@
     <div class="skills-wrap">
       <div class="skill-block">
         <h3 data-en="Skills">Навыки</h3>
-        <div class="skill-list">
-          <span class="chip lg" data-en="Product design">Продуктовый дизайн</span>
-          <span class="chip lg" data-en="Design systems">Дизайн-системы</span>
-          <span class="chip lg" data-en="Design tokens">Дизайн-токены</span>
-          <span class="chip lg" data-en="Vibe coding">Вайб-кодинг</span>
-          <span class="chip lg">JTBD</span>
-          <span class="chip lg">CustDev</span>
-          <span class="chip lg">User Research</span>
-          <span class="chip lg">CJM</span>
-          <span class="chip lg">User Flow</span>
-          <span class="chip lg" data-en="Prototyping">Прототипирование</span>
-          <span class="chip lg">Wireframes</span>
-          <span class="chip lg" data-en="A/B testing">A/B-тестирование</span>
-          <span class="chip lg">Motion Design</span>
-          <span class="chip lg">Scrum</span>
-          <span class="chip lg">Agile</span>
-          <span class="chip lg">Jira</span>
-          <span class="chip lg">Confluence</span>
-        </div>
+        <ol class="skill-items">
+          <li><b data-en="Designing complex systems">Проектирование сложных систем</b><span data-en="Platonus with 700K MAU, the AITU academic system, a platform for lawyers">Platonus на 700K MAU, система управления учебным процессом AITU, платформа для юристов</span></li>
+          <li><b data-en="Research and interviews">Исследования и интервью</b><span data-en="User and stakeholder interviews, CustDev, JTBD">Интервью с пользователями и заказчиками, CustDev, JTBD</span></li>
+          <li><b data-en="User flows and prototyping">User flow и прототипирование</b><span data-en="Flows and interactive prototypes before handoff">Сценарии и интерактивные прототипы до передачи в разработку</span></li>
+          <li><b data-en="Design systems">Дизайн-системы</b><span data-en="Components and tokens in existing systems and on shadcn/ui">Компоненты и токены в готовых системах и на базе shadcn/ui</span></li>
+          <li><b data-en="Hypotheses and metrics">Гипотезы и метрики</b><span data-en="I set a goal in numbers and check the result: course completion 56% → 78%">Ставлю цель в цифрах и проверяю результат: доходимость курса 56% → 78%</span></li>
+          <li><b data-en="Motion design">Моушн-дизайн</b><span data-en="UI animation, mascots and promo videos in After Effects">Анимации интерфейсов, маскоты и промо-ролики в After Effects</span></li>
+        </ol>
       </div>
 
       <div class="skill-block">
@@ -878,11 +873,6 @@
           <div class="tool"><b>After Effects</b></div>
           <div class="tool"><b>Photoshop</b></div>
           <div class="tool"><b>Illustrator</b></div>
-          <div class="tool"><b>InDesign</b></div>
-          <div class="tool"><b>CorelDRAW</b></div>
-          <div class="tool"><b>Claude Code</b></div>
-          <div class="tool"><b>Codex</b></div>
-          <div class="tool"><b>Magnific (Freepik)</b></div>
         </div>
       </div>
     </div>
