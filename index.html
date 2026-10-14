@@ -6,7 +6,7 @@
 <title>Айдос Манап — UI/UX Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400..800;1,400..800&family=Rubik:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -31,7 +31,7 @@
     --radius-pill:999px;
     --container:1320px;
     --pad-x:clamp(16px,3vw,40px);
-    --display:'Nunito', system-ui, sans-serif;
+    --display:'Rubik', 'Nunito', system-ui, sans-serif;
     --text:'Nunito', system-ui, sans-serif;
     --mono:'Nunito', system-ui, sans-serif;
   }
@@ -1206,7 +1206,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "light",
   "accent": "#FF5E00",
   "density": "comfortable",
-  "displayFont": "Inter Tight"
+  "displayFont": "Rubik"
 }/*EDITMODE-END*/;
 
 function App(){
@@ -1226,7 +1226,7 @@ function App(){
     } else {
       window.applyTheme(t.theme);
     }
-    document.documentElement.style.setProperty('--display', `'${t.displayFont}', 'Inter', system-ui, sans-serif`);
+    document.documentElement.style.setProperty('--display', `'${t.displayFont}', 'Nunito', system-ui, sans-serif`);
   }, [t.theme, t.accent, t.density, t.displayFont]);
 
   return (
@@ -1241,7 +1241,7 @@ function App(){
         <TweakRadio value={t.density} onChange={v=>setTweak('density',v)} options={[{value:'comfortable',label:'Просторно'},{value:'compact',label:'Плотно'}]}/>
       </TweakSection>
       <TweakSection title="Дисплейный шрифт">
-        <TweakSelect value={t.displayFont} onChange={v=>setTweak('displayFont',v)} options={['Inter Tight','Inter','Georgia']}/>
+        <TweakSelect value={t.displayFont} onChange={v=>setTweak('displayFont',v)} options={['Rubik','Nunito','Georgia']}/>
       </TweakSection>
     </TweaksPanel>
   );
