@@ -188,6 +188,29 @@
   .footer .links a:hover{color:var(--ink)}
   .arrow{display:inline-block;transition:transform .2s}
   .btn:hover .arrow{transform:translate(2px,-2px)}
+
+  /* passport */
+  .passport{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin:28px 0 0;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
+  .passport>div{background:#fff;padding:18px 20px}
+  .passport dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+  .passport dd{margin:0;font-size:15px;line-height:1.45;color:var(--ink)}
+  @media (max-width:860px){.passport{grid-template-columns:1fr 1fr}}
+  @media (max-width:480px){.passport{grid-template-columns:1fr}}
+
+  /* insight -> decision */
+  .ins{display:flex;flex-direction:column;gap:12px;margin:8px 0}
+  .ins-row{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch}
+  .ins-q{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius-sm);padding:18px 22px;font-size:16px;line-height:1.5;color:var(--ink-2);font-style:italic}
+  .ins-a{background:var(--ink);color:#fff;border-radius:var(--radius-sm);padding:18px 22px;font-size:16px;line-height:1.5}
+  .ins-ar{display:flex;align-items:center;color:var(--accent);font-size:22px}
+  @media (max-width:640px){.ins-row{grid-template-columns:1fr;gap:8px}.ins-ar{transform:rotate(90deg);justify-content:center}}
+
+  /* decisions */
+  .dec{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:26px 0;border-top:1px solid var(--line)}
+  .dec:first-of-type{border-top:0;padding-top:4px}
+  .dec-n{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.04em;padding-top:6px}
+  .dec h3{margin:0 0 10px}
+  @media (max-width:560px){.dec{grid-template-columns:1fr;gap:6px}}
 </style>
 </head>
 <body>
@@ -213,26 +236,20 @@
       <span class="sep">/</span>
       <span>Nimbl Academy</span>
     </div>
-    <h1 class="case-title">Что делал я в <em>Nimbl Academy</em></h1>
+    <h1 class="case-title">Платформа, которая подняла <em>доходимость курса</em> с 56% до 78%</h1>
     <div class="case-tags">
       <span class="chip dark">EdTech</span>
       <span class="chip">UI/UX Designer</span>
       <span class="chip">Геймификация</span>
-      <span class="chip accent">+22% Completion Rate</span>
+      <span class="chip accent">+22 п.п. Completion Rate</span>
     </div>
 
-    <div class="stat-strip" style="grid-template-columns:repeat(2,1fr)">
-      <div class="stat">
-        <div class="ic">↑</div>
-        <div class="big">+22%</div>
-        <div class="lbl">Увеличил Completion Rate академии</div>
-      </div>
-      <div class="stat">
-        <div class="ic">◆</div>
-        <div class="big" style="font-size:clamp(26px,3vw,38px)">Геймификация</div>
-        <div class="lbl">Платформа с геймифицированным обучением</div>
-      </div>
-    </div>
+    <dl class="passport">
+      <div><dt>Продукт</dt><dd>Учебная платформа академии Nimbl в Astana Hub</dd></div>
+      <div><dt>Пользователи</dt><dd>Студенты онлайн-курса по ML и AI</dd></div>
+      <div><dt>Роль</dt><dd>UI/UX дизайнер: исследование, структура, интерфейс, система геймификации</dd></div>
+      <div><dt>Пилот</dt><dd>Один поток, 14 студентов, 4 месяца</dd></div>
+    </dl>
 
     <div class="hero-shot">
       <img src="../assets/nimbl/hero.png" alt="Интерфейс платформы Nimbl Academy — карта модулей и плеер лекции" loading="lazy">
@@ -248,14 +265,15 @@
         <p class="toc-label">Содержание</p>
         <nav aria-label="Содержание кейса">
           <ol>
-            <li><a href="#context" data-spy="context"><span class="n">01</span> Контекст</a></li>
+            <li><a href="#context" data-spy="context"><span class="n">01</span> Контекст и роль</a></li>
             <li><a href="#problem" data-spy="problem"><span class="n">02</span> Проблема</a></li>
-            <li><a href="#criteria" data-spy="criteria"><span class="n">03</span> Критерии успеха</a></li>
-            <li><a href="#influence" data-spy="influence"><span class="n">04</span> На что я влияю</a></li>
-            <li><a href="#research" data-spy="research"><span class="n">05</span> Исследование</a></li>
-            <li><a href="#flow" data-spy="flow"><span class="n">06</span> User Flow</a></li>
-            <li><a href="#dev" data-spy="dev"><span class="n">07</span> Разработка</a></li>
+            <li><a href="#criteria" data-spy="criteria"><span class="n">03</span> Цель</a></li>
+            <li><a href="#research" data-spy="research"><span class="n">04</span> Исследование</a></li>
+            <li><a href="#flow" data-spy="flow"><span class="n">05</span> Сценарий студента</a></li>
+            <li><a href="#decisions" data-spy="decisions"><span class="n">06</span> Ключевые решения</a></li>
+            <li><a href="#process" data-spy="process"><span class="n">07</span> Процесс</a></li>
             <li><a href="#results" data-spy="results"><span class="n">08</span> Результаты</a></li>
+            <li><a href="#next" data-spy="next"><span class="n">09</span> Что дальше</a></li>
           </ol>
         </nav>
       </div>
@@ -264,129 +282,161 @@
     <!-- CONTENT -->
     <article class="content">
 
-      <!-- 01 Контекст -->
-      <section class="sec" id="context" data-screen-label="01 Контекст">
-        <h2>Контекст</h2>
-        <p>Nimbl занимается не только разработкой решений в виде продуктов (и своего стартапа), но еще и имеет при себе академию в AstanaHub. Поэтому раньше уроки проводились просто на созвонах в гугл мите и онлайн-экзаменах, но для развития академии было принято решение в создании платформы, где студенты могли бы смотреть лекции и сразу же проверять себя на знание материалов.</p>
-        <p>Идейно все понятно, у нас есть лекции, есть тесты и все, но также хотелось внедрить процесс, который будет увеличивать интерес студентов к прохождению курса.</p>
+      <!-- 01 Контекст и роль -->
+      <section class="sec" id="context" data-screen-label="01 Контекст и роль">
+        <h2>Контекст и роль</h2>
+        <p>Nimbl делает продукты для клиентов и собственный стартап, а ещё ведёт академию в Astana Hub. Курс по ML и AI шёл на созвонах в Google Meet с онлайн-экзаменами, а лекции, файлы и задания рассылались через разные сервисы.</p>
+        <p>Чтобы развивать академию, решили сделать собственную платформу: студент смотрит лекцию и сразу проверяет себя на практике. Я проектировал её целиком — от исследования и сценариев до интерфейса, системы званий и типов заданий.</p>
       </section>
 
       <!-- 02 Проблема -->
       <section class="sec" id="problem" data-screen-label="02 Проблема">
         <h2>Проблема</h2>
-        <p>Многие студенты теряют информацию, которая скидывается через разные платформы. Лекции, книги, файлы, звонки — много сервисов, которые путают рядового пользователя и он теряет интерес.</p>
-        <p>В среднем на одном потоке учится 16 студентов и из них до конца курса доходят около 9 человек (это всего 56%).</p>
+        <p>В среднем на поток приходило 16 студентов, а до конца доходили около 9 — это всего 56%. Почти половина группы бросала курс, не получив диплом.</p>
+        <p>Материалы были разбросаны: лекции в одном месте, книги и файлы в другом, звонки в третьем. Студент терял нужное, отставал от группы и в какой-то момент переставал заниматься.</p>
         <div class="callout">
           <div class="k">Гипотеза</div>
-          <p>Если сделать процесс обучения более интересным и объединить все материалы на одной платформе, это облегчит прохождение курса и увеличит число студентов, успешно завершающих обучение.</p>
+          <p>Если собрать все материалы в одном месте и сделать прогресс по курсу видимым и интересным, больше студентов дойдёт до конца и получит диплом.</p>
         </div>
       </section>
 
-      <!-- 03 Критерии успеха -->
-      <section class="sec" id="criteria" data-screen-label="03 Критерии успеха">
-        <h2>Критерии успеха</h2>
+      <!-- 03 Цель -->
+      <section class="sec" id="criteria" data-screen-label="03 Цель">
+        <h2>Цель</h2>
+        <p>Главная метрика — Completion Rate, доля студентов потока, которые прошли курс до конца и получили диплом. Перед запуском мы задали коридор цели в процентных пунктах от исходных 56%:</p>
         <div class="pair">
           <div class="metric is-min">
-            <div class="t">Результат минимум</div>
-            <div class="v">+14%</div>
-            <div class="sub">Completion Rate</div>
+            <div class="t">Минимум</div>
+            <div class="v">+14 п.п.</div>
+            <div class="sub">Completion Rate 70%</div>
           </div>
           <div class="metric is-max">
-            <div class="t">Результат максимум</div>
-            <div class="v">+34%</div>
-            <div class="sub">Completion Rate</div>
+            <div class="t">Максимум</div>
+            <div class="v">+34 п.п.</div>
+            <div class="sub">Completion Rate 90%</div>
           </div>
         </div>
-        <p>Повышение количества студентов, которые проходят курс до конца и получают диплом.</p>
       </section>
 
-      <!-- 04 На что я влияю -->
-      <section class="sec" id="influence" data-screen-label="04 На что я влияю">
-        <h2>На что я влияю</h2>
-        <ul class="blist">
-          <li>Увеличение Completion Rate;</li>
-          <li>Качество взаимодействия студента с курсом;</li>
-        </ul>
-      </section>
-
-      <!-- 05 Исследование -->
-      <section class="sec" id="research" data-screen-label="05 Исследование">
+      <!-- 04 Исследование -->
+      <section class="sec" id="research" data-screen-label="04 Исследование">
         <h2>Исследование</h2>
 
         <h3>Конкурентный анализ</h3>
+        <p>Я разобрал Coursera, SkillFactory, SkySmart и Duolingo по двум частям: вводной (о курсе, модули, дополнительные механики) и практической (лекции, виды тестов, задания). Coursera и SkillFactory дают понятную структуру курса, SkySmart — разнообразную практику. Duolingo лучше всех удерживает пользователя: прогресс там виден как путь, а каждый шаг вознаграждается. Эту механику я и решил перенести на взрослый курс по ML.</p>
         <figure>
-          <div class="shot pad"><img src="../assets/nimbl/competitors.png" alt="Конкурентный анализ: Coursera, SkillFactory, SkySmart, Duolingo" loading="lazy"></div>
+          <div class="shot"><img src="../assets/nimbl/competitors.png" alt="Конкурентный анализ: Coursera, SkillFactory, SkySmart, Duolingo" loading="lazy"></div>
+          <figcaption>Вводная и практическая части у четырёх образовательных продуктов</figcaption>
         </figure>
 
         <h3>Глубинные интервью</h3>
-        <p>Интервью проводились с бывшими студентами прошедших онлайн курсов академии для того, чтобы подробнее разобрать проблему из-за которой многие не заканчивают обучение.</p>
-        <p style="font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:10px">Главные тезисы</p>
-        <div class="quotes">
-          <div class="quote">Большинство уроков — это записанные раннее лекции, и ты их со временем просто теряешь или забываешь.</div>
-          <div class="quote">С практикой такая же история: если её не пройти — ничего не меняется, я могу также дальше идти по курсу и со временем понимаю, что не нагоняю группу.</div>
+        <p>Мы провели интервью с выпускниками прошлых онлайн-потоков академии, чтобы понять, почему студенты не доходят до конца. Два главных вывода сразу превратились в решения:</p>
+        <div class="ins">
+          <div class="ins-row">
+            <div class="ins-q">«Большинство уроков — это записанные лекции, и со временем ты их просто теряешь или забываешь»</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Все лекции, описания и практика собраны на одной платформе в понятной структуре модулей</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">«Если практику не пройти, ничего не меняется: я иду дальше и со временем понимаю, что не нагоняю группу»</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Следующий урок открывается только после практики, а прогресс виден на карте курса</div>
+          </div>
         </div>
-
-        <h3>Сторисы</h3>
-        <ul class="blist">
-          <li>Я хочу иметь удобное место скопления лекций;</li>
-          <li>Я хочу больше контроля над тем, что выполняю практическую часть уроков;</li>
-        </ul>
-
-        <h3>Предполагаемые решения</h3>
-        <ul class="blist">
-          <li>Создание платформы, где будут находиться все материалы курса;</li>
-          <li>Создание запрета на дальнейшее прохождение курса, пока не будут пройдены практические части;</li>
-        </ul>
       </section>
 
-      <!-- 06 User Flow -->
-      <section class="sec" id="flow" data-screen-label="06 User Flow">
-        <h2>User Flow</h2>
-        <p>Сценарий студента: от входа на платформу к изучению видео-лекции, прохождению теста с подсказками ИИ и переходу к новому модулю.</p>
+      <!-- 05 Сценарий студента -->
+      <section class="sec" id="flow" data-screen-label="05 Сценарий студента">
+        <h2>Сценарий студента</h2>
+        <p>Базовый цикл: студент смотрит видеолекцию с описанием, начинает тест и переходит к следующему модулю, когда ответит на все вопросы. Важная деталь — неверный ответ не обрывает тест. Студент получает подсказку от ИИ и пробует снова, пока не разберётся. Так практика становится частью обучения, а не экзаменом, на котором можно только провалиться.</p>
         <figure>
-          <div class="shot pad"><img src="../assets/nimbl/userflow.png" alt="User Flow платформы Nimbl Academy" loading="lazy"></div>
+          <div class="shot"><img src="../assets/nimbl/userflow.png" alt="User flow студента: лекция, тест, подсказка ИИ, новый модуль" loading="lazy"></div>
+          <figcaption>Путь от лекции к новому модулю с петлёй подсказок ИИ</figcaption>
         </figure>
       </section>
 
-      <!-- 07 Разработка -->
-      <section class="sec" id="dev" data-screen-label="07 Разработка">
-        <h2>Разработка</h2>
-        <p>Вся работа проводилась через ClickUp.</p>
-        <p>Создавалась первая версия платформы, без ничего, только лекция и модули. После чего я перешел к лучшей теме — это геймификация. Я разделил модули на различные звания, а также создал векторные щиты к каждому званию, чтобы по окончанию модуля у пользователя высвечивался щит и надпись о новом уровне.</p>
+      <!-- 06 Ключевые решения -->
+      <section class="sec" id="decisions" data-screen-label="06 Ключевые решения">
+        <h2>Ключевые решения</h2>
+
+        <div class="dec">
+          <div class="dec-n">01</div>
+          <div>
+            <h3>Курс как путь на карте, а не список уроков</h3>
+            <p>Каждый модуль показан как дорожка из уроков: пройденные подсвечены, текущий отмечен кнопкой «Продолжить», остальные закрыты замком. Студент всегда видит, где он и сколько осталось до конца модуля. Внизу экрана — общий прогресс по курсу в процентах, а в боковом меню — все 6 модулей.</p>
+          </div>
+        </div>
+
+        <div class="dec">
+          <div class="dec-n">02</div>
+          <div>
+            <h3>Практика — условие движения дальше</h3>
+            <p>Выпускники признавались, что пропускали практику и отставали незаметно для себя. Поэтому следующий урок открывается только после теста по текущему. Чтобы ограничение не превратилось в стену, после неверного ответа студент получает подсказку ИИ: застрять можно, а сдаться — сложнее.</p>
+          </div>
+        </div>
         <figure>
-          <div class="shot pad"><img src="../assets/nimbl/shields.png" alt="Векторные щиты для званий — система геймификации" loading="lazy"></div>
+          <div class="shot dark"><img src="../assets/nimbl/dev-modules.png" alt="Карта модуля: пройденные уроки, текущий урок, закрытые уроки и щит нового уровня" loading="lazy"></div>
+          <figcaption>Карта модуля: пройденные, текущий и закрытые уроки, в конце — новое звание</figcaption>
+        </figure>
+
+        <div class="dec">
+          <div class="dec-n">03</div>
+          <div>
+            <h3>Звания вместо номеров модулей</h3>
+            <p>За каждый пройденный модуль студент получает новое звание и векторный щит своего цвета — всего 7 уровней, от AI Fundamentals Intern до Junior AI Engineer+. Названия похожи на реальные позиции в индустрии, поэтому прогресс по курсу ощущается как карьерный рост, а не как галочка в списке. Щиты я нарисовал сам.</p>
+          </div>
+        </div>
+        <figure>
+          <div class="shot pad"><img src="../assets/nimbl/shields.png" alt="Семь званий и векторные щиты к ним" loading="lazy"></div>
+          <figcaption>7 званий и щиты к ним</figcaption>
         </figure>
         <figure>
           <div class="shot dark"><img src="../assets/nimbl/newlevel.png" alt="Экран получения нового уровня" loading="lazy"></div>
+          <figcaption>Экран нового уровня после завершения модуля</figcaption>
         </figure>
-        <p>Параллельно моей работе готовился бэкенд сайта, и как только я заканчивал основные страницы, мы передавали их на фронт, где платформа постепенно приходила в состояние рабочей машинки.</p>
+
+        <div class="dec">
+          <div class="dec-n">04</div>
+          <div>
+            <h3>6 типов вопросов, чтобы тест не превращался в рутину</h3>
+            <p>Однотипные тесты быстро надоедают. Я спроектировал 6 типов вопросов: от выбора правильного ответа и распределения терминов по категориям до заданий с кодом, где студент пишет решение и сразу видит вывод компилятора. Для курса по ML практика с кодом особенно важна.</p>
+          </div>
+        </div>
         <figure>
-          <div class="shot dark"><img src="../assets/nimbl/dev-flow.png" alt="Экраны профиля и практики платформы" loading="lazy"></div>
+          <div class="shot dark"><img src="../assets/nimbl/questions.png" alt="Вход на платформу, вопрос с кодом и компилятором, вопрос с распределением терминов" loading="lazy"></div>
+          <figcaption>Вход, вопрос с кодом и выводом компилятора, распределение терминов</figcaption>
         </figure>
-        <p>Также было уделено время для создания 6 видов вопросов в тесте, чтобы можно было использовать более разнообразные вопросы для увеличения вовлеченности пользователя — начиная от вопросов, где нужно просто выбрать правильный ответ, заканчивая вопросами с компилятором и кодом.</p>
+      </section>
+
+      <!-- 07 Процесс -->
+      <section class="sec" id="process" data-screen-label="07 Процесс">
+        <h2>Процесс</h2>
+        <p>Сначала я собрал базовую версию: лекции и модули без игровых механик. Затем добавил геймификацию и типы заданий. Бэкенд готовился параллельно, а готовые страницы я сразу передавал во фронтенд, поэтому платформа собиралась по частям. Задачи вели в ClickUp.</p>
+        <p>Макеты в Figma разложены по типам тестов, карте курса и UI-киту. Отдельно собраны состояния проверки ответов.</p>
         <figure>
-          <div class="shot dark"><img src="../assets/nimbl/questions.png" alt="6 видов вопросов в тесте" loading="lazy"></div>
+          <div class="shot dark"><img src="../assets/nimbl/dev-flow.png" alt="Макеты в Figma: вход, типы тестов, карта, UI-кит и состояния проверки" loading="lazy"></div>
+          <figcaption>Макеты по типам тестов, карта, UI-кит и состояния проверки</figcaption>
         </figure>
       </section>
 
       <!-- 08 Результаты -->
       <section class="sec" id="results" data-screen-label="08 Результаты">
-        <h2>Полученные результаты</h2>
+        <h2>Результаты</h2>
 
         <div class="result-hero">
           <div class="glow"></div>
-          <div class="k">Полученный результат · Completion Rate</div>
-          <div class="v"><em>+22%</em></div>
-          <div class="d">При коридоре целей от +14% (минимум) до +34% (максимум).</div>
+          <div class="k">Completion Rate · пилотный поток</div>
+          <div class="v"><em>+22</em> п.п.</div>
+          <div class="d">Внутри коридора цели: от +14 до +34 п.п.</div>
         </div>
 
-        <p>Для сравнения, увеличило ли это Completion Rate студентов, мы запустили платформу проверочно только на один поток. Напомню: до этого в среднем из 16 студентов до конца доходило только 9 — это 56%.</p>
+        <p>Чтобы проверить гипотезу, платформу запустили на одном потоке. Курс длился 4 месяца: из 14 студентов до конца дошли 11 и получили дипломы.</p>
 
         <div class="ba">
           <div class="ba-card">
             <div class="t">Было</div>
             <div class="pct">56%</div>
-            <div class="frac">9 из 16 студентов</div>
+            <div class="frac">в среднем 9 из 16 студентов</div>
           </div>
           <div class="ba-arrow">→</div>
           <div class="ba-card now">
@@ -396,7 +446,17 @@
           </div>
         </div>
 
-        <p>Курс проходил на протяжении 4 месяцев, и пробный поток из 14 человек до конца прошли 11 студентов — это уже 78%. И в конце, конечно же, вручили им дипломы!</p>
+        <p>Важная оговорка: это один поток из 14 человек, и выборка небольшая. Кроме того, на результат повлияли сразу все изменения — новая платформа, обязательная практика и геймификация, — поэтому вклад каждого из них отдельно оценить нельзя.</p>
+      </section>
+
+      <!-- 09 Что дальше -->
+      <section class="sec" id="next" data-screen-label="09 Что дальше">
+        <h2>Что бы я сделал дальше</h2>
+        <ul class="blist">
+          <li><strong>Подтвердил бы эффект на нескольких потоках.</strong> Один поток показывает направление, но для уверенного вывода нужно больше данных.</li>
+          <li><strong>Нашёл бы точки отвала.</strong> Посмотрел бы, на каком модуле и на каком типе вопросов студенты задерживаются дольше всего или уходят.</li>
+          <li><strong>Проверил бы роль подсказок ИИ.</strong> Как часто студенты к ним обращаются и помогают ли они пройти тест с первой подсказки.</li>
+        </ul>
       </section>
 
     </article>
