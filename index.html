@@ -221,12 +221,11 @@
   .viewer .back{position:absolute;top:14px;left:14px;height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-size:14px}
   body.drawer-on{overflow:hidden}
 
-  /* ---------- cursor spotlight background ---------- */
-  :root{--glow:rgba(255,94,0,.14);--grid:rgba(31,31,31,.08)}
-  :root[data-theme="dark"]{--glow:rgba(214,245,0,.10);--grid:rgba(255,255,255,.08)}
+  /* ---------- cursor glow background ---------- */
+  :root{--glow:rgba(255,94,0,.14)}
+  :root[data-theme="dark"]{--glow:rgba(214,245,0,.10)}
   .spot{position:fixed;inset:0;z-index:0;pointer-events:none;--x:78vw;--y:18vh;transition:opacity .5s}
   .spot::before{content:'';position:absolute;inset:0;background:radial-gradient(520px circle at var(--x) var(--y),var(--glow),transparent 62%)}
-  .spot::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;background-position:-1px -1px;-webkit-mask-image:radial-gradient(300px circle at var(--x) var(--y),#000,transparent 72%);mask-image:radial-gradient(300px circle at var(--x) var(--y),#000,transparent 72%)}
   .spot.away{opacity:.55}
   main{position:relative;z-index:1}
 
