@@ -437,6 +437,8 @@
   .tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border-radius:var(--radius-md);overflow:hidden;margin-top:8px}
   .tool{background:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px}
   .tool b{font-weight:500}
+  .tool-wide{grid-column:1/-1}
+  .tool-sub{font-size:13px;color:var(--ink-mute);text-align:right}
   .tool .lvl{display:flex;gap:3px}
   .tool .lvl i{width:6px;height:14px;border-radius:2px;background:rgba(31,31,31,.1);display:block}
   .tool .lvl i.on{background:var(--accent)}
@@ -865,9 +867,7 @@
         <div class="tools-grid">
           <div class="tool"><b>Figma</b></div>
           <div class="tool"><b>After Effects</b></div>
-          <div class="tool"><b>Photoshop</b></div>
-          <div class="tool"><b>Illustrator</b></div>
-          <div class="tool"><b>InDesign</b></div>
+          <div class="tool tool-wide"><b>Adobe</b><span class="tool-sub">Photoshop · Illustrator · InDesign</span></div>
           <div class="tool"><b>CorelDRAW</b></div>
           <div class="tool"><b>Claude Code</b></div>
           <div class="tool"><b>Codex</b></div>
