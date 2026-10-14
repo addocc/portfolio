@@ -94,6 +94,7 @@ body{font-size:17px;line-height:1.6;font-weight:500}
 .result-hero{background:var(--q-surface)!important;color:var(--q-ink)!important;border-radius:24px!important}
 .result-hero .glow{display:none!important}
 .result-hero .k,.result-hero .d{color:var(--q-mute)!important}
+.result-hero .d{max-width:none!important}
 .result-hero .v{font-weight:500!important}
 
 /* media: wider than text, on soft surfaces */
