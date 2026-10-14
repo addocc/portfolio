@@ -195,13 +195,12 @@
   /* ---------- drawer ---------- */
   .drawer{position:fixed;inset:0;z-index:50;pointer-events:none}
   .drawer-bg{position:absolute;inset:0;background:rgba(10,10,10,.45);opacity:0;transition:opacity .35s var(--ease)}
-  .drawer-panel{position:absolute;top:0;right:0;bottom:0;width:min(1000px,100%);background:#fff;border-radius:24px 0 0 24px;overflow:hidden;transform:translateX(104%);visibility:hidden;transition:transform .5s var(--ease),visibility 0s linear .5s}
+  .drawer-panel{position:absolute;top:50%;left:50%;width:min(1000px,100% - 32px);height:calc(100dvh - 48px);background:#fff;border-radius:28px;overflow:hidden;transform:translate(-50%,-47%) scale(.97);opacity:0;visibility:hidden;transition:transform .45s var(--ease),opacity .3s ease,visibility 0s linear .45s}
   .drawer.open{pointer-events:auto}
   .drawer.open .drawer-bg{opacity:1}
-  .drawer.open .drawer-panel{transform:none;visibility:visible;transition:transform .5s var(--ease),visibility 0s;box-shadow:-20px 0 50px rgba(0,0,0,.2)}
-  @media (max-width:700px){.drawer-panel{border-radius:0}}
-  .drawer[data-kind="video"] .drawer-panel{top:50%;bottom:auto;left:50%;right:auto;width:min(1040px,100% - 24px);border-radius:20px;background:#000;transform:translate(-50%,-46%) scale(.96);opacity:0;transition:transform .45s var(--ease),opacity .3s}
-  .drawer.open[data-kind="video"] .drawer-panel{transform:translate(-50%,-50%);opacity:1}
+  .drawer.open .drawer-panel{transform:translate(-50%,-50%);opacity:1;visibility:visible;transition:transform .45s var(--spring),opacity .25s ease,visibility 0s;box-shadow:0 30px 80px rgba(0,0,0,.28)}
+  @media (max-width:700px){.drawer-panel{width:calc(100% - 16px);height:calc(100dvh - 16px);border-radius:22px}}
+  .drawer[data-kind="video"] .drawer-panel{width:min(1040px,100% - 24px);height:auto;border-radius:20px;background:#000}
   .drawer-close{position:absolute;top:14px;right:14px;z-index:3;height:38px;padding:0 14px 0 12px;border-radius:999px;background:rgba(31,31,31,.78);color:#fff;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:6px;backdrop-filter:blur(6px)}
   .drawer-body{height:100%}
   .drawer-body iframe{display:block;width:100%;height:100%;border:0;background:#fff}
