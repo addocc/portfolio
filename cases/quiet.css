@@ -100,14 +100,14 @@ body{font-size:17px;line-height:1.6;font-weight:500}
 .hero-shot,.content figure,.case-head + .sec figure,.wrap > .sec figure,.frames,.vid-grid,.shots,.shots-2{width:var(--q-fig)!important;max-width:none!important;margin-left:calc((100% - var(--q-fig)) / 2)!important;margin-right:calc((100% - var(--q-fig)) / 2)!important}
 .sec .frames figure,.sec .vid-grid figure,.sec .shots figure,.sec .shots-2 figure{width:auto!important;margin:0!important}
 .hero-shot{margin-top:36px!important}
-.hero-shot,.shot,.media,.frame-shot,.vid-card,.shots .shot,.shots-2 .shot{background:var(--q-surface)!important;border-radius:28px!important;padding:clamp(10px,2vw,22px)!important;border:0!important;box-shadow:none!important;overflow:hidden}
-.hero-shot img,.shot img,.media video,.frame-shot img,.vid-card img,.shots img,.shots-2 img{border-radius:14px!important;display:block}
+.hero-shot,.shot,.media,.frame-shot,.vid-card,.shots .shot,.shots-2 .shot{background:transparent!important;border-radius:22px!important;padding:0!important;border:0!important;box-shadow:none!important;overflow:hidden}
+.hero-shot img,.shot img,.media video,.frame-shot img,.vid-card img,.shots img,.shots-2 img{border-radius:0!important;display:block}
 .content figure,.wrap > .sec figure{margin-top:28px!important;margin-bottom:28px!important}
 figcaption{font-family:var(--text)!important;font-size:14px!important;letter-spacing:0!important;color:var(--q-mute)!important;text-align:center;margin-top:12px!important}
 .embed{border-radius:20px!important}
-.vid-tag{background:rgba(255,255,255,.9)!important;color:var(--q-ink)!important;top:calc(clamp(10px,2vw,22px) + 10px)!important;left:calc(clamp(10px,2vw,22px) + 10px)!important}
+.vid-tag{background:rgba(255,255,255,.9)!important;color:var(--q-ink)!important}
 
 @media (max-width:560px){
   .case-head{padding-top:36px!important}
-  .hero-shot,.shot,.media,.frame-shot,.vid-card,.shots .shot,.shots-2 .shot{border-radius:20px!important}
+  .hero-shot,.shot,.media,.frame-shot,.vid-card,.shots .shot,.shots-2 .shot{border-radius:16px!important}
 }
