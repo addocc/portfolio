@@ -1,4 +1,5 @@
-/* Quiet case style — shared overrides for all case pages */
+@charset "UTF-8";
+/* Quiet case style - shared overrides for all case pages */
 :root{
   --q-bg:#FFFFFF;
   --q-surface:#F2F2F0;
@@ -26,7 +27,7 @@ body{font-size:17px;line-height:1.6;font-weight:500}
 .case-title br{display:none}
 .case-tags{display:flex!important;flex-wrap:wrap;gap:0!important;margin-top:16px!important}
 .case-tags .chip{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;font-size:14px!important;font-weight:600!important;color:var(--q-mute)!important;border-radius:0!important}
-.case-tags .chip + .chip::before{content:'·';margin:0 9px;color:var(--q-mute)}
+.case-tags .chip + .chip::before{content:'\00B7';margin:0 9px;color:var(--q-mute)}
 .lead,.case-lead{font-size:18px!important;line-height:1.6!important;color:var(--q-ink-2)!important;max-width:none!important;margin-top:22px!important}
 .lead b{font-weight:700}
 
@@ -72,7 +73,7 @@ body{font-size:17px;line-height:1.6;font-weight:500}
 .ins-q{background:none!important;border:0!important;padding:0!important;color:var(--q-mute)!important;font-style:normal!important;font-size:16px!important}
 .ins-ar{display:none!important}
 .ins-a{background:none!important;color:var(--q-ink)!important;padding:6px 0 0!important;font-size:17px!important;font-weight:600}
-.ins-a::before{content:'→ ';color:var(--accent)}
+.ins-a::before{content:'\2192\00A0';color:var(--accent)}
 
 .dec{grid-template-columns:40px 1fr!important;border-top:1px solid var(--q-line)!important;padding:24px 0!important}
 .dec:first-of-type{border-top:0!important}
