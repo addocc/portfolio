@@ -83,7 +83,7 @@
   @media(max-width:760px){.case-summary{grid-template-columns:1fr;gap:20px}}
 
   /* stat strip */
-  .stat-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+  .stat-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:34px}
   .stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:24px 24px 22px;display:flex;flex-direction:column;gap:8px;min-height:150px;justify-content:flex-start}
   .stat .big{font-family:var(--display);font-weight:600;font-size:clamp(34px,4vw,52px);letter-spacing:-0.02em;line-height:1;color:var(--accent)}
   .stat .lbl{font-size:15px;color:var(--ink-2);line-height:1.4}
@@ -201,13 +201,45 @@
   .arrow{display:inline-block;transition:transform .2s}
   .btn:hover .arrow{transform:translate(2px,-2px)}
 </style>
-<link rel="stylesheet" href="quiet.css?v=3">
+<link rel="stylesheet" href="quiet.css?v=4">
 <script>if(/[?&]embed=1\b/.test(location.search))document.documentElement.classList.add('in-sheet');</script>
 <style>
   html.in-sheet .topbar,html.in-sheet .read-progress,html.in-sheet .footer,html.in-sheet .crumbs{display:none!important}
   html.in-sheet .toc-inner{top:0!important}
   html.in-sheet .case-head{padding-top:44px!important}
   html.in-sheet .case-title{font-size:clamp(30px,4.2vw,44px)!important}
+</style>
+<style>
+  /* module ranking */
+  .rank{list-style:none;margin:0;padding:24px clamp(18px,3vw,28px);background:var(--q-surface);border-radius:22px;display:flex;flex-direction:column;gap:12px}
+  .rank li{display:grid;white-space:nowrap;grid-template-columns:minmax(0,200px) minmax(0,1fr) 40px;align-items:center;gap:14px;font-size:15px;line-height:1.3;color:var(--q-ink)}
+  .rank .bar{height:10px;border-radius:4px;background:rgba(22,22,22,.06);overflow:hidden}
+  .rank .bar i{display:block;height:100%;width:calc(var(--v) / 5 * 100%);border-radius:0 4px 4px 0;background:var(--q-ink)}
+  .rank .val{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  .rank li.off{color:var(--q-mute)}
+  .rank li.off .bar i{background:rgba(22,22,22,.28)}
+  .rank li.grp{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--q-mute);white-space:normal}
+  .rank li.grp ~ li.grp{margin-top:6px;padding-top:14px;border-top:1px dashed rgba(22,22,22,.16)}
+  @media (max-width:560px){.rank li{grid-template-columns:minmax(0,1fr) 40px;gap:6px 12px}.rank .bar{grid-column:1 / -1;grid-row:2}}
+
+  /* before / after slider */
+  .sbs{--pos:50%;position:relative;width:min(600px,100%);margin:0 auto;aspect-ratio:1 / 1.1;background:var(--q-surface);border-radius:22px;overflow:hidden;touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
+  .sbs-layer{position:absolute;inset:0;background:var(--q-surface)}
+  .sbs-layer img{position:absolute;left:50%;top:50%;height:88%;width:auto;max-width:none;transform:translate(-50%,-50%);pointer-events:none;-webkit-user-drag:none}
+  .sbs-before{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+  .sbs-tag{position:absolute;top:16px;padding:6px 12px;border-radius:999px;background:#fff;font-size:13px;font-weight:700;line-height:1.2;color:var(--q-ink)}
+  .sbs-before .sbs-tag{left:16px}
+  .sbs-after .sbs-tag{right:16px}
+  .sbs-divider{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:#fff;pointer-events:none}
+  .sbs-knob{position:absolute;top:50%;left:var(--pos);width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#fff;box-shadow:0 6px 20px -6px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:var(--q-ink);pointer-events:none}
+  .sbs-range{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  .sbs:has(.sbs-range:focus-visible){outline:2px solid var(--q-ink);outline-offset:3px}
+  @media (max-width:560px){.sbs{aspect-ratio:3 / 4}}
+
+  /* single phone mockup on a soft surface */
+  .phone-shot{background:var(--q-surface);border-radius:22px;padding:clamp(28px,5vw,48px) 16px;display:flex;justify-content:center}
+  .phone-shot img{width:min(300px,100%);height:auto}
+
 </style>
 </head>
 <body>
@@ -233,95 +265,186 @@
       <span class="sep">/</span>
       <span>Platonus</span>
     </div>
-    <h1 class="case-title">Редизайн мобильного приложения <em>Platonus</em></h1>
+    <h1 class="case-title">Редизайн главного экрана <em>Platonus</em></h1>
     <div class="case-tags">
       <span class="chip dark">EdTech</span>
-      <span class="chip">Редизайн</span>
+      <span class="chip">Мобильное приложение</span>
+      <span class="chip">Исследование</span>
     </div>
 
-    <p class="case-lead">Единые интерфейсные паттерны для&nbsp;учебных модулей Platonus Student: от&nbsp;входа и&nbsp;расписания до&nbsp;оценок и&nbsp;документов.</p>
-    <dl class="case-summary">
-      <div><dt>Мой вклад</dt><dd>Анализ обращений, проектирование сценариев и&nbsp;UI</dd></div>
-      <div><dt>Объём</dt><dd>Учебные модули мобильного приложения</dd></div>
-      <div><dt>Взаимодействие</dt><dd>Аналитики, разработчики и&nbsp;команда BTS Digital</dd></div>
+    <p class="case-lead">Как&nbsp;я&nbsp;поговорил со&nbsp;студентами, опросил 83&nbsp;студента из&nbsp;четырёх университетов и&nbsp;собрал главный экран, с&nbsp;которого начинается учебный день: восемь самых нужных модулей, расписание на&nbsp;сегодня и&nbsp;объявления.</p>
+
+    <dl class="passport">
+      <div><dt>Продукт</dt><dd>Platonus&nbsp;— система управления учебным процессом для&nbsp;университетов Казахстана. Мобильное приложение для&nbsp;студентов, 700K MAU</dd></div>
+      <div><dt>Задача</dt><dd>Сделать так, чтобы&nbsp;студент сразу видел то, за&nbsp;чем открывает приложение</dd></div>
+      <div><dt>Роль</dt><dd>UI/UX-дизайнер: интервью, опрос, структура и&nbsp;интерфейс</dd></div>
+      <div><dt>Исследование</dt><dd>4&nbsp;интервью, по&nbsp;одному студенту из&nbsp;каждого университета, и&nbsp;опрос 83&nbsp;студентов из&nbsp;этих&nbsp;же&nbsp;4&nbsp;университетов</dd></div>
+      <div><dt>Итог</dt><dd>Новая главная вышла в&nbsp;релиз. Всего в&nbsp;редизайне я&nbsp;переработал 16&nbsp;модулей приложения</dd></div>
     </dl>
+
+    <div class="stat-strip">
+      <div class="stat"><div class="big">83</div><div class="lbl">студента ответили на&nbsp;опрос</div></div>
+      <div class="stat"><div class="big">4</div><div class="lbl">университета-клиента</div></div>
+    </div>
+
+    <figure class="hero-shot">
+      <div class="sbs">
+        <div class="sbs-layer sbs-after"><img src="../assets/platonus/home-after.png" alt="Новая главная: восемь модулей, расписание на сегодня и вкладка объявлений" loading="lazy"><span class="sbs-tag">Стало</span></div>
+        <div class="sbs-layer sbs-before"><img src="../assets/platonus/home-before.png" alt="Старая главная: рекламный баннер и лента объявлений" loading="lazy"><span class="sbs-tag">Было</span></div>
+        <div class="sbs-divider" aria-hidden="true"></div>
+        <div class="sbs-knob" aria-hidden="true"><svg width="20" height="12" viewBox="0 0 20 12" fill="none"><path d="M6 1L1 6l5 5M14 1l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <input class="sbs-range" type="range" min="0" max="100" value="50" aria-label="Сравнить старую и новую главную">
+      </div>
+      <figcaption>Главная до&nbsp;и&nbsp;после. Потяните разделитель</figcaption>
+    </figure>
   </header>
 
   <div class="layout">
 
     <article class="content">
-      <section class="sec" id="context" data-screen-label="01 Задача и ограничения">
-        <h2>Задача и&nbsp;ограничения</h2>
-        <p>Platonus&nbsp;— система управления образовательным процессом для&nbsp;университетов Казахстана. В&nbsp;мобильном приложении студенты смотрят расписание и&nbsp;оценки, работают с&nbsp;заданиями и&nbsp;получают учебные документы.</p>
-        <p>Приложение развивали разные дизайнеры: модули отличались визуально и&nbsp;использовали разные паттерны для&nbsp;похожих действий. Параллельно в&nbsp;отзывах и&nbsp;поддержке накапливались вопросы о&nbsp;входе, поиске функций и&nbsp;работе с&nbsp;документами.</p>
-        <p>Моя задача&nbsp;— разобрать эти проблемы и&nbsp;перепроектировать учебные модули, опираясь на&nbsp;общий UI-kit и&nbsp;согласованную логику взаимодействия.</p>
 
-        <h3>Не&nbsp;всё&nbsp;решается интерфейсом</h3>
-        <p>Часть доступов и&nbsp;настроек модулей регулируют университеты. Редизайн не&nbsp;отменяет эти ограничения: в&nbsp;интерфейсе нужно объяснить причину недоступности и&nbsp;помочь студенту понять следующий шаг.</p>
-        <p>Ещё&nbsp;одно условие проекта&nbsp;— совместная работа с&nbsp;BTS Digital над&nbsp;интеграцией учебных модулей в&nbsp;экосистему aitu. На&nbsp;стороне дизайна требовалось согласовать визуальный язык и&nbsp;переходы между&nbsp;учебными и&nbsp;другими разделами.</p>
-      </section>
-
-      <section class="sec" id="research" data-screen-label="02 Что показали обращения">
-        <h2>Что&nbsp;показали обращения</h2>
-        <p>Я&nbsp;вручную разобрал отзывы из&nbsp;App Store, Google Play и&nbsp;2ГИС, а&nbsp;также обращения в&nbsp;поддержку. Сгруппировал их&nbsp;по&nbsp;темам и&nbsp;повторяемости, чтобы&nbsp;выделить проблемы для&nbsp;дальнейшей проработки.</p>
-        <p>Ниже&nbsp;— обобщение тем обращений, а&nbsp;не&nbsp;дословные цитаты пользователей и&nbsp;не&nbsp;рейтинг по&nbsp;частоте.</p>
-        <ul class="blist">
-          <li><b>Доступ:</b> непонятно, как&nbsp;восстановить пароль и&nbsp;что&nbsp;делать при&nbsp;блокировке.</li>
-          <li><b>Документы:</b> сложно найти справку или&nbsp;транскрипт и&nbsp;понять, где&nbsp;получить готовый документ.</li>
-          <li><b>Учебные показатели:</b> возникают вопросы о&nbsp;расчёте GPA, оценках и&nbsp;посещаемости.</li>
-          <li><b>Повседневные действия:</b> поиск student ID и&nbsp;силлабуса, смена аватара, прикрепление файлов.</li>
-        </ul>
-        <p>Обращения помогли выявить затруднения, но&nbsp;не&nbsp;показывают, какая доля всех студентов с&nbsp;ними сталкивается. Частота жалоб также не&nbsp;равна частоте использования функции.</p>
-
-        <h3>Направления для&nbsp;проверки</h3>
-        <ul class="blist">
-          <li>Вход и&nbsp;восстановление доступа: понятные подсказки при&nbsp;ошибках и&nbsp;объяснение ограничений университета.</li>
-          <li>Поиск документов и&nbsp;учебной информации: навигация, связанная с&nbsp;задачами студента.</li>
-          <li>Оценки и&nbsp;GPA: объяснение расчётов, а&nbsp;не&nbsp;только отображение итогового числа.</li>
-        </ul>
+      <!-- 01 С чего я начал -->
+      <section class="sec" id="context" data-screen-label="01 С чего я начал">
+        <h2>С&nbsp;чего я&nbsp;начал</h2>
+        <p>Platonus&nbsp;— система, в&nbsp;которой университеты Казахстана ведут учебный процесс. В&nbsp;мобильном приложении студенты смотрят расписание и&nbsp;оценки, сдают задания и&nbsp;заказывают справки.</p>
+        <p>Я&nbsp;перерабатывал приложение модуль за&nbsp;модулем. Всего их&nbsp;16, и&nbsp;все&nbsp;уже&nbsp;вышли в&nbsp;релиз. Начал с&nbsp;главного экрана, потому что&nbsp;с&nbsp;него начинается каждый заход в&nbsp;приложение.</p>
+        <p>В&nbsp;обратной связи студенты писали, что&nbsp;модули расположены неудобно. Это&nbsp;было видно и&nbsp;по&nbsp;самому меню: первым шёл Академический календарь, Расписание пряталось во&nbsp;втором ряду, а&nbsp;рядом стояли сокращения вроде ЦОО и&nbsp;ИУП.</p>
         <div class="callout">
-          <div class="k">Гипотеза, не&nbsp;подтверждённый результат</div>
-          <p>Понятная навигация и&nbsp;объяснения в&nbsp;проблемных состояниях могут помочь студенту завершить задачу без&nbsp;обращения в&nbsp;поддержку. Это&nbsp;нужно проверять на&nbsp;конкретных сценариях.</p>
+          <div class="k">Гипотеза</div>
+          <p>Если&nbsp;вынести на&nbsp;главный экран самые нужные модули, то&nbsp;это&nbsp;облегчит пользовательский путь.</p>
         </div>
       </section>
 
-      <section class="sec" id="scope" data-screen-label="03 Моя зона ответственности">
-        <h2>Моя зона ответственности</h2>
-        <p>Я&nbsp;отвечал за&nbsp;редизайн учебных модулей: анализировал обращения, проектировал сценарии и&nbsp;интерфейсы, переиспользовал и&nbsp;дополнял компоненты UI-kit, обсуждал реализацию с&nbsp;аналитиками и&nbsp;разработчиками.</p>
-        <p>Ниже модули сгруппированы по&nbsp;назначению. Это&nbsp;объём дизайн-работы, а&nbsp;не&nbsp;перечень выпущенных функций или&nbsp;последовательность релизов.</p>
-        <h3>Вход и&nbsp;ежедневная учёба</h3>
-        <p>Авторизация, меню, профиль, академический календарь, расписание, журнал и&nbsp;журнал текущей успеваемости, QR-посещаемость.</p>
-        <h3>Учебные данные и&nbsp;задания</h3>
-        <p>Задания, транскрипт, калькулятор журнала и&nbsp;индивидуальный учебный план.</p>
-        <h3>Документы и&nbsp;сервисы</h3>
-        <p>Справки и&nbsp;заявления (ЦОО), анкетирование, финансовый модуль, общежитие, объединения и&nbsp;мероприятия, партнёрские баннеры.</p>
+      <!-- 02 Интервью -->
+      <section class="sec" id="interviews" data-screen-label="02 Зачем студенты открывают приложение">
+        <h2>Зачем студенты открывают приложение</h2>
+        <p>Сначала я&nbsp;провёл подробные интервью: по&nbsp;одному студенту из&nbsp;каждого из&nbsp;четырёх университетов. Спрашивал не&nbsp;про&nbsp;интерфейс, а&nbsp;про&nbsp;обычный учебный день: в&nbsp;какой момент они&nbsp;открывают Platonus, что&nbsp;ищут первым делом и&nbsp;что&nbsp;их&nbsp;раздражает.</p>
+        <p>Из&nbsp;разговоров я&nbsp;вывел четыре гипотезы и&nbsp;под&nbsp;каждую придумал решение для&nbsp;главного экрана:</p>
+        <div class="ins">
+          <div class="ins-row">
+            <div class="ins-q">Утром студенту нужно быстро понять, куда идти: какая пара, во&nbsp;сколько и&nbsp;в&nbsp;какой аудитории</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Показывать расписание на&nbsp;сегодня прямо на&nbsp;главном</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Студентам важно видеть изменения в&nbsp;учебном процессе</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Не&nbsp;убирать объявления полностью</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Каждый день нужны два-три модуля, остальные открывают пару раз за&nbsp;семестр</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Частые модули вынести в&nbsp;быстрый доступ, редкие убрать в&nbsp;сервисы</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Сокращения и&nbsp;канцелярские названия понятны не&nbsp;всем</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Переименовать модули простыми словами</div>
+          </div>
+        </div>
+        <p>Интервью подсказали направление, но&nbsp;не&nbsp;ответили на&nbsp;главный вопрос: какие именно модули важнее остальных. Для&nbsp;этого нужны были цифры.</p>
       </section>
 
-      <section class="sec" id="process" data-screen-label="04 Работа над дизайном">
-        <h2>Работа над&nbsp;дизайном</h2>
-        <h3>Общие компоненты вместо разрозненных модулей</h3>
-        <p>Я&nbsp;опирался на&nbsp;существующий UI-kit: переиспользовал компоненты, достраивал недостающие и&nbsp;приводил похожие действия к&nbsp;общим паттернам. Цель&nbsp;— не&nbsp;заставлять студента заново осваивать формы, кнопки и&nbsp;карточки при&nbsp;переходе в&nbsp;другой модуль.</p>
-
-        <h3>Сценарии и&nbsp;ограничения</h3>
-        <p>При&nbsp;переработке пользовательских сценариев прорабатывал не&nbsp;только путь к&nbsp;результату, но&nbsp;и&nbsp;состояния ошибок с&nbsp;поясняющими подсказками. Отдельно учитывал ограничения доступа, которые задаёт университет.</p>
-        <p>Здесь важно разделять задачу интерфейса и&nbsp;правила системы: объяснить ограничение&nbsp;— не&nbsp;то&nbsp;же самое, что&nbsp;восстановить доступ или&nbsp;изменить университетскую настройку.</p>
-
-        <h3>Согласование и&nbsp;передача в&nbsp;разработку</h3>
-        <p>С&nbsp;аналитиками и&nbsp;разработчиками обсуждал бизнес-требования, реализацию макетов и&nbsp;состав ближайших релизов. С&nbsp;командой BTS Digital согласовывал визуальный язык, навигацию между&nbsp;разделами и&nbsp;точки интеграции с&nbsp;кошельком и&nbsp;партнёрскими форматами.</p>
+      <!-- 03 Опрос -->
+      <section class="sec" id="survey" data-screen-label="03 Опрос">
+        <h2>Опрос: какие модули важнее</h2>
+        <p>Я&nbsp;собрал опросник и&nbsp;отправил его&nbsp;студентам четырёх университетов-клиентов: ЕНУ имени Гумилёва, Astana International University, De Montfort University Kazakhstan и&nbsp;Медицинского университета Астана. Каждый оценил 16&nbsp;модулей приложения по&nbsp;шкале от&nbsp;1&nbsp;до&nbsp;5: насколько модуль нужен лично ему. Опрос прошёл в&nbsp;два захода в&nbsp;тех&nbsp;же&nbsp;университетах, всего ответили 83&nbsp;студента.</p>
+        <figure>
+          <ol class="rank" aria-label="Средняя оценка важности модулей">
+            <li class="grp">На&nbsp;главном экране</li>
+            <li><span class="nm">Расписание</span><span class="bar"><i style="--v:4.73"></i></span><span class="val">4,73</span></li>
+            <li><span class="nm">Журнал</span><span class="bar"><i style="--v:4.09"></i></span><span class="val">4,09</span></li>
+            <li><span class="nm">Задания</span><span class="bar"><i style="--v:3.52"></i></span><span class="val">3,52</span></li>
+            <li><span class="nm">Транскрипт</span><span class="bar"><i style="--v:3"></i></span><span class="val">3,00</span></li>
+            <li><span class="nm">ИУП</span><span class="bar"><i style="--v:2.83"></i></span><span class="val">2,83</span></li>
+            <li><span class="nm">Учебная аудитория</span><span class="bar"><i style="--v:2.51"></i></span><span class="val">2,51</span></li>
+            <li><span class="nm">Академический календарь</span><span class="bar"><i style="--v:2.43"></i></span><span class="val">2,43</span></li>
+            <li><span class="nm">Калькулятор журнала</span><span class="bar"><i style="--v:1.84"></i></span><span class="val">1,84</span></li>
+            <li class="grp">В&nbsp;сервисах</li>
+            <li class="off"><span class="nm">ЦОО</span><span class="bar"><i style="--v:1.78"></i></span><span class="val">1,78</span></li>
+            <li class="off"><span class="nm">ЖТУ</span><span class="bar"><i style="--v:1.77"></i></span><span class="val">1,77</span></li>
+            <li class="off"><span class="nm">Успеваемость</span><span class="bar"><i style="--v:1.62"></i></span><span class="val">1,62</span></li>
+            <li class="off"><span class="nm">Анкеты</span><span class="bar"><i style="--v:1.50"></i></span><span class="val">1,50</span></li>
+            <li class="off"><span class="nm">Клубы</span><span class="bar"><i style="--v:1.47"></i></span><span class="val">1,47</span></li>
+            <li class="off"><span class="nm">Мероприятия</span><span class="bar"><i style="--v:1.47"></i></span><span class="val">1,47</span></li>
+            <li class="off"><span class="nm">Общежитие</span><span class="bar"><i style="--v:1.33"></i></span><span class="val">1,33</span></li>
+            <li class="off"><span class="nm">QR</span><span class="bar"><i style="--v:1.20"></i></span><span class="val">1,20</span></li>
+          </ol>
+        </figure>
       </section>
 
-      <section class="sec" id="results" data-screen-label="05 Итоги и границы выводов">
-        <h2>Итоги и&nbsp;границы выводов</h2>
-        <h3>Результат дизайн-работы</h3>
+      <!-- 04 Названия -->
+      <section class="sec" id="naming" data-screen-label="04 Понятные названия">
+        <h2>Понятные названия</h2>
+        <p>Параллельно я&nbsp;переименовал модули. Часть названий была длинной или&nbsp;непонятной без&nbsp;расшифровки: чтобы&nbsp;заказать справку, нужно было знать, что&nbsp;это&nbsp;делается в&nbsp;ЦОО. Я&nbsp;оставлял одно-два слова, которые отвечают на&nbsp;вопрос «что&nbsp;я&nbsp;тут найду».</p>
+        <div class="ins">
+          <div class="ins-row">
+            <div class="ins-q">Академический календарь</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Календарь</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Учебная аудитория</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Аудитории</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Калькулятор журнала</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Калькулятор</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">ЦОО</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Справки</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Журнал успеваемости обучающегося</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Успеваемость</div>
+          </div>
+          <div class="ins-row">
+            <div class="ins-q">Организации</div>
+            <div class="ins-ar">→</div>
+            <div class="ins-a">Клубы</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 Новая главная -->
+      <section class="sec" id="home" data-screen-label="05 Новая главная">
+        <h2>Новая главная</h2>
+        <p>Раньше главная состояла из&nbsp;рекламного баннера и&nbsp;ленты объявлений, а&nbsp;все&nbsp;модули лежали в&nbsp;отдельном меню. Я&nbsp;пересобрал её&nbsp;вокруг того, что&nbsp;студенту нужно каждый день.</p>
+
+        <h3>8&nbsp;модулей в&nbsp;быстром доступе</h3>
+        <p>Всего в&nbsp;приложении 16&nbsp;модулей, и&nbsp;я&nbsp;выстроил их&nbsp;по&nbsp;приоритету. Первые 8&nbsp;стоят на&nbsp;главном, остальные живут в&nbsp;сервисах, а&nbsp;QR я&nbsp;вынес в&nbsp;нижнее меню. В&nbsp;первом ряду Расписание, Журнал, Задания и&nbsp;Транскрипт, которые получили самые высокие оценки в&nbsp;опросе. Редкие модули никуда не&nbsp;делись, просто не&nbsp;занимают место каждый день.</p>
+
+        <h3>QR в&nbsp;нижнем меню</h3>
+        <p>Студенты отмечают присутствие в&nbsp;начале пары: преподаватель выводит QR-код на&nbsp;экран, и&nbsp;отсканировать его&nbsp;нужно сразу. Поэтому я&nbsp;перенёс QR в&nbsp;нижнее меню, откуда он&nbsp;открывается в&nbsp;одно касание с&nbsp;любого экрана. У&nbsp;QR самая низкая оценка из&nbsp;всех модулей, но&nbsp;здесь важнее скорость, чем частота: когда код нужен, его&nbsp;нельзя искать в&nbsp;сервисах.</p>
+
+        <h3>Расписание на&nbsp;сегодня</h3>
+        <p>Под&nbsp;модулями сразу идут пары на&nbsp;сегодня: время, предмет, корпус с&nbsp;аудиторией и&nbsp;группа. Открыл приложение и&nbsp;уже&nbsp;знаешь, куда идти, без&nbsp;перехода в&nbsp;отдельный модуль.</p>
+
+        <h3>Объявления</h3>
+        <p>Объявления никуда не&nbsp;делись, они&nbsp;переехали во&nbsp;вкладку рядом с&nbsp;расписанием. Раньше лента занимала всю главную, теперь не&nbsp;мешает, но&nbsp;открывается в&nbsp;одно касание.</p>
+        <figure>
+          <div class="phone-shot"><img src="../assets/platonus/home-announcements.png" alt="Главная Platonus с открытой вкладкой объявлений: даты и заголовки новостей университета" loading="lazy"></div>
+          <figcaption>Вкладка «Объявления» на&nbsp;главной</figcaption>
+        </figure>
+      </section>
+
+      <!-- 06 Что получилось -->
+      <section class="sec" id="results" data-screen-label="06 Что получилось">
+        <h2>Что&nbsp;получилось</h2>
         <ul class="blist">
-          <li>Систематизировал проблемы из&nbsp;отзывов и&nbsp;обращений в&nbsp;поддержку.</li>
-          <li>Перепроектировал учебные модули приложения с&nbsp;опорой на&nbsp;общий UI-kit.</li>
-          <li>Согласовывал решения с&nbsp;аналитиками, разработчиками и&nbsp;партнёрской командой BTS Digital.</li>
+          <li>Все&nbsp;16&nbsp;модулей выстроены по&nbsp;приоритету: 8&nbsp;самых нужных на&nbsp;главном, QR в&nbsp;нижнем меню, остальные в&nbsp;сервисах.</li>
+          <li>Расписание на&nbsp;сегодня и&nbsp;объявления видны сразу при&nbsp;входе.</li>
+          <li>Модули получили короткие понятные названия.</li>
+          <li>Главная вышла в&nbsp;релиз вместе с&nbsp;остальными модулями редизайна.</li>
         </ul>
-        <h3>Что&nbsp;пока нельзя утверждать</h3>
-        <p>В&nbsp;этом кейсе пока нет данных, которые подтверждают сокращение времени выполнения задач, снижение числа обращений или&nbsp;рост удержания после&nbsp;редизайна. Поэтому я&nbsp;не&nbsp;приписываю эти эффекты своей работе.</p>
-        <p>Готовность макетов, выпуск модулей и&nbsp;эффект для&nbsp;пользователей&nbsp;— разные результаты. Описанный здесь объём проектирования сам по&nbsp;себе не&nbsp;подтверждает, что&nbsp;все&nbsp;решения уже&nbsp;доступны студентам.</p>
+        <p>Спасибо, что&nbsp;дочитали!</p>
       </section>
+
     </article>
   </div>
 
@@ -380,6 +503,24 @@
   document.addEventListener('click',function(e){
     var a=e.target.closest('a[href]'); if(!a) return;
     if(/(^|\/)index\.html/.test(a.getAttribute('href'))){ e.preventDefault(); parent.postMessage({type:'aidos-close-sheet'},location.origin); }
+  });
+})();
+</script>
+<script>
+(function(){
+  document.querySelectorAll('.sbs').forEach(function(el){
+    var range = el.querySelector('.sbs-range'), drag = false;
+    function set(p){ p = Math.max(0, Math.min(100, p)); el.style.setProperty('--pos', p + '%'); range.value = Math.round(p); }
+    function fromX(x){ var r = el.getBoundingClientRect(); set((x - r.left) / r.width * 100); }
+    el.addEventListener('pointerdown', function(e){
+      drag = true;
+      try { el.setPointerCapture(e.pointerId); } catch(_){}
+      // touch: wait for a horizontal move so a tap or vertical scroll doesn't jump the divider
+      if (e.pointerType === 'mouse') fromX(e.clientX);
+    });
+    el.addEventListener('pointermove', function(e){ if (drag) fromX(e.clientX); });
+    ['pointerup','pointercancel','lostpointercapture'].forEach(function(t){ el.addEventListener(t, function(){ drag = false; }); });
+    range.addEventListener('input', function(){ set(+range.value); });
   });
 })();
 </script>
