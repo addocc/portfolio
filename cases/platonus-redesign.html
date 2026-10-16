@@ -277,8 +277,8 @@
     <dl class="passport">
       <div><dt>Продукт</dt><dd>Platonus&nbsp;— система управления учебным процессом для&nbsp;университетов Казахстана. Мобильное приложение для&nbsp;студентов, 700K MAU</dd></div>
       <div><dt>Задача</dt><dd>Сделать так, чтобы&nbsp;студент сразу видел то, за&nbsp;чем открывает приложение</dd></div>
-      <div><dt>Роль</dt><dd>UI/UX-дизайнер: интервью, опрос, структура и&nbsp;интерфейс</dd></div>
-      <div><dt>Исследование</dt><dd>4&nbsp;интервью, по&nbsp;одному студенту из&nbsp;каждого университета, и&nbsp;опрос 83&nbsp;студентов из&nbsp;этих&nbsp;же&nbsp;4&nbsp;университетов</dd></div>
+      <div><dt>Роль</dt><dd>UI/UX-дизайнер: исследование, структура, интерфейс и&nbsp;дизайн-система</dd></div>
+      <div><dt>Исследование</dt><dd>4&nbsp;интервью и&nbsp;юзабилити-тест, по&nbsp;одному студенту из&nbsp;каждого университета, и&nbsp;опрос 83&nbsp;студентов из&nbsp;этих&nbsp;же&nbsp;4&nbsp;университетов</dd></div>
       <div><dt>Итог</dt><dd>Новая главная вышла в&nbsp;релиз. Всего в&nbsp;редизайне я&nbsp;переработал 16&nbsp;модулей приложения</dd></div>
     </dl>
 
@@ -433,13 +433,29 @@
         </figure>
       </section>
 
-      <!-- 06 Что получилось -->
-      <section class="sec" id="results" data-screen-label="06 Что получилось">
+      <!-- 06 Дизайн-система -->
+      <section class="sec" id="design-system" data-screen-label="06 Дизайн-система">
+        <h2>Дизайн-система</h2>
+        <p>До&nbsp;редизайна у&nbsp;Platonus не&nbsp;было ни&nbsp;дизайн-системы, ни&nbsp;даже UI-кита. Параллельно с&nbsp;модулями я&nbsp;собирал дизайн-систему на&nbsp;основе Ant Design Mobile, чтобы&nbsp;все&nbsp;16&nbsp;модулей выглядели и&nbsp;работали единообразно.</p>
+      </section>
+
+      <!-- 07 Проверка -->
+      <section class="sec" id="testing" data-screen-label="07 Проверка">
+        <h2>Проверка</h2>
+        <p>Студенты обязаны пользоваться Platonus, поэтому охват и&nbsp;удержание не&nbsp;покажут, стало&nbsp;ли удобнее. Вместо продуктовых метрик я&nbsp;проверял решения на&nbsp;самих студентах.</p>
+        <p>Пока я&nbsp;рисовал макеты, я&nbsp;проводил коридорные тесты, и&nbsp;они&nbsp;подтверждали решения по&nbsp;ходу работы. Потом провёл юзабилити-тестирование: по&nbsp;одному студенту из&nbsp;каждого университета. Каждый получал задачи по&nbsp;модулям, например найти свой GPA или&nbsp;узнать, какие в&nbsp;университете есть студенческие клубы.</p>
+        <p>GPA лежит в&nbsp;Журнале на&nbsp;главной, а&nbsp;Клубы в&nbsp;сервисах, поэтому задачи проверяли и&nbsp;быстрый доступ, и&nbsp;поиск редких модулей. Клубы раньше назывались «Организации», так что&nbsp;заодно проверялось и&nbsp;новое название. Все&nbsp;четыре студента справились со&nbsp;всеми задачами.</p>
+      </section>
+
+      <!-- 08 Что получилось -->
+      <section class="sec" id="results" data-screen-label="08 Что получилось">
         <h2>Что&nbsp;получилось</h2>
         <ul class="blist">
+          <li>Все&nbsp;четыре студента на&nbsp;юзабилити-тесте справились с&nbsp;задачами: и&nbsp;с&nbsp;модулями на&nbsp;главной, и&nbsp;с&nbsp;модулями в&nbsp;сервисах.</li>
           <li>Все&nbsp;16&nbsp;модулей выстроены по&nbsp;приоритету: 8&nbsp;самых нужных на&nbsp;главном, QR в&nbsp;нижнем меню, остальные в&nbsp;сервисах.</li>
           <li>Расписание на&nbsp;сегодня и&nbsp;объявления видны сразу при&nbsp;входе.</li>
           <li>Модули получили короткие понятные названия.</li>
+          <li>У&nbsp;приложения появилась дизайн-система на&nbsp;основе Ant Design Mobile.</li>
           <li>Главная вышла в&nbsp;релиз вместе с&nbsp;остальными модулями редизайна.</li>
         </ul>
         <p>Спасибо, что&nbsp;дочитали!</p>
@@ -509,17 +525,31 @@
 <script>
 (function(){
   document.querySelectorAll('.sbs').forEach(function(el){
-    var range = el.querySelector('.sbs-range'), drag = false;
+    var range = el.querySelector('.sbs-range'), drag = false, sx = 0, sy = 0, mode = null;
     function set(p){ p = Math.max(0, Math.min(100, p)); el.style.setProperty('--pos', p + '%'); range.value = Math.round(p); }
     function fromX(x){ var r = el.getBoundingClientRect(); set((x - r.left) / r.width * 100); }
+
+    // mouse and pen: press anywhere and drag
     el.addEventListener('pointerdown', function(e){
-      drag = true;
+      if (e.pointerType === 'touch') return;
+      drag = true; e.preventDefault();
       try { el.setPointerCapture(e.pointerId); } catch(_){}
-      // touch: wait for a horizontal move so a tap or vertical scroll doesn't jump the divider
-      if (e.pointerType === 'mouse') fromX(e.clientX);
+      fromX(e.clientX);
     });
-    el.addEventListener('pointermove', function(e){ if (drag) fromX(e.clientX); });
-    ['pointerup','pointercancel','lostpointercapture'].forEach(function(t){ el.addEventListener(t, function(){ drag = false; }); });
+    el.addEventListener('pointermove', function(e){ if (drag && e.pointerType !== 'touch') fromX(e.clientX); });
+    ['pointerup','pointercancel','lostpointercapture'].forEach(function(t){
+      el.addEventListener(t, function(e){ if (e.pointerType !== 'touch') drag = false; });
+    });
+
+    // touch: a horizontal swipe moves the divider, a vertical one scrolls the page, a tap jumps
+    el.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; mode = null; }, {passive:true});
+    el.addEventListener('touchmove', function(e){
+      var t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (!mode) { if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return; mode = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'; }
+      if (mode === 'x') { if (e.cancelable) e.preventDefault(); fromX(t.clientX); }
+    }, {passive:false});
+    el.addEventListener('touchend', function(){ if (!mode) fromX(sx); mode = null; });
+
     range.addEventListener('input', function(){ set(+range.value); });
   });
 })();
