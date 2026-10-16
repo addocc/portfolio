@@ -629,6 +629,8 @@
   /* ---------- drawer ---------- */
   var drawer=document.getElementById('drawer'), body=document.getElementById('drawerBody');
   var pushed=false, lastFocus=null, isOpen=false, openRaf=0;
+  // on phones a case opens as its own page, not in the drawer
+  var casePage=matchMedia('(max-width:700px)');
   function show(kind){
     lastFocus=document.activeElement;
     drawer.setAttribute('data-kind',kind); drawer.setAttribute('aria-hidden','false');
@@ -679,7 +681,7 @@
     hide();
   }
   function plain(e){ return !(e.metaKey||e.ctrlKey||e.shiftKey||e.button===1); }
-  document.querySelectorAll('a[data-case]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e)) return; e.preventDefault(); openCase(a.getAttribute('data-case'),true); }); });
+  document.querySelectorAll('a[data-case]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e) || casePage.matches) return; e.preventDefault(); openCase(a.getAttribute('data-case'),true); }); });
   document.querySelectorAll('a[data-video]').forEach(function(a){ a.addEventListener('click',function(e){ if(!plain(e)) return; e.preventDefault(); openVideo(a.getAttribute('data-video')); }); });
   track.addEventListener('click',function(e){ var b=e.target.closest('button[data-i]'); if(b) openPhotos(+b.getAttribute('data-i')); });
   allBtn.addEventListener('click',function(){ openPhotos(); });
@@ -698,7 +700,7 @@
     else if(isOpen){ pushed=false; hide(); }
   });
   var first=new URLSearchParams(location.search).get('case');
-  if(first && /^[a-z0-9-]+$/.test(first)) openCase(first,false);
+  if(first && /^[a-z0-9-]+$/.test(first)){ if(casePage.matches) location.replace('cases/'+first+'.html'); else openCase(first,false); }
 })();
 </script>
 </body>

@@ -223,7 +223,7 @@
   @media (max-width:560px){.rank li{grid-template-columns:minmax(0,1fr) 40px;gap:6px 12px}.rank .bar{grid-column:1 / -1;grid-row:2}}
 
   /* before / after slider */
-  .sbs{--pos:50%;position:relative;width:min(600px,100%);margin:0 auto;aspect-ratio:1 / 1.1;background:var(--q-surface);border-radius:22px;overflow:hidden;touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
+  .sbs{--pos:50%;position:relative;width:min(600px,100%);margin:0 auto;aspect-ratio:1 / 1.1;background:var(--q-surface);border-radius:22px;overflow:hidden;cursor:ew-resize;user-select:none;-webkit-user-select:none}
   .sbs-layer{position:absolute;inset:0;background:var(--q-surface)}
   .sbs-layer img{position:absolute;left:50%;top:50%;height:88%;width:auto;max-width:none;transform:translate(-50%,-50%);pointer-events:none;-webkit-user-drag:none}
   .sbs-before{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
@@ -515,10 +515,15 @@
 </script>
 <script>
 (function(){
-  if(!document.documentElement.classList.contains('in-sheet')) return;
+  var inSheet=document.documentElement.classList.contains('in-sheet');
   document.addEventListener('click',function(e){
-    var a=e.target.closest('a[href]'); if(!a) return;
-    if(/(^|\/)index\.html/.test(a.getAttribute('href'))){ e.preventDefault(); parent.postMessage({type:'aidos-close-sheet'},location.origin); }
+    var a=e.target.closest('a[href]'); if(!a || !/(^|\/)index\.html/.test(a.getAttribute('href'))) return;
+    if(inSheet){ e.preventDefault(); parent.postMessage({type:'aidos-close-sheet'},location.origin); return; }
+    // opened as a page from the home page: go back so it keeps its scroll position
+    try{
+      var ref=document.referrer && new URL(document.referrer), home=new URL(a.href);
+      if(ref && ref.origin===home.origin && ref.pathname.replace(/index\.html$/,'')===home.pathname.replace(/index\.html$/,'') && history.length>1){ e.preventDefault(); history.back(); }
+    }catch(_){}
   });
 })();
 </script>

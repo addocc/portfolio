@@ -483,10 +483,15 @@
 </script>
 <script>
 (function(){
-  if(!document.documentElement.classList.contains('in-sheet')) return;
+  var inSheet=document.documentElement.classList.contains('in-sheet');
   document.addEventListener('click',function(e){
-    var a=e.target.closest('a[href]'); if(!a) return;
-    if(/(^|\/)index\.html/.test(a.getAttribute('href'))){ e.preventDefault(); parent.postMessage({type:'aidos-close-sheet'},location.origin); }
+    var a=e.target.closest('a[href]'); if(!a || !/(^|\/)index\.html/.test(a.getAttribute('href'))) return;
+    if(inSheet){ e.preventDefault(); parent.postMessage({type:'aidos-close-sheet'},location.origin); return; }
+    // opened as a page from the home page: go back so it keeps its scroll position
+    try{
+      var ref=document.referrer && new URL(document.referrer), home=new URL(a.href);
+      if(ref && ref.origin===home.origin && ref.pathname.replace(/index\.html$/,'')===home.pathname.replace(/index\.html$/,'') && history.length>1){ e.preventDefault(); history.back(); }
+    }catch(_){}
   });
 })();
 </script>
