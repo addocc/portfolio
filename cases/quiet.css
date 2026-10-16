@@ -2,7 +2,7 @@
 /* Quiet case style - shared overrides for all case pages */
 :root{
   --q-bg:#FFFFFF;
-  --q-surface:#F2F2F0;
+  --q-surface:#F1F3F6;
   --q-ink:#161616;
   --q-ink-2:#2E2E2E;
   --q-mute:rgba(22,22,22,.5);

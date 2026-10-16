@@ -12,7 +12,7 @@
   :root{
     --accent:#FF5E00;
     --accent-soft:rgba(255,94,0,.12);
-    --bg:#EFF1F2;
+    --bg:#F1F3F6;
     --bg-card:#FFFFFF;
     --bg-deep:#1F1F1F;
     --ink:#1F1F1F;
@@ -47,7 +47,7 @@
 
   /* ---------- Top bar ---------- */
   .topbar{
-    position:sticky;top:0;z-index:50;background:rgba(239,241,242,.82);backdrop-filter:blur(14px);
+    position:sticky;top:0;z-index:50;background:rgba(241,243,246,.82);backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
   }
   .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
@@ -162,7 +162,7 @@
   figcaption{font-family:var(--mono);font-size:12px;color:var(--ink-mute);letter-spacing:.02em;margin-top:12px;padding-left:2px}
 
   /* placeholder figure (image to be supplied) */
-  .ph{border:1.5px dashed var(--line-2);border-radius:var(--radius-md);background:linear-gradient(180deg,#fff, #fbfbfc);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:48px 28px}
+  .ph{border:1.5px dashed var(--line-2);border-radius:var(--radius-md);background:var(--q-surface);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:48px 28px}
   .ph .ic{width:52px;height:52px;border-radius:14px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:22px}
   .ph .t{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink-2);letter-spacing:-0.01em}
   .ph .s{font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--ink-mute);max-width:42ch;line-height:1.5}
@@ -201,7 +201,7 @@
   .arrow{display:inline-block;transition:transform .2s}
   .btn:hover .arrow{transform:translate(2px,-2px)}
 </style>
-<link rel="stylesheet" href="quiet.css?v=4">
+<link rel="stylesheet" href="quiet.css?v=5">
 <script>if(/[?&]embed=1\b/.test(location.search))document.documentElement.classList.add('in-sheet');</script>
 <style>
   html.in-sheet .topbar,html.in-sheet .read-progress,html.in-sheet .footer,html.in-sheet .crumbs{display:none!important}
