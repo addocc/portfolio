@@ -80,6 +80,12 @@
   .hero h1 .ava{display:inline-block;width:.9em;height:.9em;margin:0 .02em;border-radius:.24em;overflow:hidden;vertical-align:-.1em;transform:rotate(-6deg);transition:transform .45s var(--spring)}
   .hero h1 .ava:hover{transform:rotate(4deg) scale(1.08)}
   .hero h1 .ava img{width:100%;height:100%;object-fit:cover}
+  /* name: an orange sheen runs across both words, then rests */
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    .hero h1 .nm{padding-bottom:.1em;background:linear-gradient(100deg,var(--ink) 0 36%,var(--accent) 45%,#FFB36B 50%,var(--accent) 55%,var(--ink) 64% 100%);background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:name-sheen 6.5s ease-in-out 1s infinite}
+    .hero h1 .nm-2{animation-delay:1.45s}
+  }
+  @keyframes name-sheen{0%{background-position:100% 0}42%,100%{background-position:0 0}}
   .hero-row{display:grid;grid-template-columns:minmax(0,560px) auto;justify-content:space-between;align-items:end;gap:28px;margin-top:34px}
   .hero p{margin:0;font-size:18px;line-height:1.6;font-weight:500;color:var(--ink-2)}
   .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
@@ -270,7 +276,7 @@
     <!-- HERO -->
     <section class="hero">
       <div class="status"><span data-en="Now at Astana IT University">Сейчас в&nbsp;Astana IT University</span></div>
-      <h1><span data-en="Aidos">Айдос</span> <span class="ava"><img src="assets/aidos-sm.jpg" alt=""></span> <span data-en="Manap">Манап</span></h1>
+      <h1><span class="nm" data-en="Aidos">Айдос</span> <span class="ava"><img src="assets/aidos-sm.jpg" alt=""></span> <span class="nm nm-2" data-en="Manap">Манап</span></h1>
       <div class="hero-row">
         <p data-en="I'm a UX/UI designer with experience at EdTech companies and an IT startup. I helped build an academic information system (AIS) for the learning process, and B2B projects.">Я&nbsp;UX/UI дизайнер с&nbsp;опытом работы в&nbsp;EdTech компаниях и&nbsp;IT-стартапе. Участвовал в&nbsp;создании информационных систем управления учебным процессом (AIS) и&nbsp;B2B проектов.</p>
         <div class="hero-btns">
