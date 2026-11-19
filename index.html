@@ -80,12 +80,6 @@
   .hero h1 .ava{display:inline-block;width:.9em;height:.9em;margin:0 .02em;border-radius:.24em;overflow:hidden;vertical-align:-.1em;transform:rotate(-6deg);transition:transform .45s var(--spring)}
   .hero h1 .ava:hover{transform:rotate(4deg) scale(1.08)}
   .hero h1 .ava img{width:100%;height:100%;object-fit:cover}
-  /* name: an orange sheen runs across both words, then rests */
-  @supports ((-webkit-background-clip:text) or (background-clip:text)){
-    .hero h1 .nm{padding-bottom:.1em;background:linear-gradient(100deg,var(--ink) 0 36%,var(--accent) 45%,#FFB36B 50%,var(--accent) 55%,var(--ink) 64% 100%);background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:name-sheen 6.5s ease-in-out 1s infinite}
-    .hero h1 .nm-2{animation-delay:1.45s}
-  }
-  @keyframes name-sheen{0%{background-position:100% 0}42%,100%{background-position:0 0}}
   .hero-row{display:grid;grid-template-columns:minmax(0,560px) auto;justify-content:space-between;align-items:end;gap:28px;margin-top:34px}
   .hero p{margin:0;font-size:18px;line-height:1.6;font-weight:500;color:var(--ink-2)}
   .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
@@ -290,11 +284,22 @@
     <section class="section" id="projects">
       <div class="sec-head reveal"><h2 data-en="Selected work">Избранные работы</h2></div>
       <div class="tabs reveal" role="tablist" aria-label="Фильтр работ">
-        <button class="tab is-active" type="button" role="tab" aria-selected="true" data-filter="ui">UI/UX <span>5</span></button>
-        <button class="tab" type="button" role="tab" aria-selected="false" data-filter="motion">Motion <span>3</span></button>
+        <button class="tab is-active" type="button" role="tab" aria-selected="true" data-filter="ui">UI/UX <span>6</span></button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-filter="motion">Motion <span>4</span></button>
         <button class="tab" type="button" role="tab" aria-selected="false" data-filter="graphic"><b data-en="Graphic">Графический</b> <span>2</span></button>
       </div>
       <div class="works" id="worksGrid">
+
+        <div class="work locked reveal" data-cat="ui">
+          <div class="shot" style="--cbg:#2F86F0">
+            <img src="assets/aitu-blurred.jpg" alt="Размытое превью мобильного приложения и AIS Astana IT University" loading="lazy">
+            <div class="lock"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12M6 21h12"/><path d="M7 3v2.5a5 5 0 0 0 2.4 4.3L12 12l2.6-2.2A5 5 0 0 0 17 5.5V3"/><path d="M7 21v-2.5a5 5 0 0 1 2.4-4.3L12 12l2.6 2.2a5 5 0 0 1 2.4 4.3V21"/><path d="M9.5 19h5" opacity=".6"/></svg><span data-en="In progress">в&nbsp;процессе</span></span></div>
+          </div>
+          <div class="work-info"><div>
+            <div class="ttl"><h3 data-en="Mobile app for students and AIS for staff">Мобильное приложение для&nbsp;студентов и&nbsp;AIS для&nbsp;сотрудников</h3></div>
+            <p>Astana IT University</p>
+          </div></div>
+        </div>
 
         <div class="work locked reveal" data-cat="ui">
           <div class="shot" style="--cbg:#176cb0">
@@ -307,17 +312,6 @@
           </div></div>
         </div>
 
-        <a class="work reveal" data-cat="ui" href="cases/platonus-redesign.html" data-case="platonus-redesign">
-          <div class="shot" style="--cbg:#D6173A">
-            <img src="assets/platonus/cover-redesign.png" alt="Редизайн главного экрана Platonus" loading="lazy">
-            <span class="tag">EdTech</span><span class="arrow">↗</span>
-          </div>
-          <div class="work-info"><div>
-            <div class="ttl"><h3 data-en="Redesign of the Platonus home screen">Редизайн главного экрана Platonus</h3> <span class="yr">2025</span></div>
-            <p data-en="Surveyed 83 students from 4 universities and built the home screen around the 8 modules they need most">Опросил 83&nbsp;студента из&nbsp;4&nbsp;университетов и&nbsp;собрал главный экран из&nbsp;8&nbsp;самых нужных модулей</p>
-          </div><span class="kpi">700K MAU</span></div>
-        </a>
-
         <a class="work wide reveal" data-cat="ui" href="cases/blink.html" data-case="blink">
           <div class="shot" style="--cbg:#0B0B14">
             <img src="assets/blink.png" alt="Blink" loading="lazy">
@@ -329,15 +323,15 @@
           </div><span class="kpi" data-en="2 YC applications">2 подачи в&nbsp;YC</span></div>
         </a>
 
-        <a class="work reveal" data-cat="ui" href="cases/nimbl-academy.html" data-case="nimbl-academy">
-          <div class="shot" style="--cbg:#14111F">
-            <img src="assets/nimbl.png" alt="Nimbl Academy" loading="lazy">
+        <a class="work reveal" data-cat="ui" href="cases/platonus-redesign.html" data-case="platonus-redesign">
+          <div class="shot" style="--cbg:#D6173A">
+            <img src="assets/platonus/cover-redesign.png" alt="Редизайн главного экрана Platonus" loading="lazy">
             <span class="tag">EdTech</span><span class="arrow">↗</span>
           </div>
           <div class="work-info"><div>
-            <div class="ttl"><h3 data-en="Course completion up from 56% to 78%">Доходимость курса с&nbsp;56% до&nbsp;78%</h3> <span class="yr">2024</span></div>
-            <p data-en="Learning platform with AI hints and achievements">Учебная платформа с&nbsp;подсказками ИИ и&nbsp;достижениями</p>
-          </div><span class="kpi">+22&nbsp;п.п.</span></div>
+            <div class="ttl"><h3 data-en="Redesign of the Platonus home screen">Редизайн главного экрана Platonus</h3> <span class="yr">2025</span></div>
+            <p data-en="Surveyed 83 students from 4 universities and built the home screen around the 8 modules they need most">Опросил 83&nbsp;студента из&nbsp;4&nbsp;университетов и&nbsp;собрал главный экран из&nbsp;8&nbsp;самых нужных модулей</p>
+          </div><span class="kpi">700K MAU</span></div>
         </a>
 
         <a class="work reveal" data-cat="ui" href="cases/docwork.html" data-case="docwork">
@@ -351,7 +345,25 @@
           </div><span class="kpi">B2B · AI</span></div>
         </a>
 
-        <a class="work wide reveal" data-cat="motion" href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" data-video="AF8cavjqE5g">
+        <a class="work wide reveal" data-cat="ui" href="cases/nimbl-academy.html" data-case="nimbl-academy">
+          <div class="shot" style="--cbg:#14111F">
+            <img src="assets/nimbl.png" alt="Nimbl Academy" loading="lazy">
+            <span class="tag">EdTech</span><span class="arrow">↗</span>
+          </div>
+          <div class="work-info"><div>
+            <div class="ttl"><h3 data-en="Course completion up from 56% to 78%">Доходимость курса с&nbsp;56% до&nbsp;78%</h3> <span class="yr">2024</span></div>
+            <p data-en="Learning platform with AI hints and achievements">Учебная платформа с&nbsp;подсказками ИИ и&nbsp;достижениями</p>
+          </div><span class="kpi">+22&nbsp;п.п.</span></div>
+        </a>
+
+        <div class="work locked reveal" data-cat="motion">
+          <div class="shot" style="--cbg:#E9EEF0">
+            <img src="assets/terminals-blurred.jpg" alt="Размытое фото терминалов в аэропорту" loading="lazy">
+            <div class="lock"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12M6 21h12"/><path d="M7 3v2.5a5 5 0 0 0 2.4 4.3L12 12l2.6-2.2A5 5 0 0 0 17 5.5V3"/><path d="M7 21v-2.5a5 5 0 0 1 2.4-4.3L12 12l2.6 2.2a5 5 0 0 1 2.4 4.3V21"/><path d="M9.5 19h5" opacity=".6"/></svg><span data-en="In progress">в&nbsp;процессе</span></span></div>
+          </div>
+          <div class="work-info"><div><div class="ttl"><h3 data-en="Animations for terminal interactions at Kazakhstan's airports and train stations">Анимации для&nbsp;интеракшнов с&nbsp;терминалами в&nbsp;аэропортах и&nbsp;вокзалах Казахстана</h3></div><p>Motion</p></div></div>
+        </div>
+        <a class="work reveal" data-cat="motion" href="https://youtu.be/AF8cavjqE5g" target="_blank" rel="noreferrer" data-video="AF8cavjqE5g">
           <div class="shot" style="--cbg:#0B0B14"><img src="assets/blink-promo.png" alt="Промо-ролик Blink" loading="lazy"><span class="play">▶ <span data-en="Watch">Смотреть</span></span><span class="arrow">↗</span></div>
           <div class="work-info"><div><div class="ttl"><h3 data-en="Blink promo video">Промо-ролик Blink</h3> <span class="yr">2024</span></div><p>Motion · After Effects</p></div></div>
         </a>
